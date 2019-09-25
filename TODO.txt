@@ -1,0 +1,37 @@
+Laser Ansteuerung TODO
+
+Checken was bisher da ist!!! (Debugging)
+
+Interface mit Koordinatensystem/Gitter? Tkinter
+--> Pfad des Lasers festlegen. Graphisch, Entfernung?
+
+Pfad in Skript umwandeln für Laser in VBS
+Skript speichern für wiederholte nutzen
+-X,Y,Z anfahren. Von dort aus Pfad verfolgen
+
+
+
+DAFÜR:	1. Verstehen, was skripte bereits machen
+		In Bausteine zusammenfassen
+	2. Interface schreiben, das Skript 
+
+
+_______________________________________________________
+**************VBS**************************************
+
+*Case insensitive! (Groß Klein eGaL)
+
+*Kommentare mit '
+
+*Variablen Deklarierung:
+dim -> nur in gleicher Procedure
+Public -> für alle
+Private -> nur in diesem Script
+
+*Funktionen (Function) und Prozeduren (Sub)
+Sub hat keinen Rückgabewert, Function schon
+Umrahmt von Sub, End Sub
+Beim Aufrufen braucht man keine Klammern
+
+
+
