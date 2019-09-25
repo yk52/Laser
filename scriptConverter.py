@@ -22,7 +22,7 @@ energyMode = 0
 triggerMode = 0
 waitMs = 0
 rasterfahrt = 0
-pitch = 0
+pitchArray = 0
 
 def readPath(grid):
 	# get grid and turn into path
@@ -75,13 +75,15 @@ def defineVars():
 	vbs.write("triggerModeVal = %d\n" %triggerMode)
 	vbs.write("waitMs = %d\n\n" %waitMs)
 	
+def shoot():
+	vbs.write("PSOPulse pulse, 1000000/%f\n" %repRate)
 
 def moveAndShoot(xDist, yDist):
 	vbs.write("\nmoveRel x, %f\n" %xDist)
 	vbs.write("moveRel y, %f\n" %yDist)
 	vbs.write("waituntilinpos x,y\n")
 	vbs.write("wait waitMs\n")
-	vbs.write("PSOPulse pulse, 1000000/%f\n" %repRate)
+	shoot()
 	
 def diagonalShoot(x0, x1, y0, y1, pitch):
 	# TODO implement diagonal later. continue with for loop
@@ -91,14 +93,27 @@ def diagonalShoot(x0, x1, y0, y1, pitch):
 	numShots = dist / pitch
 	
 def lineShoot(x0, x1, y0, y1, pitch):
+	# Starting position not shot automatically
 	deltaX = x1 - x0
 	deltaY = y1 - y0
 	numShots = (deltaX + deltaY) / pitch	# Because either deltaX or Y is 0
-	vbs.write("PSOPulse pulse, 1000000/%f\n" %repRate)	# Shoot first shot at initial position
-	for i in range(0, numShots):
+	for i in range(0, numShots+1):
 		moveAndShoot(deltaX, deltaY)
+"""	
+outToIn: 1=Rasterschnecke von Ecke auﬂen nach innen. 0=Mitte nach auﬂen	
+Bei auﬂen nach innen muss der Startpunkt immer links oben sein
+dir = 0,1,2,3: Up, Right, Down, Left
+"""
+def doRasterfahrt(outToIn, sizeX, sizeY, pitch):
+	# TODO Algorithmus f¸r schnecke finden. Rekursiv?
+	dir = 0
+	if outToIn == 0:	# innen nach auﬂen
+		lineLen = pitch
+		shoot()
+		while lineLen < sizeX or sizeY:
+			
 	
-def doRasterfahrt():
+	
 
 def createScript(fileName, initValues, coordinates):
 	# output script made out of basic code blocks
