@@ -1,6 +1,8 @@
 Laser Ansteuerung TODO
 
-Checken was bisher da ist!!! (Debugging)
+Anforderungen:
+	*Option Rasterfahrt: Schnecke von Origin aus nach innen fahren
+	*Schuss Pitch festlegen (i.d.R. 100µm*x)
 
 Interface mit Koordinatensystem/Gitter? Tkinter
 --> Pfad des Lasers festlegen. Graphisch, Entfernung?
