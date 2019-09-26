@@ -5,6 +5,7 @@ Debug: Rasterfahrt out to in. Läuft?
 
 Anforderungen:	*Rasterschuss: von origin aus bei bestimmten pitch raster von außen nach innen/ innen nach außen
 			-> siehe Blatt: erst 3, danach konstant 2 immer eins weniger. Implementieren! bzw: einfache if/else abfrage? If genug platz, sonst abbiegen?
+		*In GUI: Darstellung Raster auf Vorschau? (importiertes GDL)
 		*Gleiche Stelle nicht doppelt lasern!!!!!
 		(*für jeden Schuss pitch angeben (in verschiedenen Farben kodieren. auf schwarzem Hintergrund))
 		*gdl file importieren und abfahren(koordinaten)
