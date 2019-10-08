@@ -31,19 +31,17 @@ def readPath(grid):
 
 def setParams(array):
 	i = 0
-	startX = array[i]
+	startX = array[i]   # x Coordinate
 	i += 1
-	startY = array[i]
+	startY = array[i]   # y Coordinate
 	i += 1
-	startZ = array[i]
+	startZ = array[i]   # z Coordinate
 	i += 1
-	startLeistung = array[i]
+	startLeistung = array[i]    # Attenuator position in degrees
 	i += 1
-	pulse = array[i]
+	pulse = array[i]    # Number of pulses before laser is shot
 	i += 1
-	repRate = array[i]
-	i += 1
-	numShots = array[i]
+	repRate = array[i]  # Pulse duration = 1us / repRate
 	i += 1
 	pulseEnergy = array[i]
 	i += 1
@@ -53,12 +51,12 @@ def setParams(array):
 	i += 1
 	triggerMode = array[i]
 	i += 1
-	waitMs = array[i]
+	waitMs = array[i]   # wait for x ms after waituntilinpos 
 	
 def defineVars():
 	vbs.write("' Define all used variables ***************************************************\n\n")
 	vbs.write("dim startX, startY, startZ, startLeistung\n")
-	vbs.write("dim pulse, repRate, numShots\n")
+	vbs.write("dim pulse\n")
 	vbs.write("dim i,j\n")
 	vbs.write("dim pulseEnergyDist, HVVal, energyModeVal, triggerModeVal\n")
 	vbs.write("dim waitMs\n\n")
@@ -67,8 +65,6 @@ def defineVars():
 	vbs.write("startZ = %.3f\n" %startZ)
 	vbs.write("startLeistung = %.3f\n" %startLeistung)
 	vbs.write("pulse = %d\n" %pulse)
-	vbs.write("repRate = %d\n" %repRate)
-	vbs.write("numShots = %d\n" %numShots)
 	vbs.write("pulseEnergyDist = %d\n" %pulseEnergy)
 	vbs.write("HVVal = %d\n" %hv)
 	vbs.write("energyModeVal = %d\n" %energyMode)
@@ -78,6 +74,9 @@ def defineVars():
 def shoot():
 	vbs.write("PSOPulse pulse, 1000000/%f\n" %repRate)
 
+"""
+Move a relative distance in x and y and shoot once at that position
+"""
 def moveAndShoot(xDist, yDist):
 	vbs.write("\nmoveRel x, %f\n" %xDist)
 	vbs.write("moveRel y, %f\n" %yDist)
@@ -92,6 +91,9 @@ def diagonalShoot(x0, x1, y0, y1, pitch):
 	dist = math.sqrt(pow(deltaX,2)+pow(deltaY,2))
 	numShots = dist / pitch
 	
+"""
+Move along a horizontal or vertical line and shoot in a certain pitch
+"""
 def lineShoot(x0, x1, y0, y1, pitch):
 	# Starting position not shot automatically
 	deltaX = x1 - x0

@@ -20,6 +20,11 @@ Skript speichern für wiederholte nutzen
 
 
 
+______________________________________________________
+******Script Converter**************************************
+Take inputs from GUI and turn into vbs script
+GUI input reihenfolge: startX, startY, startZ, startLeistung, pulse, repRate, numShots, pulseEnergy, hv, energyMode, triggerMode, waitMs
+
 
 _______________________________________________________
 **************VBS**************************************
