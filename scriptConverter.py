@@ -171,21 +171,21 @@ def doRasterfahrtOut(f, sizeX, sizeY, pitch, x0, y0):
     lenY = 0
 
     moveAbs(f, x0, y0)
-    shoot()     # first shot
+    shoot(f)     # first shot
 
-    while (lenX <= sizeX or lenY <= sizeY):
+    while (lenX <= sizeX):
         lenX += pitch
         lenY += pitch
         direction = (direction + 1) % 4
         if (lenX <= sizeX):
-            lineRelShoot(f, direction, lenX)
+            lineRelShoot(f, direction, lenX, pitch)
         else:
-            lineRelShoot(f, direction, lenX - pitch)
+            lineRelShoot(f, direction, lenX - pitch, pitch)
         direction = (direction + 1) % 4
         if (lenY <= sizeY):
-            lineRelShoot(f, direction, lenY)
+            lineRelShoot(f, direction, lenY, pitch)
         else:
-            lineRelShoot(f, direction, lenY - pitch)
+            lineRelShoot(f, direction, lenY - pitch, pitch)
 
 	
 
