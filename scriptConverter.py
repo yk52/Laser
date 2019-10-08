@@ -24,8 +24,8 @@ waitMs = 0
 rasterfahrt = 0
 pitchArray = 0
 
-def readPath(grid):
-	# get grid and turn into path
+def readGrid(grid):
+        # get grid and turn into 2 arrays: start and stop
 	return coordinates
 	
 
@@ -77,11 +77,43 @@ def shoot():
 """
 Move a relative distance in x and y and shoot once at that position
 """
-def moveAndShoot(xDist, yDist):
+def moveRel(xDist, yDist):
 	vbs.write("\nmoveRel x, %f\n" %xDist)
 	vbs.write("moveRel y, %f\n" %yDist)
 	vbs.write("waituntilinpos x,y\n")
 	vbs.write("wait waitMs\n")
+
+"""
+Move absolute distance in x and y and shoot once at that position
+"""
+def moveAbs(xPos, yPos):
+	vbs.write("\nmove x, %f\n" %xPos)
+	vbs.write("move y, %f\n" %yPos)
+	vbs.write("waituntilinpos x,y\n")
+	vbs.write("wait waitMs\n")
+        
+
+"""
+move into certain direction. 0=up, 1=right, 2=down, 3=left
+down and right: +
+up and left: -
+"""
+def moveDir(direction, dist):
+        if direction == 0:      # up
+                moveRel(0, -1*dist)
+        elif direction == 1:      # right
+                moveRel(dist, 0)
+        elif direction == 2:      # down
+                moveRel(0, dist)
+        elif direction == 3:      # left
+                moveRel(-1*dist, 0)
+	
+
+def shoot():
+	vbs.write("PSOPulse pulse, 1000000/%f\n" %repRate)
+
+def moveAndShootRel(xDist, yDist):
+        moveRel(xDist, yDist)
 	shoot()
 	
 def diagonalShoot(x0, x1, y0, y1, pitch):
@@ -94,27 +126,79 @@ def diagonalShoot(x0, x1, y0, y1, pitch):
 """
 Move along a horizontal or vertical line and shoot in a certain pitch
 """
+def lineRelShoot(direction, dist, pitch):
+	# Starting position not shot automatically
+        # 0 = start, 1 = stop
+	numShots = dist / pitch
+	for i in range(numShots):
+                moveDir(direction, pitch)
+                shoot()
+
+# TODO maybe still need this?
+""" 
 def lineShoot(x0, x1, y0, y1, pitch):
 	# Starting position not shot automatically
+        # 0 = start, 1 = stop
 	deltaX = x1 - x0
 	deltaY = y1 - y0
 	numShots = (deltaX + deltaY) / pitch	# Because either deltaX or Y is 0
-	for i in range(0, numShots+1):
-		moveAndShoot(deltaX, deltaY)
+	for i in range(numShots):
+		moveAndShootRel(deltaX, deltaY)
+"""
+
 """	
-outToIn: 1=Rasterschnecke von Ecke auﬂen nach innen. 0=Mitte nach auﬂen	
+Von Auﬂen nach Innen.
 Bei auﬂen nach innen muss der Startpunkt immer links oben sein
 dir = 0,1,2,3: Up, Right, Down, Left
+!!! sizeX und sizeY m¸ssen Vielfaches von pitch sein!
 """
-def doRasterfahrt(outToIn, sizeX, sizeY, pitch):
-	# TODO Algorithmus f¸r schnecke finden. Rekursiv?
-	dir = 0
-	if outToIn == 0:	# innen nach auﬂen
-		lineLen = pitch
-		shoot()
-		while lineLen < sizeX or sizeY:
-			
-	
+
+def doRasterfahrtIn(sizeX, sizeY, pitch, x0, y0):
+	# TODO debug
+	direction = 1
+        lenX = sizeX
+        lenY = sizeY
+        moveAbs(x0, y0)
+        shoot()     # first shot
+        lineRelShoot(direction, lenX, pitch)   # first line to the right
+
+        while(lenY >= pitch or lenX >= pitch):
+                direction = (direction + 1) % 4
+                if (lenY >= pitch):
+                        lineRelShoot(direction, lenY, pitch)
+                direction = (direction + 1) % 4
+                if (lenX >= pitch): 
+                        lineRelShoot(direction, lenX, pitch)
+                lenY -= pitch
+                lenX -= pitch
+
+
+"""
+Von Innen nach auﬂen. Geht nur vom Zentrum aus.
+"""
+def doRasterfahrtOut(sizeX, sizeY, pitch, x0, y0):
+	# TODO Debug
+        direction = 0
+        lenX = 0
+        lenY = 0
+
+        moveAbs(x0, y0)
+        shoot()     # first shot
+
+        while (lenX <= sizeX or lenY <= sizeY):
+                lenX += pitch
+                lenY += pitch
+                direction = (direction + 1) % 4
+                if (lenX <= sizeX):
+                        lineRelShoot(direction, lenX)
+                else:
+                        lineRelShoot(direction, lenX - pitch)
+                direction = (direction + 1) % 4
+                if (lenY <= sizeY):
+                        lineRelShoot(direction, lenY)
+                else:
+                        lineRelShoot(direction, lenY - pitch)
+
 	
 
 def createScript(fileName, initValues, coordinates):
@@ -135,7 +219,7 @@ def createScript(fileName, initValues, coordinates):
 		# Third enter movement and laser procedure
 		arrayLen = len(coordinates)-1
 		for i in range(0, arrayLen+1):
-			moveAndShoot(coordinates[i][0], coordinates[i][1])
+			moveAndShootRel(coordinates[i][0], coordinates[i][1])
 		
 		# Fourth enter what's left to say
 		with open("end.txt", 'r') as body:	
