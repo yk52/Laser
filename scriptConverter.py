@@ -31,6 +31,8 @@ def readGrid(grid):
 
 def setParams(array):
     i = 0
+    filename = array[i]   # Name of file to be saved as
+    i += 1
     startX = array[i]   # x Coordinate
     i += 1
     startY = array[i]   # y Coordinate
