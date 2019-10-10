@@ -165,7 +165,6 @@ def doRasterfahrtIn(f, sizeX, sizeY, pitch, x0, y0):
 Von Innen nach aussen. Geht nur vom Zentrum aus.
 """
 def doRasterfahrtOut(f, sizeX, sizeY, pitch, x0, y0):
-    # TODO Debug
     direction = 0
     lenX = 0
     lenY = 0
@@ -181,11 +180,13 @@ def doRasterfahrtOut(f, sizeX, sizeY, pitch, x0, y0):
             lineRelShoot(f, direction, lenX, pitch)
         else:
             lineRelShoot(f, direction, lenX - pitch, pitch)
+            break
         direction = (direction + 1) % 4
         if (lenY <= sizeY):
             lineRelShoot(f, direction, lenY, pitch)
         else:
             lineRelShoot(f, direction, lenY - pitch, pitch)
+            break
 
 	
 

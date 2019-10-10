@@ -6,4 +6,4 @@ test script for scriptConverter
 import scriptConverter
 
 with open("testSkript.txt", 'w') as f:
-    scriptConverter.doRasterfahrtOut(f, 1, 1, 1, 4.4, 4.22)
+    scriptConverter.doRasterfahrtOut(f, 0.5, 0.5, 0.1, 0, 0)

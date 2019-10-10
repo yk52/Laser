@@ -1,14 +1,11 @@
 Laser Ansteuerung TODO
 
 braucht man nach jedem schuss pause?
-Debug: Rasterfahrt out to in. Läuft?
 
-Continue debugging rasterFahrtOut with test.py!
 
-Anforderungen:	*Rasterschuss: von origin aus bei bestimmten pitch raster von außen nach innen/ innen nach außen
-			-> siehe Blatt: erst 3, danach konstant 2 immer eins weniger. Implementieren! bzw: einfache if/else abfrage? If genug platz, sonst abbiegen?
-		*In GUI: Darstellung Raster auf Vorschau? (importiertes GDL)
+Anforderungen:	*Rasterschuss: von origin aus bei bestimmten pitch raster von außen nach innen/ innen nach außen -> LÄUFT
 		*Gleiche Stelle nicht doppelt lasern!!!!!
+		*In GUI: Darstellung Raster auf Vorschau? (importiertes GDL)
 		(*für jeden Schuss pitch angeben (in verschiedenen Farben kodieren. auf schwarzem Hintergrund))
 		*gdl file importieren und abfahren(koordinaten)
 		*Dafür: start und endpunkt für schüsse in nem pitch (Linienschuss)
