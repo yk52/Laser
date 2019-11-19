@@ -5,5 +5,5 @@ test script for scriptConverter
 
 import scriptConverter
 
-with open("testSkript.txt", 'w') as f:
-    scriptConverter.doRasterfahrtOut(f, 0.5, 0.5, 0.1, 0, 0)
+params = ["testRaster", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+scriptConverter.doRasterfahrtIn(params, 0.5, 0.5, 0.1)

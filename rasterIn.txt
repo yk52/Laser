@@ -1,6 +1,0 @@
-
-move x, 0.000000
-move y, 0.000000
-waituntilinpos x,y
-wait waitMs
-PSOPulse pulse, 1000000/0.000000

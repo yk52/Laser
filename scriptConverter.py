@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-23/09/19
+19/11/19
 Take the path entered into the laser GUI and convert it into a visual basic script (.vbs) script
 """
 
@@ -9,6 +9,7 @@ import math
 #import pyximport; pyximport.install()
 
 # global variables
+fileName = ""
 startX = 0
 startY = 0
 startZ = 0
@@ -28,10 +29,26 @@ def readGrid(grid):
     # get grid and turn into 2 arrays: start and stop
     return coordinates
 	
-
+"""
+Sets global parameters for all functions to use.
+"""
 def setParams(array):
+    # Maybe it was a mistake to use global variables.........
+    global fileName
+    global startX 
+    global startY
+    global startZ
+    global startLeistung
+    global pulse
+    global repRate
+    global puseEnergy
+    global hv
+    global energyMode
+    global triggerMode
+    global waitMs
+
     i = 0
-    filename = array[i]   # Name of file to be saved as
+    fileName = array[i]   # Name of file to be saved as
     i += 1
     startX = array[i]   # x Coordinate
     i += 1
@@ -56,6 +73,17 @@ def setParams(array):
     waitMs = array[i]   # wait for x ms after waituntilinpos 
 	
 def defineVars(f):
+    global startX 
+    global startY
+    global startZ
+    global startLeistung
+    global pulse
+    global puseEnergy
+    global hv
+    global energyMode
+    global triggerMode
+    global waitMs
+
     f.write("' Define all used variables ***************************************************\n\n")
     f.write("dim startX, startY, startZ, startLeistung\n")
     f.write("dim pulse\n")
@@ -74,7 +102,9 @@ def defineVars(f):
     f.write("waitMs = %d\n\n" %waitMs)
 	
 def shoot(f):
+    global repRate
     f.write("PSOPulse pulse, 1000000/%f\n" %repRate)
+    
 
 """
 Move a relative distance in x and y and shoot once at that position
@@ -112,6 +142,7 @@ def moveDir(f, direction, dist):
 	
 
 def shoot(f):
+    global repRate
     f.write("PSOPulse pulse, 1000000/%f\n" %repRate)
 
 def moveAndShootRel(f, xDist, yDist):
@@ -137,82 +168,140 @@ def lineRelShoot(f, direction, dist, pitch):
         shoot(f)
 
 
+"""
+Add everything previous to the main body code (movement) to the .vbs file
+"""
+def addHeader(f):
+    f.write("Option Explicit\n\n")
+    # First define all variables
+    defineVars(f)
+            
+    # Second enter all used subprocedures and code main body
+    with open("body.txt", 'r') as body:	
+        for line in body:
+            f.write(line)
+        
+
+"""
+Add everything latter to the main body code (movement) to the .vbs file
+"""
+def addTrailer(f):
+    # Fourth enter what's left to say
+    with open("end.txt", 'r') as body:	
+        for line in body:
+            f.write(line)
+
+
 """	
-Von Aussen nach Innen.
+Von Aussen nach Innen. Erste Linie geht nach Rechts.
 Bei aussen nach innen muss der Startpunkt immer links oben sein
 dir = 0,1,2,3: Up, Right, Down, Left
-!!! sizeX und sizeY muessen Vielfaches von pitch sein!
+!!! sizeX und sizeY muessen Vielfaches von pitch sein! Erstellt vollstaendig
+ausfuehrbares vbs skript.
+
 """
 
-def doRasterfahrtIn(f, sizeX, sizeY, pitch, x0, y0):
+def doRasterfahrtIn(initValues, sizeX, sizeY, pitch):
+    global fileName
+    global startX
+    global startY
     direction = 1
     lenX = sizeX
     lenY = sizeY
-    moveAbs(f, x0, y0)
-    shoot(f)     # first shot
-    lineRelShoot(f, direction, lenX, pitch)   # first line to the right
+    setParams(initValues)
 
-    while(lenY >= pitch):
-        direction = (direction + 1) % 4
-        if (lenY >= pitch):
-                lineRelShoot(f, direction, lenY, pitch)
-        direction = (direction + 1) % 4
-        if (lenX >= pitch): 
-                lineRelShoot(f, direction, lenX, pitch)
-        lenY -= pitch
-        lenX -= pitch
+    if os.path.isfile(fileName+".vbs"):
+        print(
+        "\nFile already exists. \nPlease delete the existing one, or choose a new \
+name.")
+        return
+
+    with open(fileName+".vbs", 'a+') as f:
+        addHeader(f)
+
+        moveAbs(f, startX, startY)
+        shoot(f)     # first shot
+        lineRelShoot(f, direction, lenX, pitch)   # first line to the right
+
+        while(lenY >= pitch):
+            direction = (direction + 1) % 4
+            if (lenY >= pitch):
+                    lineRelShoot(f, direction, lenY, pitch)
+            direction = (direction + 1) % 4
+            if (lenX >= pitch): 
+                    lineRelShoot(f, direction, lenX, pitch)
+            lenY -= pitch
+            lenX -= pitch
+
+        addTrailer(f)
 
 
 """
-Von Innen nach aussen. Geht nur vom Zentrum aus.
+Von Innen nach aussen. Geht nur vom Zentrum aus. Erste Fahrt geht nach Rechts.
+Erstellt vollstaendig ausfuehrbares vbs skript.
 """
-def doRasterfahrtOut(f, sizeX, sizeY, pitch, x0, y0):
+def doRasterfahrtOut(initValues, sizeX, sizeY, pitch):
+    global fileName
+    global startX
+    global startY
     direction = 0
     lenX = 0
     lenY = 0
 
-    moveAbs(f, x0, y0)
-    shoot(f)     # first shot
+    setParams(initValues)
 
-    while (lenX <= sizeX):
-        lenX += pitch
-        lenY += pitch
-        direction = (direction + 1) % 4
-        if (lenX <= sizeX):
-            lineRelShoot(f, direction, lenX, pitch)
-        else:
-            lineRelShoot(f, direction, lenX - pitch, pitch)
-            break
-        direction = (direction + 1) % 4
-        if (lenY <= sizeY):
-            lineRelShoot(f, direction, lenY, pitch)
-        else:
-            lineRelShoot(f, direction, lenY - pitch, pitch)
-            break
+    if os.path.isfile(fileName+".vbs"):
+        print(
+        "\nFile already exists. \nPlease delete the existing one, or choose a new \
+name.")
+        return
+
+    with open(fileName+".vbs", 'a+') as f:
+        addHeader(f)
+        moveAbs(f, startX, startY)
+        shoot(f)     # first shot
+
+        while (lenX <= sizeX):
+            lenX += pitch
+            lenY += pitch
+            direction = (direction + 1) % 4
+            if (lenX <= sizeX):
+                lineRelShoot(f, direction, lenX, pitch)
+            else:
+                lineRelShoot(f, direction, lenX - pitch, pitch)
+                break
+            direction = (direction + 1) % 4
+            if (lenY <= sizeY):
+                lineRelShoot(f, direction, lenY, pitch)
+            else:
+                lineRelShoot(f, direction, lenY - pitch, pitch)
+                break
+
+        addTrailer(f)
 
 	
+"""
+output script made out of basic code blocks
+Goal: Only one standard form with different values, but different path
 
-def createScript(fileName, initValues, coordinates):
-    # output script made out of basic code blocks
-    # Goal: Only one standard form with different values, but different path
+"""
+def createUserScript(initValues, coordinates):
+    global fileName
 
     setParams(initValues)
-    with open(fileName+".vbs", 'a+') as vbs:
-        vbs.write("Option Explicit\n\n")
-        # First define all variables
-        defineVars()
-                
-        # Second enter all used subprocedures and code main body
-        with open("body.txt", 'r') as body:	
-            for line in body:
-                vbs.write(line)
-                        
-        # Third enter movement and laser procedure
+
+    if os.path.isfile(fileName+".vbs"):
+        print(
+        "\nFile already exists. \nPlease delete the existing one, or choose a new \
+name.")
+        return
+
+    with open(fileName+".vbs", 'a+') as f:
+        addHeader(f)        
+
+        # enter movement and laser procedure
         arrayLen = len(coordinates)-1
         for i in range(0, arrayLen+1):
-            moveAndShootRel(vbs, coordinates[i][0], coordinates[i][1])
+            moveAndShootRel(f, coordinates[i][0], coordinates[i][1])
         
-        # Fourth enter what's left to say
-        with open("end.txt", 'r') as body:	
-            for line in body:
-                vbs.write(line)
+        addTrailer(f)

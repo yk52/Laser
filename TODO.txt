@@ -1,14 +1,17 @@
 Laser Ansteuerung TODO
 
+Skript bleibt leer?
 
 
+____________________________________________________________
+******Check*************************************************
+-braucht man nach jedem schuss pause?
+-Funktioniert Rasterfahrt Out/In?
 
+____________________________________________________________
+****** TODO *************************************************
 
-
-braucht man nach jedem schuss pause?
-
-
-Anforderungen:	*Rasterschuss: von origin aus bei bestimmten pitch raster von außen nach innen/ innen nach außen -> LÄUFT
+Anforderungen:	*Rasterschuss: von origin aus bei bestimmten pitch raster von außen nach innen/ innen nach außen -> LÄUFT?
 		*Gleiche Stelle nicht doppelt lasern!!!!!
 		*In GUI: Darstellung Raster auf Vorschau? (importiertes GDL)
 		(*für jeden Schuss pitch angeben (in verschiedenen Farben kodieren. auf schwarzem Hintergrund))
@@ -26,7 +29,7 @@ Skript speichern für wiederholte nutzen
 
 
 
-______________________________________________________
+____________________________________________________________
 ******Script Converter**************************************
 Take inputs from GUI and turn into vbs script
 GUI input reihenfolge: startX, startY, startZ, startLeistung, pulse, repRate, numShots, pulseEnergy, hv, energyMode, triggerMode, waitMs
