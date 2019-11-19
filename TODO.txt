@@ -1,15 +1,34 @@
 Laser Ansteuerung TODO
 
-Skript bleibt leer?
+in SkriptKonverter:
+Graph zu Koordinaten?
+diagonalShoot: diagonal pitch innerhalb Bewegungsmöglichkeit vom Laser?
 
+in GUI: 
+-Test ob name bereits existiert in GUI?
+-Gitter skalierbar nach kleinstem Pitch? (min. 1µm)
+-If new Line: Add single shot for first position (start of line)
+-new Line / Done für Lineshot (damit man weiß, wann neue line beginnen soll, und wann alte fortgeführt) -> STOP (5) in Queue, damit mans weiß
+-Doppelklick an gleiche Stelle für point shot
+-ESC für Aktuellen Punkt loslassen/löschen --> rückgängig
+-Show wo überall ein schuss hinkommt (im gitter) vor allem interessant für diagonalShoot?
 
 ____________________________________________________________
 ******Check*************************************************
+
 -braucht man nach jedem schuss pause?
 -Funktioniert Rasterfahrt Out/In?
 
 ____________________________________________________________
 ****** TODO *************************************************
+
+2 MODI:	-> 3 Arrays.	A): Queue Array (Nx2). Spalte 1: Point = 0, Line = 1 || Spalte 2: Idx im jeweiligen P oder L array.
+		   	B): Point Array (NPx2). Spalte 1: X || Spalte 2: Y
+			C): Line Array	(NLx4). Spalte 1,2: X0, Y0 || Spalte 3,4: X1, Y1
+
+Punktschuss P: move to certain point and shoot
+Linienschuss L: Schieße in nem Pitch
+
 
 Anforderungen:	*Rasterschuss: von origin aus bei bestimmten pitch raster von außen nach innen/ innen nach außen -> LÄUFT?
 		*Gleiche Stelle nicht doppelt lasern!!!!!

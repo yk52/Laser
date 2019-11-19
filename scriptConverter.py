@@ -23,14 +23,11 @@ energyMode = 0
 triggerMode = 0
 waitMs = 0
 rasterfahrt = 0
-pitchArray = 0
+pitch = 1   # TODO change back to 0 later
 
-def readGrid(grid):
-    # get grid and turn into 2 arrays: start and stop
-    return coordinates
 	
 """
-Sets global parameters for all functions to use.
+Sets global parameters from GUI input for all functions to use
 """
 def setParams(array):
     # Maybe it was a mistake to use global variables.........
@@ -46,6 +43,7 @@ def setParams(array):
     global energyMode
     global triggerMode
     global waitMs
+    global pitch
 
     i = 0
     fileName = array[i]   # Name of file to be saved as
@@ -71,6 +69,8 @@ def setParams(array):
     triggerMode = array[i]
     i += 1
     waitMs = array[i]   # wait for x ms after waituntilinpos 
+    i += 1
+    pitch = array[i]
 	
 def defineVars(f):
     global startX 
@@ -107,7 +107,7 @@ def shoot(f):
     
 
 """
-Move a relative distance in x and y and shoot once at that position
+Move a relative distance in x and y
 """
 def moveRel(f, xDist, yDist):
     f.write("\nmoveRel x, %f\n" %xDist)
@@ -116,13 +116,35 @@ def moveRel(f, xDist, yDist):
     f.write("wait waitMs\n")
 
 """
-Move absolute distance in x and y and shoot once at that position
+Move absolute distance in x and y
 """
 def moveAbs(f, xPos, yPos):
     f.write("\nmove x, %f\n" %xPos)
     f.write("move y, %f\n" %yPos)
     f.write("waituntilinpos x,y\n")
     f.write("wait waitMs\n")
+
+"""
+Shoot once.
+"""
+def shoot(f):
+    global repRate
+    f.write("PSOPulse pulse, 1000000/%f\n" %repRate)
+
+
+"""
+Move a relative distance in x and y and shoot once
+"""
+def moveAndShootRel(f, xDist, yDist):
+    moveRel(f, xDist, yDist)
+    shoot(f)
+	
+"""
+Move absolute distance in x and y and shoot once
+"""
+def moveAndShootAbs(f, x, y):
+    moveAbs(f, x, y)
+    shoot(f)
         
 
 """
@@ -141,27 +163,35 @@ def moveDir(f, direction, dist):
         moveRel(f, -1*dist, 0)
 	
 
-def shoot(f):
-    global repRate
-    f.write("PSOPulse pulse, 1000000/%f\n" %repRate)
 
-def moveAndShootRel(f, xDist, yDist):
-    moveRel(f, xDist, yDist)
-    shoot(f)
-	
-def diagonalShoot(f, x0, x1, y0, y1, pitch):
-    # TODO implement diagonal later. continue with for loop
-    deltaX = x1 - x0
-    deltaY = y1 - y0
+"""
+Move along a 2D (possibly diagonal) line and shoot in a certain pitch
+"""
+# TODO: what if stepX and stepY too small for movement of laser?
+def twoDShoot(f, x0, x1, y0, y1):
+    global pitch
+    # Starting position not shot automatically
+    deltaX = float(x1 - x0)
+    deltaY = float(y1 - y0)
     dist = math.sqrt(pow(deltaX,2)+pow(deltaY,2))
-    numShots = dist / pitch
+    numShots = int(dist / float(pitch))
+    stepX = deltaX / numShots
+    stepY = deltaY / numShots
+    x = x0
+    y = y0
+    for i in range(numShots):
+        x += stepX
+        y += stepY
+        moveAndShootAbs(f, x, y)
 	
+
 """
 Move along a horizontal or vertical line and shoot in a certain pitch
 """
-def lineRelShoot(f, direction, dist, pitch):
+def lineRelShoot(f, direction, dist):
     # Starting position not shot automatically
     # 0 = start, 1 = stop
+    global pitch
     numShots = int(dist / pitch)
     for i in range(numShots):
         moveDir(f, direction, pitch)
@@ -201,10 +231,11 @@ ausfuehrbares vbs skript.
 
 """
 
-def doRasterfahrtIn(initValues, sizeX, sizeY, pitch):
+def doRasterfahrtIn(initValues, sizeX, sizeY):
     global fileName
     global startX
     global startY
+    global pitch
     direction = 1
     lenX = sizeX
     lenY = sizeY
@@ -240,10 +271,11 @@ name.")
 Von Innen nach aussen. Geht nur vom Zentrum aus. Erste Fahrt geht nach Rechts.
 Erstellt vollstaendig ausfuehrbares vbs skript.
 """
-def doRasterfahrtOut(initValues, sizeX, sizeY, pitch):
+def doRasterfahrtOut(initValues, sizeX, sizeY):
     global fileName
     global startX
     global startY
+    global pitch
     direction = 0
     lenX = 0
     lenY = 0
@@ -279,13 +311,37 @@ name.")
 
         addTrailer(f)
 
-	
+"""
+Get 3 arrays from GUI: Queue, point shot Array and line shot Array.
+Turn into vbs script
+"""
+def readUserPath(f, queue, pArray, lArray):
+    lenQ = len(queue)
+    i = 0
+    while (i < lenQ):
+        idx = queue[i][1]  
+        if (queue[i][0] == 1):
+            # Line
+            x0 = lArray[idx][0]
+            y0 = lArray[idx][1]
+            x1 = lArray[idx][2]
+            y1 = lArray[idx][3]
+            twoDShoot(f, x0, x1, y0, y1)
+        elif (queue[i][0] == 0):
+            # Point
+            x = pArray[idx][0]
+            y = pArray[idx][1]
+            moveAndShootAbs(f, x, y)  
+
+        i += 1    
+
+
 """
 output script made out of basic code blocks
 Goal: Only one standard form with different values, but different path
 
 """
-def createUserScript(initValues, coordinates):
+def createUserScript(initValues, queue, points, lines):
     global fileName
 
     setParams(initValues)
@@ -300,8 +356,6 @@ name.")
         addHeader(f)        
 
         # enter movement and laser procedure
-        arrayLen = len(coordinates)-1
-        for i in range(0, arrayLen+1):
-            moveAndShootRel(f, coordinates[i][0], coordinates[i][1])
+        readUserPath(f, queue, points, lines)
         
         addTrailer(f)
