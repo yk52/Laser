@@ -2,7 +2,7 @@ Laser Ansteuerung TODO
 
 in SkriptKonverter:
 Graph zu Koordinaten?
-diagonalShoot: diagonal pitch innerhalb Bewegungsmöglichkeit vom Laser?
+
 
 in GUI: 
 -Test ob name bereits existiert in GUI?
@@ -16,13 +16,14 @@ in GUI:
 ____________________________________________________________
 ******Check*************************************************
 
+diagonalShoot: diagonal pitch innerhalb Bewegungsmöglichkeit vom Laser?	------> Check obs klappt mit xGoal und yGoal! Offset zu groß, bei einfach aufrunden-.-.-
 -braucht man nach jedem schuss pause?
 -Funktioniert Rasterfahrt Out/In?
 
 ____________________________________________________________
 ****** TODO *************************************************
 
-2 MODI:	-> 3 Arrays.	A): Queue Array (Nx2). Spalte 1: Point = 0, Line = 1 || Spalte 2: Idx im jeweiligen P oder L array.
+2 MODI:	-> 3 Arrays.	A): Queue Array (Nx2). Spalte 1: Point = 0, Line = 1 || Spalte 2: Idx im jeweiligen P oder L array. Start = 0!
 		   	B): Point Array (NPx2). Spalte 1: X || Spalte 2: Y
 			C): Line Array	(NLx4). Spalte 1,2: X0, Y0 || Spalte 3,4: X1, Y1
 

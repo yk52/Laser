@@ -8,7 +8,9 @@ import os
 import math
 #import pyximport; pyximport.install()
 
-# global variables
+unit = 1.0    # smallest unit = 1 micrometer
+
+# global user variables
 fileName = ""
 startX = 0
 startY = 0
@@ -167,7 +169,8 @@ def moveDir(f, direction, dist):
 """
 Move along a 2D (possibly diagonal) line and shoot in a certain pitch
 """
-# TODO: what if stepX and stepY too small for movement of laser?
+# TODO: what if stepX and stepY too small for movement of laser? Continue!
+# Lieber mit distanz arbeiten
 def twoDShoot(f, x0, x1, y0, y1):
     global pitch
     # Starting position not shot automatically
@@ -177,12 +180,29 @@ def twoDShoot(f, x0, x1, y0, y1):
     numShots = int(dist / float(pitch))
     stepX = deltaX / numShots
     stepY = deltaY / numShots
+
     x = x0
     y = y0
+    xGoal = 0
+    yGoal = 0
+
     for i in range(numShots):
         x += stepX
         y += stepY
-        moveAndShootAbs(f, x, y)
+
+        if (stepX > 0):
+            xGoal = math.ceil(x)
+        else:
+            xGoal = math.floor(x)
+        if (stepY > 0):
+            yGoal = math.ceil(y)
+        else:
+            yGoal = math.floor(y)
+        
+        if ((yGoal >= y) or (xGoal >= x)):
+            continue
+
+        moveAndShootAbs(f, xGoal, yGoal)
 	
 
 """
