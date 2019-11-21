@@ -16,7 +16,8 @@ in GUI:
 ____________________________________________________________
 ******Check*************************************************
 
-diagonalShoot: diagonal pitch innerhalb Bewegungsmˆglichkeit vom Laser?	------> Check obs klappt mit xGoal und yGoal! Offset zu groﬂ, bei einfach aufrunden-.-.-
+diagonalShoot: diagonal pitch innerhalb Bewegungsmˆglichkeit vom Laser?	------> Check obs klappt mit xGoal und yGoal!
+--> --> --> --> Diagonal shoot soll treppenm‰ﬂig sein! Im 100 µm Raster bleiben z.B.
 -braucht man nach jedem schuss pause?
 -Funktioniert Rasterfahrt Out/In?
 
