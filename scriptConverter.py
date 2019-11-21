@@ -248,7 +248,6 @@ Bei aussen nach innen muss der Startpunkt immer links oben sein
 dir = 0,1,2,3: Up, Right, Down, Left
 !!! sizeX und sizeY muessen Vielfaches von pitch sein! Erstellt vollstaendig
 ausfuehrbares vbs skript.
-
 """
 
 def doRasterfahrtIn(initValues, sizeX, sizeY):
@@ -359,7 +358,6 @@ def readUserPath(f, queue, pArray, lArray):
 """
 output script made out of basic code blocks
 Goal: Only one standard form with different values, but different path
-
 """
 def createUserScript(initValues, queue, points, lines):
     global fileName
