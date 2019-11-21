@@ -271,15 +271,15 @@ name.")
 
         moveAbs(f, startX, startY)
         shoot(f)     # first shot
-        lineRelShoot(f, direction, lenX, pitch)   # first line to the right
+        lineRelShoot(f, direction, lenX)   # first line to the right
 
         while(lenY >= pitch):
             direction = (direction + 1) % 4
             if (lenY >= pitch):
-                    lineRelShoot(f, direction, lenY, pitch)
+                    lineRelShoot(f, direction, lenY)
             direction = (direction + 1) % 4
             if (lenX >= pitch): 
-                    lineRelShoot(f, direction, lenX, pitch)
+                    lineRelShoot(f, direction, lenX)
             lenY -= pitch
             lenX -= pitch
 
@@ -317,15 +317,15 @@ name.")
             lenY += pitch
             direction = (direction + 1) % 4
             if (lenX <= sizeX):
-                lineRelShoot(f, direction, lenX, pitch)
+                lineRelShoot(f, direction, lenX)
             else:
-                lineRelShoot(f, direction, lenX - pitch, pitch)
+                lineRelShoot(f, direction, lenX - pitch)
                 break
             direction = (direction + 1) % 4
             if (lenY <= sizeY):
-                lineRelShoot(f, direction, lenY, pitch)
+                lineRelShoot(f, direction, lenY)
             else:
-                lineRelShoot(f, direction, lenY - pitch, pitch)
+                lineRelShoot(f, direction, lenY - pitch)
                 break
 
         addTrailer(f)
