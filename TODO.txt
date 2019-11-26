@@ -2,6 +2,7 @@ Laser Ansteuerung TODO
 
 in SkriptKonverter:
 Graph zu Koordinaten?
+****** Stimmt das Koordinaten system? (wegen bewegung. rechts und runter ist PLUS bei mir aktuell)
 
 
 in GUI: 

@@ -169,40 +169,55 @@ def moveDir(f, direction, dist):
 """
 Move along a 2D (possibly diagonal) line and shoot in a certain pitch
 """
-# TODO: what if stepX and stepY too small for movement of laser? Continue!
-# Lieber mit distanz arbeiten
-def twoDShoot(f, x0, x1, y0, y1):
+def diagonalShoot(f, x0, y0, x1, y1):
+    """ for testing:"""
+    testArray = []
+
     global pitch
     # Starting position not shot automatically
     deltaX = float(x1 - x0)
     deltaY = float(y1 - y0)
-    dist = math.sqrt(pow(deltaX,2)+pow(deltaY,2))
-    numShots = int(dist / float(pitch))
-    stepX = deltaX / numShots
-    stepY = deltaY / numShots
+    slope = deltaY / deltaX
 
+
+    if (deltaX < 0):
+        stepX = -1 * pitch
+        deltaX *= -1
+    else:
+        stepX = pitch
+
+    if (deltaY < 0):
+        stepY = -1 * pitch
+        deltaY *= -1
+    else:
+        stepY = pitch
+
+    idealStepY = stepX * slope
     x = x0
     y = y0
-    xGoal = 0
-    yGoal = 0
+    yIdeal = y0
 
-    for i in range(numShots):
+    while (deltaY >= 0):
+
         x += stepX
-        y += stepY
-
-        if (stepX > 0):
-            xGoal = math.ceil(x)
+        deltaX -= abs(stepX)
+        if (deltaX < 0):
+            break
         else:
-            xGoal = math.floor(x)
-        if (stepY > 0):
-            yGoal = math.ceil(y)
-        else:
-            yGoal = math.floor(y)
-        
-        if ((yGoal >= y) or (xGoal >= x)):
-            continue
+            moveAndShootAbs(f, x, y)
+            testArray.append([x,y]) # delete later
 
-        moveAndShootAbs(f, xGoal, yGoal)
+        yIdeal = yIdeal + idealStepY
+
+        while (deltaY < 0):
+            y += stepY
+            deltaY -= abs(stepY)
+            moveAndShootAbs(f, x, y)
+            testArray.append([x,y]) # delete later
+
+
+    return testArray        
+                
 	
 
 """
@@ -345,7 +360,7 @@ def readUserPath(f, queue, pArray, lArray):
             y0 = lArray[idx][1]
             x1 = lArray[idx][2]
             y1 = lArray[idx][3]
-            twoDShoot(f, x0, x1, y0, y1)
+            diagonalShoot(f, x0, x1, y0, y1)
         elif (queue[i][0] == 0):
             # Point
             x = pArray[idx][0]
