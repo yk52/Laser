@@ -18,8 +18,8 @@ in GUI:
 ____________________________________________________________
 ******Check*************************************************
 
-diagonalShoot: diagonal pitch innerhalb Bewegungsmöglichkeit vom Laser?	------> Check obs klappt mit xGoal und yGoal!
---> --> --> --> Diagonal shoot soll treppenmäßig sein! Im 100 µm Raster bleiben z.B.
+DIAGONAL SHOOT diagonal pitch innerhalb Bewegungsmöglichkeit vom Laser?
+--> --> --> --> Diagonal shoot gleibt stecken in while loops. current test also does not work
 -braucht man nach jedem schuss pause?
 -Funktioniert Rasterfahrt Out/In?
 
