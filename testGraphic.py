@@ -37,12 +37,11 @@ l = [[0,0,2,0],[2,0,2,3],[2,3,1,3],[1,3,1,2]]
 scriptConverter.doRasterfahrtOut(params, 5, 5)
 #scriptConverter.createUserScript(params, queue, p, l)
 
-a,b,c,d = 40, 40, 580, 60
+a,b,c,d = 300, 500, 500, 460
 
 
 with open("twoDTest.txt", 'w') as f:
     testArray = scriptConverter.diagonalShoot(f, a, b, c, d)
-print(testArray)
 
 
 """ Show the lines %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -3,6 +3,7 @@ Laser Ansteuerung TODO
 in SkriptKonverter:
 Graph zu Koordinaten?
 ****** Stimmt das Koordinaten system? (wegen bewegung. rechts und runter ist PLUS bei mir aktuell)
+	Gibt es im Laser negative koordinaten? sonst problem bei diagonal shoot und im allgemeinen
 
 
 in GUI: 

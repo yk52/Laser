@@ -201,26 +201,26 @@ def diagonalShoot(f, x0, y0, x1, y1):
     while (deltaY > 0 or deltaX > 0):
         diffIdeal = abs(yIdeal - y)
 
-        if (deltaX >= 0):
+        if (deltaX > 0 and diffIdeal < 0):
             deltaX -= abs(stepX)
             x += stepX
             moveAndShootAbs(f, x, y)
             testArray.append([x,y]) # delete later
+            print(x,y)
 
             if (deltaY > 0):
                 yIdeal = yIdeal + idealStepY
+                print(yIdeal)
 
         
-        if (deltaY > 0):
-            diffIdeal = abs(yIdeal - y)
+        diffIdeal = abs(yIdeal - y)
+        if (deltaY > 0 and diffIdeal > 0):
             deltaY -= abs(stepY)
-            if (diffIdeal >= 0):
-                y += stepY
-                moveAndShootAbs(f, x, y)
-                testArray.append([x,y]) # delete later
-            else:
-                continue
-
+            y += stepY
+            moveAndShootAbs(f, x, y)
+            testArray.append([x,y]) # delete later
+            print("y")
+            print(x,y)
 
 
     return testArray        
