@@ -188,6 +188,7 @@ def diagonalShoot(f, x0, y0, x1, y1):
     if (deltaY < 0):
         stepY = -1 * pitch
         deltaY *= -1
+        fac = -1
     else:
         stepY = pitch
 
@@ -196,23 +197,30 @@ def diagonalShoot(f, x0, y0, x1, y1):
     y = y0
     yIdeal = y0
 
-    while (deltaY >= 0):
 
-        x += stepX
-        deltaX -= abs(stepX)
+    while (deltaY > 0 or deltaX > 0):
+        diffIdeal = abs(yIdeal - y)
+
         if (deltaX >= 0):
+            deltaX -= abs(stepX)
+            x += stepX
             moveAndShootAbs(f, x, y)
             testArray.append([x,y]) # delete later
 
-        yIdeal = yIdeal + idealStepY
+            if (deltaY > 0):
+                yIdeal = yIdeal + idealStepY
 
-        while (abs(yIdeal - y) < 0):
-            y += stepY
+        
+        if (deltaY > 0):
+            diffIdeal = abs(yIdeal - y)
             deltaY -= abs(stepY)
-            if (deltaY >= 0):
-                break
-            moveAndShootAbs(f, x, y)
-            testArray.append([x,y]) # delete later
+            if (diffIdeal >= 0):
+                y += stepY
+                moveAndShootAbs(f, x, y)
+                testArray.append([x,y]) # delete later
+            else:
+                continue
+
 
 
     return testArray        
