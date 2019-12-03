@@ -16,8 +16,8 @@ def checkered(canvas, line_distance):
 
 """ Get the coordinates %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 """
-x = 250
-y = 250
+x = 20
+y = 20
 z = 20
 startLeistung = -26
 pulse = 1
@@ -27,7 +27,7 @@ hv = 26
 EnergyMode = 0
 TriggerMode = 0
 waitMs = 100
-pitch = 50
+pitch = 20
 
 params = ["OutTest", x, y, z, startLeistung, pulse, repRate, PulseEnergy, hv,
         EnergyMode, TriggerMode, waitMs, pitch]
@@ -38,12 +38,12 @@ l = [[0,0,2,0],[2,0,2,3],[2,3,1,3],[1,3,1,2]]
 #scriptConverter.createUserScript(params, queue, p, l)
 
 #x0,y0, x1,y1
-#a,b,c,d = 300, 500, 500, 460
+a,b,c,d = 550, 520, 400, 20
 
 
 with open("twoDTest.txt", 'w') as f:
-    #testArray = scriptConverter.diagonalShoot(f, a, b, c, d)
-    testArray = scriptConverter.doRasterfahrtIn(params, 500, 200)
+    testArray = scriptConverter.diagonalShoot(f, a, b, c, d)
+    #testArray = scriptConverter.doRasterfahrtIn(params, 500, 200)
     #testArray = scriptConverter.doRasterfahrtOut(params, 500, 250)
 
 """ Show the lines %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -59,25 +59,26 @@ w.pack()
 
 checkered(w,pitch)
 
-#line = w.create_line(a, b, c, d)
-#w.pack()
+# test diagonal shoot
+line = w.create_line(a, b, c, d)
+w.pack()
 
 
-# test rasterfahrt
-xOld = 0
-yOld = 0
-first = 1
+## test rasterfahrt
+#xOld = 0
+#yOld = 0
+#first = 1
 
 for xy in testArray:
     #positions of shots
-    point = w.create_oval(xy[0],xy[1],xy[0],xy[1], width = 10, fill='orange')
-    if (first):
-        first = 0
-    else:
-        line = w.create_line(xOld, yOld, xy[0], xy[1], width = 5)
-    xOld = xy[0]
-    yOld = xy[1]
-
+    point = w.create_oval(xy[0],xy[1],xy[0],xy[1], width = 5, fill='orange')
+#    if (first):
+#        first = 0
+#    else:
+#        line = w.create_line(xOld, yOld, xy[0], xy[1], width = 5)
+#    xOld = xy[0]
+#    yOld = xy[1]
+#
 
 w.pack()
 master.mainloop()

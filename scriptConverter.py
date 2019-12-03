@@ -25,7 +25,7 @@ energyMode = 0
 triggerMode = 0
 waitMs = 0
 rasterfahrt = 0
-pitch = 1   
+pitch = 20   
 
 	
 """
@@ -172,6 +172,7 @@ Move along a 2D (possibly diagonal) line and shoot in a certain pitch
 def diagonalShoot(f, x0, y0, x1, y1):
     """ for testing:"""
     testArray = []
+    switched = 0
 
     global pitch
     # Starting position not shot automatically
@@ -179,29 +180,42 @@ def diagonalShoot(f, x0, y0, x1, y1):
     deltaY = float(y1 - y0)
     slope = deltaY / deltaX
 
+    x = x0
+    y = y0
+    yIdeal = y0
+    # Pitch of stepY always > 0, bc if not, it is made so it is (switch start
+    # and end)
+    stepY = pitch 
+
+
     if (deltaX < 0):
         stepX = -1 * pitch
         deltaX *= -1
     else:
         stepX = pitch
 
-    if (deltaY < 0):
-        stepY = -1 * pitch
-        deltaY *= -1
-        fac = -1
-    else:
-        stepY = pitch
-
+    stepY = pitch
     idealStepY = stepX * slope
-    x = x0
-    y = y0
-    yIdeal = y0
+    if (deltaY < 0):
+        # switch direction of y if deltaY is negative. 
+        # e.g. start from last point up to initial starting point ->
+        # first point is shot, last point no.
+        deltaY = -1 * deltaY
+        switched = 1
+        y = y1
+        y1 = y0
+        y0 = y
+        yIdeal = y0
+        moveAndShootAbs(f, x, y)
 
 
+    #moveAbs(f, x,y)
+
+    # deltaY and deltaX are absolutes now
     while (deltaY > 0 or deltaX > 0):
-        diffIdeal = abs(yIdeal - y)
+        diffIdeal = yIdeal - y
 
-        if (deltaX > 0 and diffIdeal < 0):
+        if (deltaX > 0 and diffIdeal <= 0):
             deltaX -= abs(stepX)
             x += stepX
             moveAndShootAbs(f, x, y)
@@ -214,7 +228,7 @@ def diagonalShoot(f, x0, y0, x1, y1):
 
         
         diffIdeal = abs(yIdeal - y)
-        if (deltaY > 0 and diffIdeal > 0):
+        if (deltaY > 0 and diffIdeal >= 0):
             deltaY -= abs(stepY)
             y += stepY
             moveAndShootAbs(f, x, y)
