@@ -16,8 +16,8 @@ def checkered(canvas, line_distance):
 
 """ Get the coordinates %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 """
-x = 50
-y = 50
+x = 250
+y = 250
 z = 20
 startLeistung = -26
 pulse = 1
@@ -43,8 +43,8 @@ l = [[0,0,2,0],[2,0,2,3],[2,3,1,3],[1,3,1,2]]
 
 with open("twoDTest.txt", 'w') as f:
     #testArray = scriptConverter.diagonalShoot(f, a, b, c, d)
-    #testArray = scriptConverter.doRasterfahrtIn(params, 500, 200)
-    testArray = scriptConverter.doRasterfahrtOut(params, 500, 200)
+    testArray = scriptConverter.doRasterfahrtIn(params, 500, 200)
+    #testArray = scriptConverter.doRasterfahrtOut(params, 500, 250)
 
 """ Show the lines %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 """

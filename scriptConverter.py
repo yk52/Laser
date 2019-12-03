@@ -345,6 +345,7 @@ def doRasterfahrtIn(initValues, sizeX, sizeY):
 """
 Von Innen nach aussen. Geht nur vom Zentrum aus. Erste Fahrt geht nach Rechts.
 Erstellt vollstaendig ausfuehrbares vbs skript.
+funktioniert nur fuer mehr oder weniger quadratische Formen
 """
 def doRasterfahrtOut(initValues, sizeX, sizeY):
     global fileName
@@ -358,6 +359,7 @@ def doRasterfahrtOut(initValues, sizeX, sizeY):
     setParams(initValues)
 
     # for graphic Test:
+    testArray = []
     x0 = startX
     y0 = startY
     x1 = x0 + lenX
@@ -378,23 +380,62 @@ def doRasterfahrtOut(initValues, sizeX, sizeY):
         moveAbs(f, startX, startY)
         shoot(f)     # first shot
 
+        #for graphic test
+        testArray.append([startX, startY])
+        x0 = startX
+        y0 = startY
+
         while (lenX <= sizeX):
             lenX += pitch
             lenY += pitch
             direction = (direction + 1) % 4
             if (lenX <= sizeX):
                 lineRelShoot(f, direction, lenX)
+                # for graphic test
+                if (direction == 3):
+                    x1 = x0 - lenX
+                else:    
+                    x1 = x0 + lenX
+                testArray.append([x1, y1]) 
+                x0 = x1
+                y0 = y1
             else:
                 lineRelShoot(f, direction, lenX - pitch)
+                # for graphic test
+                if (direction == 3):
+                    x1 = x0 - (lenX - pitch)
+                else:    
+                    x1 = x0 + (lenX - pitch)
+                testArray.append([x1, y1]) 
+                x0 = x1
+                y0 = y1
                 break
             direction = (direction + 1) % 4
             if (lenY <= sizeY):
                 lineRelShoot(f, direction, lenY)
+                # for graphic test
+                if (direction == 0):
+                    y1 = y0 - lenY
+                else:    
+                    y1 = y0 + lenY
+                testArray.append([x1, y1]) 
+                x0 = x1
+                y0 = y1
             else:
                 lineRelShoot(f, direction, lenY - pitch)
+                # for graphic test
+                if (direction == 0):
+                    y1 = y0 - (lenY - pitch)
+                else:    
+                    y1 = y0 + (lenY - pitch)
+                testArray.append([x1, y1]) 
+                x0 = x1
+                y0 = y1
                 break
 
         addTrailer(f)
+
+    return testArray
 
 """
 Get 3 arrays from GUI: Queue, point shot Array and line shot Array.
