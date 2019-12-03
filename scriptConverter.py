@@ -25,7 +25,7 @@ energyMode = 0
 triggerMode = 0
 waitMs = 0
 rasterfahrt = 0
-pitch = 1   # TODO change back to 0 later
+pitch = 1   
 
 	
 """
@@ -282,11 +282,15 @@ def doRasterfahrtIn(initValues, sizeX, sizeY):
     lenY = sizeY
     setParams(initValues)
 
-    if os.path.isfile(fileName+".vbs"):
-        print(
-        "\nFile already exists. \nPlease delete the existing one, or choose a new \
-name.")
-        return
+
+#    if os.path.isfile(fileName+".vbs"):
+#        print(
+#        "\nFile already exists. \nPlease delete the existing one, or choose a new \
+#name.")
+#        return
+#
+    #TODO for graphic Test
+    testArray = []
 
     with open(fileName+".vbs", 'a+') as f:
         addHeader(f)
@@ -295,17 +299,47 @@ name.")
         shoot(f)     # first shot
         lineRelShoot(f, direction, lenX)   # first line to the right
 
+        # for graphic Test:
+        x0 = startX
+        y0 = startY
+        x1 = x0 + lenX
+        y1 = startY
+        testArray.append([x0, y0])
+        testArray.append([x1, y1])
+        x0 = x1
+        y0 = y1
+
         while(lenY >= pitch):
             direction = (direction + 1) % 4
             if (lenY >= pitch):
-                    lineRelShoot(f, direction, lenY)
+                lineRelShoot(f, direction, lenY)
+                # for graphic test
+                x1 = x0
+                if (direction == 0):
+                    y1 = y0 - lenY
+                else:    
+                    y1 = y0 + lenY
+                testArray.append([x1, y1]) 
+                x0 = x1
+                y0 = y1
             direction = (direction + 1) % 4
             if (lenX >= pitch): 
-                    lineRelShoot(f, direction, lenX)
+                lineRelShoot(f, direction, lenX)
+                # for graphic test
+                y1 = y0
+                if (direction == 3):
+                    x1 = x0 - lenX
+                else:    
+                    x1 = x0 + lenX
+                testArray.append([x1, y1]) 
+                x0 = x1
+                y0 = y1
             lenY -= pitch
             lenX -= pitch
 
         addTrailer(f)
+
+        return testArray
 
 
 """
@@ -323,11 +357,21 @@ def doRasterfahrtOut(initValues, sizeX, sizeY):
 
     setParams(initValues)
 
-    if os.path.isfile(fileName+".vbs"):
-        print(
-        "\nFile already exists. \nPlease delete the existing one, or choose a new \
-name.")
-        return
+    # for graphic Test:
+    x0 = startX
+    y0 = startY
+    x1 = x0 + lenX
+    y1 = startY
+    testArray.append([x0, y0])
+    testArray.append([x1, y1])
+    x0 = x1
+    y0 = y1
+
+#    if os.path.isfile(fileName+".vbs"):
+#        print(
+#        "\nFile already exists. \nPlease delete the existing one, or choose a new \
+#name.")
+#        return
 
     with open(fileName+".vbs", 'a+') as f:
         addHeader(f)

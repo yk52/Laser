@@ -23,6 +23,9 @@ DIAGONAL SHOOT diagonal pitch innerhalb Bewegungsmöglichkeit vom Laser?
 -braucht man nach jedem schuss pause?
 -Funktioniert Rasterfahrt Out/In?
 
+FALLS IRGENDWAS MIT KOORIDNATEN SYSTEM NICHT STIMMT:
+annahmen checken! Aktuelle annahmen: negative Koordinaten existieren, hoch und nach links werden zahlen kleiner
+
 ____________________________________________________________
 ****** TODO *************************************************
 
