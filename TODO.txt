@@ -27,6 +27,7 @@ DIAGONAL SHOOT diagonal pitch innerhalb Bewegungsmöglichkeit vom Laser?
 
 FALLS IRGENDWAS MIT KOORIDNATEN SYSTEM NICHT STIMMT:
 annahmen checken! Aktuelle annahmen: negative Koordinaten existieren NICHT, hoch und nach links werden zahlen kleiner
+------------> !!!!!!!!!!!!!! Negative Koordinaten EXISTIEREN!!!! Entsprechend umändern!!!
 
 
 ____________________________________________________________
