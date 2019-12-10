@@ -38,7 +38,7 @@ l = [[0,0,2,0],[2,0,2,3],[2,3,1,3],[1,3,1,2]]
 scriptConverter.createUserScript(params, queue, p, l)
 
 #x0,y0, x1,y1
-a,b,c,d = 20, 60, 520, 40
+a,b,c,d = 400, 20, 20, 540
 
 
 with open("twoDTest.txt", 'w') as f:

@@ -205,19 +205,19 @@ def diagonalShoot(f, x0, y0, x1, y1):
         timesY = math.ceil(idealStepY / pitch)
         correctX = 1
         diff = abs(idealStepY - pitch*timesY)
+        checkTimes = math.ceil(idealStepY/diff)
     elif (idealStepY < pitch):
         timesY = 1
         timesX = math.ceil(pitch / idealStepY)
         correctY = 1
         diff = abs(idealStepY - pitch*timesX)
+        checkTimes = math.ceil(diff/idealStepY)
 
     movedX = 0
     movedY = 0
 
     moveAbs(f, x0, y0)
 
-    print(timesX, timesY)
-    print(idealStepY)
 
     # deltaX and Y are absolutes now
     while ((movedX < deltaX) or (movedY < deltaY)):
@@ -248,26 +248,27 @@ def diagonalShoot(f, x0, y0, x1, y1):
                 break
 
         # Add correction steps if needed
-        xIdeal = (yIterations * pitch) / slope
-        yIdeal = slope * (xIterations * pitch)
+        if (min(xIterations, yIterations) % checkTimes == 0):
+            xIdeal = (yIterations * pitch) / slope
+            yIdeal = slope * (xIterations * pitch)
 
-        if (movedX < xIdeal):
-            xIterations += 1
-            movedX += pitch
-            moveAndShootRel(f, stepX, 0)
+            if (movedX < xIdeal):
+                xIterations += 1
+                movedX += pitch
+                moveAndShootRel(f, stepX, 0)
 
-            # delete later
-            x += stepX 
-            testArray.append([x,y])
+                # delete later
+                x += stepX 
+                testArray.append([x,y])
 
-        elif (movedY < yIdeal):
-            yIterations += 1
-            movedY += pitch
-            moveAndShootRel(f, 0, stepY)
+            elif (movedY < yIdeal):
+                yIterations += 1
+                movedY += pitch
+                moveAndShootRel(f, 0, stepY)
 
-            # delete later
-            y += stepY 
-            testArray.append([x,y])
+                # delete later
+                y += stepY 
+                testArray.append([x,y])
 
     return testArray        
                 
