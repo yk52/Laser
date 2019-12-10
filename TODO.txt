@@ -2,6 +2,9 @@ Laser Ansteuerung TODO
 
 ##########VIEL EINFACHER! Nicht direkt drinnen zeichnen, in illustrator oder klayout (gds file) und dann importieren
 
+Good to know:
+First position is never shot. Falls es die erste Linie überhaupt ist: Manuell erste position schießen!
+
 in SkriptKonverter:
 Graph zu Koordinaten?
 ****** Stimmt das Koordinaten system? (wegen bewegung. rechts und runter ist PLUS bei mir aktuell)
@@ -10,6 +13,7 @@ Graph zu Koordinaten?
 
 in GUI: 
 -Test ob name bereits existiert in GUI?
+-Was ist die Grundeinheit? µm? mm?
 -Gitter skalierbar nach kleinstem Pitch? (min. 1µm)
 -If new Line: Add single shot for first position (start of line)
 -new Line / Done für Lineshot (damit man weiß, wann neue line beginnen soll, und wann alte fortgeführt) -> STOP (5) in Queue, damit mans weiß
@@ -28,6 +32,7 @@ DIAGONAL SHOOT diagonal pitch innerhalb Bewegungsmöglichkeit vom Laser?
 FALLS IRGENDWAS MIT KOORIDNATEN SYSTEM NICHT STIMMT:
 annahmen checken! Aktuelle annahmen: negative Koordinaten existieren NICHT, hoch und nach links werden zahlen kleiner
 ------------> !!!!!!!!!!!!!! Negative Koordinaten EXISTIEREN!!!! Entsprechend umändern!!!
+				Egal, wenn man alles relativ macht?
 
 
 ____________________________________________________________
@@ -38,8 +43,9 @@ OK Rasterfahrt IN check: (x,y,pitch)
 OK Rasterfahrt OUT check: (x,y,pitch) -> geht nur bei Quadratischen
 (300, 300, 30), (300, 90, 30), (90, 300, 30)
 
-diagonalShoot check: (x0, x1, y0, y1, pitch)
-(550, 20, 400, 520, 20) (100, 20, 400, 520, 20) (oben nach unten ok)
+diagonalShoot check: (x0, y0, x1, y1, pitch) -> xy0 und xy1 auch vertauscht getestet
+(520, 520, 400, 20, 20) (100, 20, 400, 520, 20) 
+(20, 520, 20, 600, 20) (520, 20, 20, 600, 20) (20, 20, 520, 600, 20) (20, 20, 40, 600, 20)
 
 ____________________________________________________________
 ****** TODO *************************************************

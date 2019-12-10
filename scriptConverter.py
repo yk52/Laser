@@ -170,72 +170,104 @@ def moveDir(f, direction, dist):
 Move along a 2D (possibly diagonal) line and shoot in a certain pitch
 """
 def diagonalShoot(f, x0, y0, x1, y1):
+    # TODO switch of y0 und y1 noch nicht richtig laufend
     """ for testing:"""
     testArray = []
-    switched = 0
 
     global pitch
+    xIterations = 0
+    yIterations = 0
     # Starting position not shot automatically
     deltaX = float(x1 - x0)
     deltaY = float(y1 - y0)
-    slope = deltaY / deltaX
 
     x = x0
     y = y0
-    yIdeal = y0
-    # Pitch of stepY always > 0, bc if not, it is made so it is (switch start
-    # and end)
-    stepY = pitch 
+    
+    if (deltaY < 0):
+        stepY = -1 * pitch 
+        deltaY = -1 * deltaY
+    else:
+        stepY = pitch
 
 
     if (deltaX < 0):
         stepX = -1 * pitch
-        deltaX *= -1
+        deltaX = -1 * deltaX
     else:
         stepX = pitch
 
-    stepY = pitch
-    idealStepY = stepX * slope
-    if (deltaY < 0):
-        # switch direction of y if deltaY is negative. 
-        # e.g. start from last point up to initial starting point ->
-        # first point is shot, last point no.
-        deltaY = -1 * deltaY
-        switched = 1
-        y = y1
-        y1 = y0
-        y0 = y
-        yIdeal = y0
-        moveAndShootAbs(f, x, y)
+    slope = deltaY / deltaX
+    idealStepY = pitch * slope # absolute value
 
+    if (idealStepY > pitch):
+        timesX = 1
+        timesY = math.ceil(idealStepY / pitch)
+        correctX = 1
+        diff = abs(idealStepY - pitch*timesY)
+    elif (idealStepY < pitch):
+        timesY = 1
+        timesX = math.ceil(pitch / idealStepY)
+        correctY = 1
+        diff = abs(idealStepY - pitch*timesX)
 
-    #moveAbs(f, x,y)
+    movedX = 0
+    movedY = 0
 
-    # deltaY and deltaX are absolutes now
-    while (deltaY > 0 or deltaX > 0):
-        diffIdeal = yIdeal - y
+    moveAbs(f, x0, y0)
 
-        if (deltaX > 0 and diffIdeal <= 0):
-            deltaX -= abs(stepX)
-            x += stepX
-            moveAndShootAbs(f, x, y)
-            testArray.append([x,y]) # delete later
-            print(x,y)
+    print(timesX, timesY)
+    print(idealStepY)
 
-            if (deltaY > 0):
-                yIdeal = yIdeal + idealStepY
-                print(yIdeal)
+    # deltaX and Y are absolutes now
+    while ((movedX < deltaX) or (movedY < deltaY)):
+        # First: Do step sideways
+        for i in range(timesX):
+            if (movedX < deltaX):
+                xIterations += 1
+                movedX += pitch
+                moveAndShootRel(f, stepX, 0)
 
-        
-        diffIdeal = abs(yIdeal - y)
-        if (deltaY > 0 and diffIdeal >= 0):
-            deltaY -= abs(stepY)
-            y += stepY
-            moveAndShootAbs(f, x, y)
-            testArray.append([x,y]) # delete later
-            print("y")
-            print(x,y)
+                # delete later
+                x += stepX 
+                testArray.append([x,y])
+            else:
+                break
 
+        # Then: Vertically
+        for i in range(timesY):
+            if (movedY < deltaY):
+                yIterations += 1
+                movedY += pitch
+                moveAndShootRel(f, 0, stepY)
+
+                # delete later
+                y += stepY
+                testArray.append([x,y])
+            else:
+                break
+
+        # Add correction steps if needed
+        xIdeal = (yIterations * pitch) / slope
+        yIdeal = slope * (xIterations * pitch)
+
+        if (movedX < xIdeal):
+            xIterations += 1
+            movedX += pitch
+            moveAndShootRel(f, stepX, 0)
+
+            # delete later
+            x += stepX 
+            testArray.append([x,y])
+
+        elif (movedY < yIdeal):
+            yIterations += 1
+            movedY += pitch
+            moveAndShootRel(f, 0, stepY)
+
+            # delete later
+            y += stepY 
+            testArray.append([x,y])
 
     return testArray        
                 

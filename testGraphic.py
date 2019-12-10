@@ -16,9 +16,9 @@ def checkered(canvas, line_distance):
 
 """ Get the coordinates %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 """
-x = 20
-y = 20
-z = 20
+x = 50
+y = 50
+z = 50
 startLeistung = -26
 pulse = 1
 repRate = 20 
@@ -29,22 +29,22 @@ TriggerMode = 0
 waitMs = 100
 pitch = 20
 
-params = ["OutTest", x, y, z, startLeistung, pulse, repRate, PulseEnergy, hv,
+params = ["trying", x, y, z, startLeistung, pulse, repRate, PulseEnergy, hv,
         EnergyMode, TriggerMode, waitMs, pitch]
 queue = [[0,0],[1,0],[1,1],[1,2],[1,3],[0,1]]
 p = [[0,0],[4,2]]
 l = [[0,0,2,0],[2,0,2,3],[2,3,1,3],[1,3,1,2]]
-#scriptConverter.doRasterfahrtOut(params, 5, 5)
-#scriptConverter.createUserScript(params, queue, p, l)
+# testArray = scriptConverter.doRasterfahrtIn(params, 5000, 5000)
+scriptConverter.createUserScript(params, queue, p, l)
 
 #x0,y0, x1,y1
-a,b,c,d = 550, 520, 400, 20
+a,b,c,d = 20, 60, 520, 40
 
 
 with open("twoDTest.txt", 'w') as f:
     testArray = scriptConverter.diagonalShoot(f, a, b, c, d)
-    #testArray = scriptConverter.doRasterfahrtIn(params, 500, 200)
-    #testArray = scriptConverter.doRasterfahrtOut(params, 500, 250)
+#    #testArray = scriptConverter.doRasterfahrtIn(params, 500, 200)
+#    #testArray = scriptConverter.doRasterfahrtOut(params, 500, 250)
 
 """ Show the lines %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 """
@@ -64,10 +64,6 @@ line = w.create_line(a, b, c, d)
 w.pack()
 
 
-## test rasterfahrt
-#xOld = 0
-#yOld = 0
-#first = 1
 
 for xy in testArray:
     #positions of shots
