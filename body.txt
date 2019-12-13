@@ -37,7 +37,7 @@ End Sub
 
 ' Program start ***********************************************************
 
-setCompexproParams energyMode, triggerMode, startLeistung, HV
+setCompexproParams energyModeVal, triggerModeVal, pulseEnergyVal, HVVal
 
 move x, startX
 move y, startY

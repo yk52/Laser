@@ -310,6 +310,10 @@ def addTrailer(f):
         for line in body:
             f.write(line)
 
+def addBunny(f):
+    with open("rabbit ascii art.txt", 'r') as body:
+        for line in body:
+            f.write(line)
 
 """	
 Von Aussen nach Innen. Erste Linie geht nach Rechts.
@@ -531,3 +535,5 @@ name.")
         readUserPath(f, queue, points, lines)
         
         addTrailer(f)
+        if ("hase" or "Hase" or "unny" or "abbit") in fileName:
+            addBunny(f)

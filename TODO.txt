@@ -1,9 +1,12 @@
 Laser Ansteuerung TODO
 
+THIS TIME TODO:::
 ##########VIEL EINFACHER! Nicht direkt drinnen zeichnen, in illustrator oder klayout (gds file) und dann importieren
+probieren!
 
 Good to know:
 First position is never shot. Falls es die erste Linie überhaupt ist: Manuell erste position schießen!
+Bewegungen sind relativ. Koordinatensystem recht egal
 
 in SkriptKonverter:
 Graph zu Koordinaten?
@@ -24,15 +27,10 @@ in GUI:
 ____________________________________________________________
 ******Check*************************************************
 
-DIAGONAL SHOOT diagonal pitch innerhalb Bewegungsmöglichkeit vom Laser?
-
 -braucht man nach jedem schuss pause?
 
 
-FALLS IRGENDWAS MIT KOORIDNATEN SYSTEM NICHT STIMMT:
-annahmen checken! Aktuelle annahmen: negative Koordinaten existieren NICHT, hoch und nach links werden zahlen kleiner
-------------> !!!!!!!!!!!!!! Negative Koordinaten EXISTIEREN!!!! Entsprechend umändern!!!
-				Egal, wenn man alles relativ macht?
+
 
 
 ____________________________________________________________
