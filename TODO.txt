@@ -5,12 +5,14 @@ THIS TIME TODO:::
 ##########VIEL EINFACHER! Nicht direkt drinnen zeichnen, in illustrator oder klayout (gds file) und dann importieren
 probieren!
 --> Weiß jetzt wie GDS file aussieht! (test2.txt) --> einlesen!
+--------> ES GEHT NOCH VIEL VIEL EINFACHER?! LoadDXF/LoadGDS2??!! (p267) --> Nur um es anzuzeigen
+--------> Mit For-Schleife vereinfachen
 
 Good to know:
 First position is never shot. Falls es die erste Linie überhaupt ist: Manuell erste position schießen!
 Bewegungen sind relativ. Koordinatensystem recht egal
 Grundeinheit ist mm!
-units in GUI manuell eingeben?
+Annahme:keine Einzelnen Schüsse, denen keine Linien nachfolgen. (Nur linien. keine punkte)
 
 in SkriptKonverter:
 Graph zu Koordinaten?

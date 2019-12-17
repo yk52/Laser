@@ -27,6 +27,10 @@ waitMs = 0
 rasterfahrt = 0
 pitch = 20   
 
+# Arrays of single line with relative distances to be moved
+xRelArray = []
+yRelArray = []
+
 	
 """
 Sets global parameters from GUI input for all functions to use
@@ -157,12 +161,16 @@ down and left: -
 def moveDir(f, direction, dist):
     if direction == 0:      # up
         moveRel(f, 0, dist)
+        yRelArray.append(dist)
     elif direction == 1:      # right
         moveRel(f, dist, 0)
+        xRelArray.append(dist)
     elif direction == 2:      # down
         moveRel(f, 0, -1*dist)
+        yRelArray.append(-1*dist)
     elif direction == 3:      # left
         moveRel(f, -1*dist, 0)
+        xRelArray.append(-1*dist)
 	
 
 
@@ -495,8 +503,11 @@ def doRasterfahrtOut(initValues, sizeX, sizeY):
 """
 Get 3 arrays from GUI: Queue, point shot Array and line shot Array.
 Turn into vbs script
+
+Array contents:
+    Queue -> 
 """
-def readUserPath(f, queue, pArray, lArray):
+def readUserPath(f, unit, queue, pArray, lArray):
     lenQ = len(queue)
     i = 0
     while (i < lenQ):
