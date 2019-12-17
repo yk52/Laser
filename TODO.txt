@@ -1,12 +1,15 @@
 Laser Ansteuerung TODO
 
+
 THIS TIME TODO:::
 ##########VIEL EINFACHER! Nicht direkt drinnen zeichnen, in illustrator oder klayout (gds file) und dann importieren
 probieren!
+--> Weiﬂ jetzt wie GDS file aussieht! (test2.txt) --> einlesen!
 
 Good to know:
 First position is never shot. Falls es die erste Linie ¸berhaupt ist: Manuell erste position schieﬂen!
 Bewegungen sind relativ. Koordinatensystem recht egal
+Grundeinheit ist mm!
 
 in SkriptKonverter:
 Graph zu Koordinaten?
@@ -16,7 +19,6 @@ Graph zu Koordinaten?
 
 in GUI: 
 -Test ob name bereits existiert in GUI?
--Was ist die Grundeinheit? µm? mm?
 -Gitter skalierbar nach kleinstem Pitch? (min. 1µm)
 -If new Line: Add single shot for first position (start of line)
 -new Line / Done f¸r Lineshot (damit man weiﬂ, wann neue line beginnen soll, und wann alte fortgef¸hrt) -> STOP (5) in Queue, damit mans weiﬂ
@@ -28,8 +30,6 @@ ____________________________________________________________
 ******Check*************************************************
 
 -braucht man nach jedem schuss pause?
-
-
 
 
 

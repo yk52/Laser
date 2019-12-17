@@ -8,7 +8,7 @@ import os
 import math
 #import pyximport; pyximport.install()
 
-unit = 1.0    # smallest unit = 1 micrometer
+unit = 1.0    # standard unit = 1 mm. Smalles precision: 1 micron
 
 # global user variables
 fileName = ""
@@ -151,16 +151,16 @@ def moveAndShootAbs(f, x, y):
 
 """
 move into certain direction. 0=up, 1=right, 2=down, 3=left
-down and right: +
-up and left: -
+up and right: +
+down and left: -
 """
 def moveDir(f, direction, dist):
     if direction == 0:      # up
-        moveRel(f, 0, -1*dist)
+        moveRel(f, 0, dist)
     elif direction == 1:      # right
         moveRel(f, dist, 0)
     elif direction == 2:      # down
-        moveRel(f, 0, dist)
+        moveRel(f, 0, -1*dist)
     elif direction == 3:      # left
         moveRel(f, -1*dist, 0)
 	
@@ -170,7 +170,6 @@ def moveDir(f, direction, dist):
 Move along a 2D (possibly diagonal) line and shoot in a certain pitch
 """
 def diagonalShoot(f, x0, y0, x1, y1):
-    # TODO switch of y0 und y1 noch nicht richtig laufend
     """ for testing:"""
     testArray = []
 
@@ -311,7 +310,7 @@ def addTrailer(f):
             f.write(line)
 
 def addBunny(f):
-    with open("rabbit ascii art.txt", 'r') as body:
+    with open("rabbit.txt", 'r') as body:
         for line in body:
             f.write(line)
 
@@ -344,6 +343,8 @@ def doRasterfahrtIn(initValues, sizeX, sizeY):
     testArray = []
 
     with open(fileName+".vbs", 'a+') as f:
+        if ("ase" or "unny" or "abbit") in fileName:
+            addBunny(f)
         addHeader(f)
 
         moveAbs(f, startX, startY)
@@ -427,6 +428,9 @@ def doRasterfahrtOut(initValues, sizeX, sizeY):
 #        return
 
     with open(fileName+".vbs", 'a+') as f:
+        if ("ase" or "unny" or "abbit") in fileName:
+            addBunny(f)
+            print("yes")
         addHeader(f)
         moveAbs(f, startX, startY)
         shoot(f)     # first shot
@@ -529,11 +533,12 @@ name.")
         return
 
     with open(fileName+".vbs", 'a+') as f:
+        if ("ase" or "unny" or "abbit") in fileName:
+            addBunny(f)
+
         addHeader(f)        
 
         # enter movement and laser procedure
         readUserPath(f, queue, points, lines)
         
         addTrailer(f)
-        if ("hase" or "Hase" or "unny" or "abbit") in fileName:
-            addBunny(f)
