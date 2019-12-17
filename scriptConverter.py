@@ -169,7 +169,7 @@ def moveDir(f, direction, dist):
 """
 Move along a 2D (possibly diagonal) line and shoot in a certain pitch
 """
-def diagonalShoot(f, x0, y0, x1, y1):
+def lineShoot(f, x0, y0, x1, y1):
     """ for testing:"""
     testArray = []
 
@@ -507,7 +507,7 @@ def readUserPath(f, queue, pArray, lArray):
             y0 = lArray[idx][1]
             x1 = lArray[idx][2]
             y1 = lArray[idx][3]
-            diagonalShoot(f, x0, x1, y0, y1)
+            lineShoot(f, x0, x1, y0, y1)
         elif (queue[i][0] == 0):
             # Point
             x = pArray[idx][0]

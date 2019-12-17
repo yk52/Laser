@@ -10,6 +10,7 @@ Good to know:
 First position is never shot. Falls es die erste Linie überhaupt ist: Manuell erste position schießen!
 Bewegungen sind relativ. Koordinatensystem recht egal
 Grundeinheit ist mm!
+units in GUI manuell eingeben?
 
 in SkriptKonverter:
 Graph zu Koordinaten?
