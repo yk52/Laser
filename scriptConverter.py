@@ -162,41 +162,38 @@ down and left: -
 def moveDir(f, direction, dist):
     if direction == 0:      # up
         moveRel(f, 0, dist)
-        yRelArray.append(dist)
     elif direction == 1:      # right
         moveRel(f, dist, 0)
-        xRelArray.append(dist)
     elif direction == 2:      # down
         moveRel(f, 0, -1*dist)
-        yRelArray.append(-1*dist)
     elif direction == 3:      # left
         moveRel(f, -1*dist, 0)
-        xRelArray.append(-1*dist)
 	
 
+def moveRelArray(xDist, yDist):        
+    xRelArray.append(xDist)
+    yRelArray.append(yDist)
+
 """
-move into certain direction. 0=up, 1=right, 2=down, 3=left
+Appends relative x,y distances to be moved to Array to sum them up in a for loop
+move into certain direction relative to original position. 0=up, 1=right, 2=down, 3=left
 up and right: +
 down and left: -
 """
 def moveDirArray(direction, dist):
     if direction == 0:      # up
-        yRelArray.append(dist)
-        xRelArray.append(0)
+        moveRelArray(0, dist)
     elif direction == 1:      # right
-        xRelArray.append(dist)
-        yRelArray.append(0)
+        moveRelArray(dist, 0)
     elif direction == 2:      # down
-        yRelArray.append(-1*dist)
-        xRelArray.append(0)
+        moveRelArray(0, -1*dist)
     elif direction == 3:      # left
-        xRelArray.append(-1*dist)
-        yRelArray.append(0)
+        moveRelArray(-1*dist, 0)
 
 """
 Move along a 2D (possibly diagonal) line and shoot in a certain pitch
 """
-def lineShoot(f, x0, y0, x1, y1):
+def lineShootArray(x0, y0, x1, y1):
     """ for testing:"""
     testArray = []
 
@@ -252,7 +249,7 @@ def lineShoot(f, x0, y0, x1, y1):
             if (movedX < deltaX):
                 xIterations += 1
                 movedX += pitch
-                moveAndShootRel(f, stepX, 0)
+                moveRelArray(stepX, 0)
 
                 # delete later
                 x += stepX 
@@ -265,7 +262,7 @@ def lineShoot(f, x0, y0, x1, y1):
             if (movedY < deltaY):
                 yIterations += 1
                 movedY += pitch
-                moveAndShootRel(f, 0, stepY)
+                moveRelArray(0, stepY)
 
                 # delete later
                 y += stepY
@@ -281,7 +278,7 @@ def lineShoot(f, x0, y0, x1, y1):
             if (movedX < xIdeal):
                 xIterations += 1
                 movedX += pitch
-                moveAndShootRel(f, stepX, 0)
+                moveRelArray(stepX, 0)
 
                 # delete later
                 x += stepX 
@@ -290,7 +287,7 @@ def lineShoot(f, x0, y0, x1, y1):
             elif (movedY < yIdeal):
                 yIterations += 1
                 movedY += pitch
-                moveAndShootRel(f, 0, stepY)
+                moveRelArray(0, stepY)
 
                 # delete later
                 y += stepY 
@@ -563,6 +560,11 @@ def doRasterfahrtOut(initValues, sizeX, sizeY):
 
     return testArray
 
+
+def clearRelArrays():
+    xRelArray = []
+    yRelArray = []
+
 """
 Get 3 arrays from GUI: Queue, point shot Array and line shot Array.
 Turn into vbs script
@@ -585,9 +587,19 @@ def readUserPath(f, unit, queue, pArray, lArray):
             y0 = lArray[idx][1]
             x1 = lArray[idx][2]
             y1 = lArray[idx][3]
-            lineShoot(f, x0, x1, y0, y1)
+            if (x0 == x1):
+                yDist = y1 - y0
+                lineRelShootArray(0, yDist)
+            elif (y0 == y1):
+                xDist = x1 - x0
+                lineRelShootArray(xDist, 0)
+            else:
+                lineShootArray(x0, y0, x1, y1)
         elif (queue[i][0] == 0):
             # Point
+            if (i != 0):
+                addForLoop(f)
+            clearRelArrays()
             x = pArray[idx][0]
             y = pArray[idx][1]
             moveAndShootAbs(f, x, y)  

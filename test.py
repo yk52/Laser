@@ -26,6 +26,9 @@ params = ["userScript", x, y, z, startLeistung, pulse, repRate, PulseEnergy, hv,
 #scriptConverter.doRasterfahrtIn(params, 5, 5)
 
 queue, p, l = readGDS2txt.getCoordinates("test2.txt")
+print(queue)
+print(p)
+print(l)
 scriptConverter.createUserScript(params, queue, p, l)
 
 #with open("twoDTest.txt", 'w') as f:
