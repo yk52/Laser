@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-19/11/19
+09/01/20
 Take the path entered into the laser GUI and convert it into a visual basic script (.vbs) script
 """
 
@@ -568,7 +568,11 @@ Get 3 arrays from GUI: Queue, point shot Array and line shot Array.
 Turn into vbs script
 
 Array contents:
-    Queue -> 
+    Queue ->    Required actions in chronological order. 
+                Column1: Point(0) or line(1), Column2: index of position in p or
+                lArray where coordinates are saved
+    pArray ->   [xCoordinate, yCoordinate]
+    lArray ->   [x0, y0, x1, y1] 0=start, 1=goal
 """
 def readUserPath(f, unit, queue, pArray, lArray):
     lenQ = len(queue)
@@ -597,6 +601,7 @@ Goal: Only one standard form with different values, but different path
 """
 def createUserScript(initValues, queue, points, lines):
     global fileName
+    global unit
 
     setParams(initValues)
 
@@ -613,6 +618,6 @@ name.")
         addHeader(f)        
 
         # enter movement and laser procedure
-        readUserPath(f, queue, points, lines)
+        readUserPath(f, unit, queue, points, lines)
         
         addTrailer(f)

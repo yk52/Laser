@@ -16,8 +16,8 @@ Annahme:keine Einzelnen Schüsse, denen keine Linien nachfolgen. (Nur linien. kei
 
 in SkriptKonverter:
 Graph zu Koordinaten?
-****** Stimmt das Koordinaten system? (wegen bewegung. rechts und runter ist PLUS bei mir aktuell)
-	Gibt es im Laser negative koordinaten? sonst problem bei diagonal shoot und im allgemeinen
+****** Stimmt das Koordinaten system? (wegen bewegung. rechts und hoch ist PLUS bei mir aktuell)
+	Gibt es im Laser negative koordinaten? Ja!
 
 
 in GUI: 
@@ -34,7 +34,9 @@ ____________________________________________________________
 
 -braucht man nach jedem schuss pause?
 
-
+____________________________________________________________
+******DONE*************************************************
+-readGDS2txt.py fertig. Returns queue, pArray, lArray
 
 ____________________________________________________________
 ******Checked*************************************************

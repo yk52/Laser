@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-17/12/19
+09/01/20
 Read file from klayout saved as GDS2-txt files and return list of coordinates for
 scriptConverter.py
 """
@@ -60,25 +60,23 @@ def getCoordinates(path):
                 y0 = y1
                 split = line.split(" ")
                 x1 = int(split[0][:-1])
-                y1 = int(split[1][:-2])
+                y1 = int(split[1][:-1])
                 queue.append([1, lIdx])
-                lIdx += 1
                 lArray.append([x0, y0, x1, y1])
+                lIdx += 1
 
             elif ("XY" in line):
                 lineOngoing = 1
                 split = line.split(" ")
                 x0 = int(split[1][:-1])
-                y0 = int(split[2][:-2])
+                y0 = int(split[2][:-1])
                 queue.append([0, pIdx])
+                pArray.append([x0, y0])
                 pIdx += 1
                 x1 = x0
                 y1 = y0
 
     return queue, pArray, lArray
-
-
-
 
 
 
