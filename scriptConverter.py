@@ -364,6 +364,7 @@ def addForLoop(f):
     with open("singleLine.txt", 'r') as body:	
         for line in body:
             f.write(line)
+        f.write("\n")    
 
 """
 Add everything latter to the main body code (movement) to the .vbs file

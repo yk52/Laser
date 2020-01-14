@@ -5,8 +5,8 @@ Am ende alles mit testarray löschen
 THIS TIME TODO:::
 ##########VIEL EINFACHER! Nicht direkt drinnen zeichnen, in illustrator oder klayout (gds file) und dann importieren
 probieren!
---------> Mit For-Schleife vereinfachen. NEXT:::Read usr script -> line 231: lineShootArray: diff = 0 -> division by 0. why?
---------> ES GEHT NOCH VIEL VIEL EINFACHER?! LoadDXF/LoadGDS2??!! (p267) --> Nur um es anzuzeigen
+--------> Wie unit integrieren?
+
 
 
 Good to know:
@@ -39,6 +39,7 @@ ____________________________________________________________
 ******DONE*************************************************
 -readGDS2txt.py fertig. Returns queue, pArray, lArray
 -Rasterfahrt macht for-schleife
+-createUserScript mit testArray.
 
 ____________________________________________________________
 ******Checked*************************************************
