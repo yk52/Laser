@@ -155,8 +155,14 @@ def moveAndShootRel(f, xDist, yDist):
 Move absolute distance in x and y and shoot once
 """
 def moveAndShootAbs(f, x, y):
+    global testX, testY, testArray #delete later
     moveAbs(f, x, y)
     shoot(f)
+
+    #delete later
+    testX = x
+    testY = y
+    testArray.append([testX, testY])
         
 
 """
@@ -180,7 +186,7 @@ def moveRelArray(xDist, yDist):
     yDistArray.append(yDist)
 
     # delete later
-    global testX, testY
+    global testX, testY, testArray
     testX += xDist
     testY += yDist
     testArray.append([testX, testY])
@@ -206,7 +212,6 @@ Move along a 2D (possibly diagonal) line and shoot in a certain pitch
 """
 def lineShootArray(f, x0, y0, x1, y1):
     """ for testing:"""
-    global testX, testY, testArray #delete later
     global pitch
     xIterations = 0
     yIterations = 0
@@ -233,7 +238,7 @@ def lineShootArray(f, x0, y0, x1, y1):
     slope = deltaY / deltaX
     idealStepY = pitch * slope # absolute value
 
-    if (idealStepY > pitch):
+    if (idealStepY >= pitch):
         timesX = 1
         timesY = math.ceil(idealStepY / pitch)
         correctX = 1
@@ -252,9 +257,6 @@ def lineShootArray(f, x0, y0, x1, y1):
     movedX = 0
     movedY = 0
 
-    moveAbs(f, x0, y0)
-
-
     # deltaX and Y are absolutes now
     while ((movedX < deltaX) or (movedY < deltaY)):
         # First: Do step sideways
@@ -263,10 +265,6 @@ def lineShootArray(f, x0, y0, x1, y1):
                 xIterations += 1
                 movedX += pitch
                 moveRelArray(stepX, 0)
-
-                # delete later
-                testX += stepX 
-                testArray.append([testX,testY])
             else:
                 break
 
@@ -276,10 +274,6 @@ def lineShootArray(f, x0, y0, x1, y1):
                 yIterations += 1
                 movedY += pitch
                 moveRelArray(0, stepY)
-
-                # delete later
-                y += stepY
-                testArray.append([testX,testY])
             else:
                 break
 
@@ -294,18 +288,10 @@ def lineShootArray(f, x0, y0, x1, y1):
                 movedX += pitch
                 moveRelArray(stepX, 0)
 
-                # delete later
-                x += stepX 
-                testArray.append([x,y])
-
             elif (movedY < yIdeal):
                 yIterations += 1
                 movedY += pitch
                 moveRelArray(0, stepY)
-
-                # delete later
-                y += stepY 
-                testArray.append([x,y])
 
     return testArray        
                 
@@ -592,7 +578,6 @@ Array contents:
     lArray ->   [x0, y0, x1, y1] 0=start, 1=goal
 """
 def readUserPath(f, unit, queue, pArray, lArray):
-    global testArray, testX, testY #delete later
     lenQ = len(queue)
     i = 0
     while (i < lenQ):
@@ -629,10 +614,6 @@ def readUserPath(f, unit, queue, pArray, lArray):
             x = pArray[idx][0]
             y = pArray[idx][1]
             moveAndShootAbs(f, x, y)  
-            #delete later
-            testX = x
-            testY = y
-            testArray.append([testX, testY])
 
         i += 1    
 

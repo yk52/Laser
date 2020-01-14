@@ -10,7 +10,7 @@ probieren!
 
 
 Good to know:
-First position is never shot. Falls es die erste Linie überhaupt ist: Manuell erste position schießen!
+First position is never shot. Must be moved to manually. Falls es die erste Linie überhaupt ist: Manuell an erste position bewegen und schießen!
 Bewegungen sind relativ. Koordinatensystem recht egal
 Grundeinheit ist mm!
 Annahme:keine Einzelnen Schüsse, denen keine Linien nachfolgen. (Nur linien. keine punkte)

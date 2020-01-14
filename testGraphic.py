@@ -42,7 +42,7 @@ params = ["trying", x, y, z, startLeistung, pulse, repRate, PulseEnergy, hv,
 a,b,c,d = 20, 20, 20, 540
 
 
-queue, p, l = readGDS2txt.getCoordinates("test.txt")
+queue, p, l = readGDS2txt.getCoordinates("test2.txt")
 testArray = scriptConverter.createUserScript(params, queue, p, l)
 
 """ Show the lines %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
