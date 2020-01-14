@@ -1,5 +1,6 @@
 Laser Ansteuerung TODO
 
+Am ende alles mit testarray löschen
 
 THIS TIME TODO:::
 ##########VIEL EINFACHER! Nicht direkt drinnen zeichnen, in illustrator oder klayout (gds file) und dann importieren

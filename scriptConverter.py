@@ -28,8 +28,13 @@ rasterfahrt = 0
 pitch = 20   
 
 # Arrays of single line with relative distances to be moved
-xRelArray = []
-yRelArray = []
+xDistArray = []
+yDistArray = []
+
+# delete later
+testArray = []
+testX = 0
+testY = 0
 
 	
 """
@@ -171,8 +176,14 @@ def moveDir(f, direction, dist):
 	
 
 def moveRelArray(xDist, yDist):        
-    xRelArray.append(xDist)
-    yRelArray.append(yDist)
+    xDistArray.append(xDist)
+    yDistArray.append(yDist)
+
+    # delete later
+    global testX, testY
+    testX += xDist
+    testY += yDist
+    testArray.append([testX, testY])
 
 """
 Appends relative x,y distances to be moved to Array to sum them up in a for loop
@@ -193,10 +204,9 @@ def moveDirArray(direction, dist):
 """
 Move along a 2D (possibly diagonal) line and shoot in a certain pitch
 """
-def lineShootArray(x0, y0, x1, y1):
+def lineShootArray(f, x0, y0, x1, y1):
     """ for testing:"""
-    testArray = []
-
+    global testX, testY, testArray #delete later
     global pitch
     xIterations = 0
     yIterations = 0
@@ -228,7 +238,10 @@ def lineShootArray(x0, y0, x1, y1):
         timesY = math.ceil(idealStepY / pitch)
         correctX = 1
         diff = abs(idealStepY - pitch*timesY)
-        checkTimes = math.ceil(idealStepY/diff)
+        if (diff == 0):
+            checkTimes = 0
+        else:
+            checkTimes = math.ceil(idealStepY/diff)
     elif (idealStepY < pitch):
         timesY = 1
         timesX = math.ceil(pitch / idealStepY)
@@ -252,8 +265,8 @@ def lineShootArray(x0, y0, x1, y1):
                 moveRelArray(stepX, 0)
 
                 # delete later
-                x += stepX 
-                testArray.append([x,y])
+                testX += stepX 
+                testArray.append([testX,testY])
             else:
                 break
 
@@ -266,12 +279,13 @@ def lineShootArray(x0, y0, x1, y1):
 
                 # delete later
                 y += stepY
-                testArray.append([x,y])
+                testArray.append([testX,testY])
             else:
                 break
 
         # Add correction steps if needed
-        if (min(xIterations, yIterations) % checkTimes == 0):
+        if (checkTimes != 0 and (min(xIterations, yIterations) % checkTimes ==
+            0)):
             xIdeal = (yIterations * pitch) / slope
             yIdeal = slope * (xIterations * pitch)
 
@@ -339,11 +353,11 @@ def addHeader(f):
 Add everything previous to the main body code (movement) to the .vbs file
 """
 def addForLoop(f):
-    numXY = len(xRelArray)
+    numXY = len(xDistArray)
     f.write("lenArray = %d\n" %numXY)
-    f.write("xArray = Array(")
+    f.write("xDistArray = Array(")
     i = 0
-    for x in xRelArray:
+    for x in xDistArray:
         f.write(str(x))
         i += 1
         if (i != numXY):
@@ -351,9 +365,9 @@ def addForLoop(f):
         else:
             f.write(")\n")
 
-    f.write("yArray = Array(")
+    f.write("yDistArray = Array(")
     i = 0
-    for y in yRelArray:
+    for y in yDistArray:
         f.write(str(y))
         i += 1
         if (i != numXY):
@@ -562,8 +576,9 @@ def doRasterfahrtOut(initValues, sizeX, sizeY):
 
 
 def clearRelArrays():
-    xRelArray = []
-    yRelArray = []
+    global xDistArray, yDistArray
+    xDistArray = []
+    yDistArray = []
 
 """
 Get 3 arrays from GUI: Queue, point shot Array and line shot Array.
@@ -577,6 +592,7 @@ Array contents:
     lArray ->   [x0, y0, x1, y1] 0=start, 1=goal
 """
 def readUserPath(f, unit, queue, pArray, lArray):
+    global testArray, testX, testY #delete later
     lenQ = len(queue)
     i = 0
     while (i < lenQ):
@@ -589,12 +605,22 @@ def readUserPath(f, unit, queue, pArray, lArray):
             y1 = lArray[idx][3]
             if (x0 == x1):
                 yDist = y1 - y0
-                lineRelShootArray(0, yDist)
+                if (yDist > 0):
+                    direction = 0
+                else:
+                    direction = 2
+                lineRelShootArray(direction, abs(yDist))
             elif (y0 == y1):
                 xDist = x1 - x0
-                lineRelShootArray(xDist, 0)
+                if (xDist > 0):
+                    direction = 1
+                else:
+                    direction = 2
+                lineRelShootArray(direction, abs(xDist))
             else:
-                lineShootArray(x0, y0, x1, y1)
+                lineShootArray(f, x0, y0, x1, y1)
+            if (i == lenQ - 1):    
+                addForLoop(f)
         elif (queue[i][0] == 0):
             # Point
             if (i != 0):
@@ -603,6 +629,10 @@ def readUserPath(f, unit, queue, pArray, lArray):
             x = pArray[idx][0]
             y = pArray[idx][1]
             moveAndShootAbs(f, x, y)  
+            #delete later
+            testX = x
+            testY = y
+            testArray.append([testX, testY])
 
         i += 1    
 
@@ -614,6 +644,7 @@ Goal: Only one standard form with different values, but different path
 def createUserScript(initValues, queue, points, lines):
     global fileName
     global unit
+    global testArray #delete later
 
     setParams(initValues)
 
@@ -633,3 +664,4 @@ name.")
         readUserPath(f, unit, queue, points, lines)
         
         addTrailer(f)
+    return testArray
