@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-09/01/20
+16/01/20
 Read file from klayout saved as GDS2-txt files and return list of coordinates for
 scriptConverter.py
 """
@@ -14,6 +14,7 @@ import math
 Read GDS2 txt. file and return UNIT.
 """
 def getUnit(path):
+    l = 0
     with open(path, 'r') as f:
         for line in f:
             l += 1
@@ -24,7 +25,10 @@ def getUnit(path):
                 if (unit < 1e-6):
                     return -1   # Error. Unit too small
                 else:
-                    return unit
+                    if (unit == 1e-3):
+                        return 1e0
+                    else:
+                        return unit*1e3
             elif (l == 6):
                 return 3  # Error. unit not found
 
@@ -286,29 +290,3 @@ def readUserPath(f, queue, pArray, lArray):
 
         i += 1    
 
-
-"""
-output script made out of basic code blocks
-Goal: Only one standard form with different values, but different path
-"""
-def createUserScript(initValues, queue, points, lines):
-    global fileName
-
-    setParams(initValues)
-
-    if os.path.isfile(fileName+".vbs"):
-        print(
-        "\nFile already exists. \nPlease delete the existing one, or choose a new \
-name.")
-        return
-
-    with open(fileName+".vbs", 'a+') as f:
-        if ("ase" or "unny" or "abbit") in fileName:
-            addBunny(f)
-
-        addHeader(f)        
-
-        # enter movement and laser procedure
-        readUserPath(f, queue, points, lines)
-        
-        addTrailer(f)

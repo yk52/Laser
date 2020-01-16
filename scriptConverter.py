@@ -43,6 +43,7 @@ Sets global parameters from GUI input for all functions to use
 def setParams(array):
     # Maybe it was a mistake to use global variables.........
     global fileName
+    global unit
     global startX 
     global startY
     global startZ
@@ -58,6 +59,8 @@ def setParams(array):
 
     i = 0
     fileName = array[i]   # Name of file to be saved as
+    i += 1
+    unit = array[i]   # unit size relative to mm
     i += 1
     startX = array[i]   # x Coordinate
     i += 1
@@ -84,6 +87,7 @@ def setParams(array):
     pitch = array[i]
 	
 def defineVars(f):
+    global unit
     global startX 
     global startY
     global startZ
@@ -96,16 +100,17 @@ def defineVars(f):
     global waitMs
 
     f.write("' Define all used variables ***************************************************\n\n")
-    f.write("dim startX, startY, startZ, startLeistung\n")
+    f.write("dim unit, startX, startY, startZ, startLeistung\n")
     f.write("dim xArray, yArray, lenArray\n")
     f.write("dim pulse\n")
     f.write("dim i,j\n")
     f.write("dim pulseEnergyDist, HVVal, energyModeVal, triggerModeVal\n")
     f.write("dim waitMs\n\n")
+    f.write("unit = %.3E\n" %unit)
     f.write("startX = %.3f\n" %startX)
     f.write("startY = %.3f\n" %startY)
     f.write("startZ = %.3f\n" %startZ)
-    f.write("startLeistung = %.3f\n" %startLeistung)
+    f.write("startLeistung = %.2f\n" %startLeistung)
     f.write("pulse = %d\n" %pulse)
     f.write("pulseEnergyDist = %d\n" %pulseEnergy)
     f.write("HVVal = %d\n" %hv)
@@ -115,15 +120,15 @@ def defineVars(f):
 	
 def shoot(f):
     global repRate
-    f.write("PSOPulse pulse, 1000000/%f\n" %repRate)
+    f.write("PSOPulse pulse, 1000000/%.3f\n" %repRate)
     
 
 """
 Move a relative distance in x and y
 """
 def moveRel(f, xDist, yDist):
-    f.write("\nmoveRel x, %f\n" %xDist)
-    f.write("moveRel y, %f\n" %yDist)
+    f.write("\nmoveRel x, %.3f*unit\n" %xDist)
+    f.write("moveRel y, %.3f*unit\n" %yDist)
     f.write("waituntilinpos x,y\n")
     f.write("wait waitMs\n")
 
@@ -131,8 +136,8 @@ def moveRel(f, xDist, yDist):
 Move absolute distance in x and y
 """
 def moveAbs(f, xPos, yPos):
-    f.write("\nmove x, %f\n" %xPos)
-    f.write("move y, %f\n" %yPos)
+    f.write("\nmove x, %.3f*unit\n" %xPos)
+    f.write("move y, %.3f*unit\n" %yPos)
     f.write("waituntilinpos x,y\n")
     f.write("wait waitMs\n")
 
@@ -141,7 +146,7 @@ Shoot once.
 """
 def shoot(f):
     global repRate
-    f.write("PSOPulse pulse, 1000000/%f\n" %repRate)
+    f.write("PSOPulse pulse, 1000000/%.3f\n" %repRate)
 
 
 """
@@ -570,6 +575,7 @@ def clearRelArrays():
 """
 Get 3 arrays from GUI: Queue, point shot Array and line shot Array.
 Turn into vbs script
+unit must be already converted such that the coordinates*unit == [mm]
 
 Array contents:
     Queue ->    Required actions in chronological order. 
@@ -578,18 +584,17 @@ Array contents:
     pArray ->   [xCoordinate, yCoordinate]
     lArray ->   [x0, y0, x1, y1] 0=start, 1=goal
 """
-def readUserPath(f, unit, queue, pArray, lArray):
+def readUserPath(f, queue, pArray, lArray):
     lenQ = len(queue)
     i = 0
-    u = unit*10^3
     while (i < lenQ):
         idx = queue[i][1]  
         if (queue[i][0] == 1):
             # Line
-            x0 = u*lArray[idx][0]
-            y0 = u*lArray[idx][1]
-            x1 = u*lArray[idx][2]
-            y1 = u*lArray[idx][3]
+            x0 = lArray[idx][0]
+            y0 = lArray[idx][1]
+            x1 = lArray[idx][2]
+            y1 = lArray[idx][3]
             if (x0 == x1):
                 yDist = y1 - y0
                 if (yDist > 0):
@@ -613,8 +618,8 @@ def readUserPath(f, unit, queue, pArray, lArray):
             if (i != 0):
                 addForLoop(f)
             clearRelArrays()
-            x = u*pArray[idx][0]
-            y = u*pArray[idx][1]
+            x = pArray[idx][0]
+            y = pArray[idx][1]
             moveAndShootAbs(f, x, y)  
 
         i += 1    
@@ -626,7 +631,6 @@ Goal: Only one standard form with different values, but different path
 """
 def createUserScript(initValues, queue, points, lines):
     global fileName
-    global unit
     global testArray #delete later
 
     setParams(initValues)
@@ -644,7 +648,7 @@ name.")
         addHeader(f)        
 
         # enter movement and laser procedure
-        readUserPath(f, unit, queue, points, lines)
+        readUserPath(f, queue, points, lines)
         
         addTrailer(f)
     return testArray

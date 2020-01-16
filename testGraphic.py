@@ -30,8 +30,6 @@ TriggerMode = 0
 waitMs = 100
 pitch = 50
 
-params = ["trying", x, y, z, startLeistung, pulse, repRate, PulseEnergy, hv,
-        EnergyMode, TriggerMode, waitMs, pitch]
 #queue = [[0,0],[1,0],[1,1],[1,2],[1,3],[0,1]]
 #p = [[0,0],[4,2]]
 #l = [[0,0,2,0],[2,0,2,3],[2,3,1,3],[1,3,1,2]]
@@ -43,6 +41,9 @@ a,b,c,d = 20, 20, 20, 540
 
 
 queue, p, l = readGDS2txt.getCoordinates("test2.txt")
+unit = readGDS2txt.getUnit("test2.txt")
+params = ["trying", unit, x, y, z, startLeistung, pulse, repRate, PulseEnergy, hv,
+        EnergyMode, TriggerMode, waitMs, pitch]
 testArray = scriptConverter.createUserScript(params, queue, p, l)
 
 """ Show the lines %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -57,7 +58,6 @@ w = Canvas(master,
 w.pack()
 
 checkered(w,pitch)
-print(l)
 
 w.create_oval(500,500,500,500, width = 10, fill='orange')
 w.pack()
@@ -70,7 +70,6 @@ for i in range(len(queue)):
 
 w.pack()
 
-print(testArray)
 for xy in testArray:
     #positions of shots
     point = w.create_oval(xy[0]+500,500-xy[1],xy[0]+500,500-xy[1], width = 5, fill='orange')

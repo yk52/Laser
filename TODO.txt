@@ -5,7 +5,7 @@ Am ende alles mit testarray löschen
 THIS TIME TODO:::
 ##########VIEL EINFACHER! Nicht direkt drinnen zeichnen, in illustrator oder klayout (gds file) und dann importieren
 probieren!
---------> Wie unit integrieren?
+--------> Wie unit integrieren? so machen, dass unit mit defineVars definiert wird.
 
 
 
