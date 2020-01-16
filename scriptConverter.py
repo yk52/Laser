@@ -581,14 +581,15 @@ Array contents:
 def readUserPath(f, unit, queue, pArray, lArray):
     lenQ = len(queue)
     i = 0
+    u = unit*10^3
     while (i < lenQ):
         idx = queue[i][1]  
         if (queue[i][0] == 1):
             # Line
-            x0 = lArray[idx][0]
-            y0 = lArray[idx][1]
-            x1 = lArray[idx][2]
-            y1 = lArray[idx][3]
+            x0 = u*lArray[idx][0]
+            y0 = u*lArray[idx][1]
+            x1 = u*lArray[idx][2]
+            y1 = u*lArray[idx][3]
             if (x0 == x1):
                 yDist = y1 - y0
                 if (yDist > 0):
@@ -612,8 +613,8 @@ def readUserPath(f, unit, queue, pArray, lArray):
             if (i != 0):
                 addForLoop(f)
             clearRelArrays()
-            x = pArray[idx][0]
-            y = pArray[idx][1]
+            x = u*pArray[idx][0]
+            y = u*pArray[idx][1]
             moveAndShootAbs(f, x, y)  
 
         i += 1    
