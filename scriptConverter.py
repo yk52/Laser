@@ -24,7 +24,7 @@ energyMode = 0
 triggerMode = 0
 waitMs = 0
 rasterfahrt = 0
-pitch = 20   
+pitch = 0   
 
 # Arrays of single line with relative distances to be moved
 xDistArray = []
@@ -112,7 +112,7 @@ def defineVars(f):
 
 def shoot(f):
     global repRate
-    f.write("PSOPulse pulse, 1000000/%.3f\n" %repRate)
+    f.write("PSOPulse pulse, 1000000/%.3f\n\n" %repRate)
     
 
 """
@@ -305,16 +305,21 @@ def lineRelShoot(f, direction, dist):
     # Starting position not shot automatically
     global pitch
     text = ""
+    step = 0
     num = int(dist / pitch)
 
     if direction % 2 == 0:
         if direction == 2:      # down
-            dist *= -1
-        text = "lineRelShootY(%d,%.3f)\n" %(num,dist)
+            step = -1*pitch
+        else:                   # up
+            step = pitch
+        text = "lineRelShootY(%d,%.3f)\n" %(num,step)
     else:
         if direction == 3:      # left
-            dist *= -1
-        text = "lineRelShootX(%d,%.3f)\n" %(num,dist)
+            step = -1*pitch
+        else:                   # right 
+            step = pitch
+        text = "lineRelShootX(%d,%.3f)\n" %(num,step)
 
     f.write(text)
 
@@ -335,6 +340,8 @@ def addHeader(f):
 Add everything previous to the main body code (movement) to the .vbs file
 """
 def xyArrayShoot(f):
+    global xDistArray
+    global yDistArray
     numXY = len(xDistArray)
     f.write("xDistArray = Array(")
     i = 0
@@ -581,6 +588,7 @@ def readUserPath(f, queue, pArray, lArray):
             y0 = lArray[idx][1]
             x1 = lArray[idx][2]
             y1 = lArray[idx][3]
+            # if vertical
             if (x0 == x1):
                 yDist = y1 - y0
                 if (yDist > 0):
@@ -588,6 +596,7 @@ def readUserPath(f, queue, pArray, lArray):
                 else:
                     direction = 2
                 lineRelShoot(f,direction, abs(yDist))
+            # if horizontal    
             elif (y0 == y1):
                 xDist = x1 - x0
                 if (xDist > 0):
@@ -595,15 +604,13 @@ def readUserPath(f, queue, pArray, lArray):
                 else:
                     direction = 2
                 lineRelShoot(f,direction, abs(xDist))
+            # if diagonal
             else:
                 makeXYArray(f, x0, y0, x1, y1)
-            if (i == lenQ - 1):    
-                xyArrayShoot(f)
-        elif (queue[i][0] == 0):
-            # Point
-            if (i != 0):
                 xyArrayShoot(f)
                 clearRelArrays()
+        elif (queue[i][0] == 0):
+            # Point
             x = pArray[idx][0]
             y = pArray[idx][1]
             moveAndShootAbs(f, x, y)  

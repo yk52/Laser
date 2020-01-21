@@ -28,24 +28,24 @@ hv = 26
 EnergyMode = 0
 TriggerMode = 0
 waitMs = 100
-pitch = 50
+pitch = 1000
+
+params = ["raster", x, y, z, startLeistung, pulse, repRate, PulseEnergy, hv,
+        EnergyMode, TriggerMode, waitMs, pitch]
 
 #queue = [[0,0],[1,0],[1,1],[1,2],[1,3],[0,1]]
 #p = [[0,0],[4,2]]
 #l = [[0,0,2,0],[2,0,2,3],[2,3,1,3],[1,3,1,2]]
-# testArray = scriptConverter.doRasterfahrtIn(params, 5000, 5000)
+testArray = scriptConverter.doRasterfahrtOut(params, 5000, 5000)
 #scriptConverter.createUserScript(params, queue, p, l)
 
 #x0,y0, x1,y1
 a,b,c,d = 20, 20, 20, 540
 
 
-queue, p, l = readGDS2txt.getCoordinates("test2.txt")
-unit = readGDS2txt.getUnit("test2.txt")
-print(unit)
-params = ["trying", unit, x, y, z, startLeistung, pulse, repRate, PulseEnergy, hv,
-        EnergyMode, TriggerMode, waitMs, pitch]
-testArray = scriptConverter.createUserScript(params, queue, p, l)
+#queue, p, l = readGDS2txt.getCoordinates("test2.txt")
+#unit = readGDS2txt.getUnit("test2.txt")
+#testArray = scriptConverter.createUserScript(params, queue, p, l)
 
 """ Show the lines %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 """
@@ -64,10 +64,10 @@ w.create_oval(500,500,500,500, width = 10, fill='orange')
 w.pack()
 
 # test diagonal shoot
-for i in range(len(queue)):
-    if (queue[i][0] == 1):
-        idx = queue[i][1]
-        line = w.create_line(l[idx][0]+500,500-l[idx][1],l[idx][2]+500,500-l[idx][3], width = 2)
+#for i in range(len(queue)):
+#    if (queue[i][0] == 1):
+#        idx = queue[i][1]
+#        line = w.create_line(l[idx][0]+500,500-l[idx][1],l[idx][2]+500,500-l[idx][3], width = 2)
 
 w.pack()
 
