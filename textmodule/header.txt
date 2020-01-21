@@ -1,0 +1,11 @@
+Option Explicit
+
+' Define all used variables ***************************************************
+
+dim unit, startX, startY, startZ, startLeistung
+dim stepX, stepY, pitch
+dim xArray, yArray
+dim pulse
+dim i,j
+dim pulseEnergyDist, HVVal, energyModeVal, triggerModeVal
+dim waitMs

@@ -1,0 +1,7 @@
+
+for i=0 to numLoop-1
+    moveRel x, xArray(i)*unit
+    moveRel y, yArray(i)*unit
+    waituntilinpos x,y
+    PSOPulse startShots, 1000000/20
+next

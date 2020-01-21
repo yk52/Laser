@@ -22,6 +22,8 @@ def getUnit(path):
             if ("UNITS" in line):
                 split = line.split(" ")
                 unit = float(split[1])*float(split[2])
+                print(split[1])
+                print(split[2])
                 if (unit < 1e-6):
                     return -1   # Error. Unit too small
                 else:
@@ -30,7 +32,7 @@ def getUnit(path):
                     else:
                         return unit*1e3
             elif (l == 6):
-                return 3  # Error. unit not found
+                return 0  # Error. unit not found
 
 
 """ 

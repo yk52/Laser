@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-09/01/20
+21/01/20
 Take the path entered into the laser GUI and convert it into a visual basic script (.vbs) script
 """
 
@@ -8,7 +8,6 @@ import os
 import math
 #import pyximport; pyximport.install()
 
-unit = 1.0    # standard unit = 1 mm. Smalles precision: 1 micron
 
 # global user variables
 fileName = ""
@@ -43,7 +42,6 @@ Sets global parameters from GUI input for all functions to use
 def setParams(array):
     # Maybe it was a mistake to use global variables.........
     global fileName
-    global unit
     global startX 
     global startY
     global startZ
@@ -59,8 +57,6 @@ def setParams(array):
 
     i = 0
     fileName = array[i]   # Name of file to be saved as
-    i += 1
-    unit = array[i]   # unit size relative to mm
     i += 1
     startX = array[i]   # x Coordinate
     i += 1
@@ -87,7 +83,6 @@ def setParams(array):
     pitch = array[i]
 	
 def defineVars(f):
-    global unit
     global startX 
     global startY
     global startZ
@@ -99,14 +94,10 @@ def defineVars(f):
     global triggerMode
     global waitMs
 
-    f.write("' Define all used variables ***************************************************\n\n")
-    f.write("dim unit, startX, startY, startZ, startLeistung\n")
-    f.write("dim xArray, yArray, lenArray\n")
-    f.write("dim pulse\n")
-    f.write("dim i,j\n")
-    f.write("dim pulseEnergyDist, HVVal, energyModeVal, triggerModeVal\n")
-    f.write("dim waitMs\n\n")
-    f.write("unit = %.3E\n" %unit)
+    with open("textmodule/header.txt", 'r') as body:
+        for line in body:
+            f.write(line)
+
     f.write("startX = %.3f\n" %startX)
     f.write("startY = %.3f\n" %startY)
     f.write("startZ = %.3f\n" %startZ)
@@ -118,6 +109,7 @@ def defineVars(f):
     f.write("triggerModeVal = %d\n" %triggerMode)
     f.write("waitMs = %d\n\n" %waitMs)
 	
+
 def shoot(f):
     global repRate
     f.write("PSOPulse pulse, 1000000/%.3f\n" %repRate)
@@ -127,8 +119,8 @@ def shoot(f):
 Move a relative distance in x and y
 """
 def moveRel(f, xDist, yDist):
-    f.write("\nmoveRel x, %.3f*unit\n" %xDist)
-    f.write("moveRel y, %.3f*unit\n" %yDist)
+    f.write("\nmoveRel x, %.3f\n" %xDist)
+    f.write("moveRel y, %.3f\n" %yDist)
     f.write("waituntilinpos x,y\n")
     f.write("wait waitMs\n")
 
@@ -136,8 +128,8 @@ def moveRel(f, xDist, yDist):
 Move absolute distance in x and y
 """
 def moveAbs(f, xPos, yPos):
-    f.write("\nmove x, %.3f*unit\n" %xPos)
-    f.write("move y, %.3f*unit\n" %yPos)
+    f.write("\nmove x, %.3f\n" %xPos)
+    f.write("move y, %.3f\n" %yPos)
     f.write("waituntilinpos x,y\n")
     f.write("wait waitMs\n")
 
@@ -196,6 +188,7 @@ def moveRelArray(xDist, yDist):
     testY += yDist
     testArray.append([testX, testY])
 
+
 """
 Appends relative x,y distances to be moved to Array to sum them up in a for loop
 move into certain direction relative to original position. 0=up, 1=right, 2=down, 3=left
@@ -212,10 +205,11 @@ def moveDirArray(direction, dist):
     elif direction == 3:      # left
         moveRelArray(-1*dist, 0)
 
+
 """
 Move along a 2D (possibly diagonal) line and shoot in a certain pitch
 """
-def lineShootArray(f, x0, y0, x1, y1):
+def makeXYArray(f, x0, y0, x1, y1):
     """ for testing:"""
     global pitch
     xIterations = 0
@@ -302,40 +296,37 @@ def lineShootArray(f, x0, y0, x1, y1):
                 
 	
 
+
+
 """
 Move along a horizontal or vertical line and shoot in a certain pitch
 """
 def lineRelShoot(f, direction, dist):
     # Starting position not shot automatically
-    # 0 = start, 1 = stop
     global pitch
-    numShots = int(dist / pitch)
-    for i in range(numShots):
-        moveDir(f, direction, pitch)
-        shoot(f)
+    text = ""
+    num = int(dist / pitch)
 
+    if direction % 2 == 0:
+        if direction == 2:      # down
+            dist *= -1
+        text = "lineRelShootY(%d,%.3f)\n" %(num,dist)
+    else:
+        if direction == 3:      # left
+            dist *= -1
+        text = "lineRelShootX(%d,%.3f)\n" %(num,dist)
 
-"""
-Move along a horizontal or vertical line and shoot in a certain pitch
-"""
-def lineRelShootArray(direction, dist):
-    # Starting position not shot automatically
-    # 0 = start, 1 = stop
-    global pitch
-    numShots = int(dist / pitch)
-    for i in range(numShots):
-        moveDirArray(direction, pitch)
+    f.write(text)
 
 """
 Add everything previous to the main body code (movement) to the .vbs file
 """
 def addHeader(f):
-    f.write("Option Explicit\n\n")
     # First define all variables
     defineVars(f)
             
     # Second enter all used subprocedures and code main body
-    with open("body.txt", 'r') as body:	
+    with open("textmodule/body.txt", 'r') as body:	
         for line in body:
             f.write(line)
         
@@ -343,9 +334,8 @@ def addHeader(f):
 """
 Add everything previous to the main body code (movement) to the .vbs file
 """
-def addForLoop(f):
+def xyArrayShoot(f):
     numXY = len(xDistArray)
-    f.write("lenArray = %d\n" %numXY)
     f.write("xDistArray = Array(")
     i = 0
     for x in xDistArray:
@@ -366,22 +356,20 @@ def addForLoop(f):
         else:
             f.write(")\n")
 
-    with open("singleLine.txt", 'r') as body:	
-        for line in body:
-            f.write(line)
-        f.write("\n")    
+    f.write("xyArrayShoot(%d)\n" %numXY)
+    
 
 """
 Add everything latter to the main body code (movement) to the .vbs file
 """
 def addTrailer(f):
     # Fourth enter what's left to say
-    with open("end.txt", 'r') as body:	
+    with open("textmodule/end.txt", 'r') as body:	
         for line in body:
             f.write(line)
 
 def addBunny(f):
-    with open("rabbit.txt", 'r') as body:
+    with open("textmodule/rabbit.txt", 'r') as body:
         for line in body:
             f.write(line)
 
@@ -420,7 +408,7 @@ def doRasterfahrtIn(initValues, sizeX, sizeY):
 
         moveAbs(f, startX, startY)
         shoot(f)     # first shot
-        lineRelShootArray(direction, lenX)   # first line to the right
+        lineRelShoot(f, direction, lenX)   # first line to the right
 
         # for graphic Test:
         x0 = startX
@@ -435,7 +423,7 @@ def doRasterfahrtIn(initValues, sizeX, sizeY):
         while(lenY >= pitch):
             direction = (direction + 1) % 4
             if (lenY >= pitch):
-                lineRelShootArray(direction, lenY)
+                lineRelShoot(f, direction, lenY)
                 # for graphic test
                 x1 = x0
                 if (direction == 0):
@@ -447,7 +435,7 @@ def doRasterfahrtIn(initValues, sizeX, sizeY):
                 y0 = y1
             direction = (direction + 1) % 4
             if (lenX >= pitch): 
-                lineRelShootArray(direction, lenX)
+                lineRelShoot(f, direction, lenX)
                 # for graphic test
                 y1 = y0
                 if (direction == 3):
@@ -460,8 +448,6 @@ def doRasterfahrtIn(initValues, sizeX, sizeY):
             lenY -= pitch
             lenX -= pitch
 
-    
-        addForLoop(f)
         addTrailer(f)
 
         return testArray
@@ -518,7 +504,7 @@ def doRasterfahrtOut(initValues, sizeX, sizeY):
             lenY += pitch
             direction = (direction + 1) % 4
             if (lenX <= sizeX):
-                lineRelShootArray(direction, lenX)
+                lineRelShoot(f, direction, lenX)
                 # for graphic test
                 if (direction == 3):
                     x1 = x0 - lenX
@@ -528,7 +514,7 @@ def doRasterfahrtOut(initValues, sizeX, sizeY):
                 x0 = x1
                 y0 = y1
             else:
-                lineRelShootArray(direction, lenX - pitch)
+                lineRelShoot(f, direction, lenX - pitch)
                 # for graphic test
                 if (direction == 3):
                     x1 = x0 - (lenX - pitch)
@@ -540,7 +526,7 @@ def doRasterfahrtOut(initValues, sizeX, sizeY):
                 break
             direction = (direction + 1) % 4
             if (lenY <= sizeY):
-                lineRelShootArray(direction, lenY)
+                lineRelShoot(f, direction, lenY)
                 # for graphic test
                 if (direction == 0):
                     y1 = y0 - lenY
@@ -550,7 +536,7 @@ def doRasterfahrtOut(initValues, sizeX, sizeY):
                 x0 = x1
                 y0 = y1
             else:
-                lineRelShootArray(direction, lenY - pitch)
+                lineRelShoot(f, direction, lenY - pitch)
                 # for graphic test
                 if (direction == 0):
                     y1 = y0 - (lenY - pitch)
@@ -561,7 +547,6 @@ def doRasterfahrtOut(initValues, sizeX, sizeY):
                 y0 = y1
                 break
 
-        addForLoop(f)
         addTrailer(f)
 
     return testArray
@@ -571,6 +556,7 @@ def clearRelArrays():
     global xDistArray, yDistArray
     xDistArray = []
     yDistArray = []
+
 
 """
 Get 3 arrays from GUI: Queue, point shot Array and line shot Array.
@@ -601,23 +587,23 @@ def readUserPath(f, queue, pArray, lArray):
                     direction = 0
                 else:
                     direction = 2
-                lineRelShootArray(direction, abs(yDist))
+                lineRelShoot(f,direction, abs(yDist))
             elif (y0 == y1):
                 xDist = x1 - x0
                 if (xDist > 0):
                     direction = 1
                 else:
                     direction = 2
-                lineRelShootArray(direction, abs(xDist))
+                lineRelShoot(f,direction, abs(xDist))
             else:
-                lineShootArray(f, x0, y0, x1, y1)
+                makeXYArray(f, x0, y0, x1, y1)
             if (i == lenQ - 1):    
-                addForLoop(f)
+                xyArrayShoot(f)
         elif (queue[i][0] == 0):
             # Point
             if (i != 0):
-                addForLoop(f)
-            clearRelArrays()
+                xyArrayShoot(f)
+                clearRelArrays()
             x = pArray[idx][0]
             y = pArray[idx][1]
             moveAndShootAbs(f, x, y)  

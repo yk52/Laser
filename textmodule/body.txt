@@ -17,6 +17,30 @@ Sub setCompexproParams(energyModeVal, triggerModeVal, pulseEnergyVal, HVVal)
     compexpro.WaitUntilReady
 End Sub
 
+Sub lineRelShootX(numShots, dist)
+    for i=0 to numShots
+        moveRel x, dist
+        waituntilinpos x
+        PSOPulse startShots, 1000000/20
+    next
+End Sub
+
+Sub lineRelShootY(numShots, dist)
+    for i=0 to numShots
+        moveRel y, dist
+        waituntilinpos y
+        PSOPulse startShots, 1000000/20
+    next
+End Sub
+
+Sub xyArrayShoot(numShots)
+    for i=0 to numShots
+        moveRel x, xArray(i)*unit
+        moveRel y, yArray(i)*unit
+        waituntilinpos x,y
+        PSOPulse startShots, 1000000/20
+    next
+End Sub
 
 Sub PSOPulse(nShots, fPulseWidth)
     If nShots < 1 Then Exit Sub

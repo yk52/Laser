@@ -42,6 +42,7 @@ a,b,c,d = 20, 20, 20, 540
 
 queue, p, l = readGDS2txt.getCoordinates("test2.txt")
 unit = readGDS2txt.getUnit("test2.txt")
+print(unit)
 params = ["trying", unit, x, y, z, startLeistung, pulse, repRate, PulseEnergy, hv,
         EnergyMode, TriggerMode, waitMs, pitch]
 testArray = scriptConverter.createUserScript(params, queue, p, l)
