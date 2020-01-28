@@ -40,7 +40,6 @@ testY = 0
 Sets global parameters from GUI input for all functions to use
 """
 def setParams(array):
-    # Maybe it was a mistake to use global variables.........
     global fileName
     global startX 
     global startY
@@ -110,43 +109,21 @@ def defineVars(f):
     f.write("waitMs = %d\n\n" %waitMs)
 	
 
-def shoot(f):
-    global repRate
-    f.write("PSOPulse pulse, 1000000/%.3f\n\n" %repRate)
-    
 
-"""
-Move a relative distance in x and y
-"""
-def moveRel(f, xDist, yDist):
-    f.write("\nmoveRel x, %.3f\n" %xDist)
-    f.write("moveRel y, %.3f\n" %yDist)
-    f.write("waituntilinpos x,y\n")
-    f.write("wait waitMs\n")
 
 """
 Move absolute distance in x and y
 """
 def moveAbs(f, xPos, yPos):
-    f.write("\nmove x, %.3f\n" %xPos)
-    f.write("move y, %.3f\n" %yPos)
-    f.write("waituntilinpos x,y\n")
-    f.write("wait waitMs\n")
+    f.write("moveAbs %.3f, %.3f\n" %(xPos, yPos))
 
 """
 Shoot once.
 """
 def shoot(f):
     global repRate
-    f.write("PSOPulse pulse, 1000000/%.3f\n" %repRate)
+    f.write("PSOPulse pulse, 1000000/%.3f\n\n" %repRate)
 
-
-"""
-Move a relative distance in x and y and shoot once
-"""
-def moveAndShootRel(f, xDist, yDist):
-    moveRel(f, xDist, yDist)
-    shoot(f)
 	
 """
 Move absolute distance in x and y and shoot once
@@ -162,23 +139,8 @@ def moveAndShootAbs(f, x, y):
     testArray.append([testX, testY])
         
 
-"""
-move into certain direction. 0=up, 1=right, 2=down, 3=left
-up and right: +
-down and left: -
-"""
-def moveDir(f, direction, dist):
-    if direction == 0:      # up
-        moveRel(f, 0, dist)
-    elif direction == 1:      # right
-        moveRel(f, dist, 0)
-    elif direction == 2:      # down
-        moveRel(f, 0, -1*dist)
-    elif direction == 3:      # left
-        moveRel(f, -1*dist, 0)
-	
 
-def moveRelArray(xDist, yDist):        
+def addXYtoArray(xDist, yDist):        
     xDistArray.append(xDist)
     yDistArray.append(yDist)
 
@@ -195,15 +157,15 @@ move into certain direction relative to original position. 0=up, 1=right, 2=down
 up and right: +
 down and left: -
 """
-def moveDirArray(direction, dist):
+def moveDir(direction, dist):
     if direction == 0:      # up
-        moveRelArray(0, dist)
+        addXYtoArray(0, dist)
     elif direction == 1:      # right
-        moveRelArray(dist, 0)
+        addXYtoArray(dist, 0)
     elif direction == 2:      # down
-        moveRelArray(0, -1*dist)
+        addXYtoArray(0, -1*dist)
     elif direction == 3:      # left
-        moveRelArray(-1*dist, 0)
+        addXYtoArray(-1*dist, 0)
 
 
 """
@@ -263,7 +225,7 @@ def makeXYArray(f, x0, y0, x1, y1):
             if (movedX < deltaX):
                 xIterations += 1
                 movedX += pitch
-                moveRelArray(stepX, 0)
+                addXYtoArray(stepX, 0)
             else:
                 break
 
@@ -272,7 +234,7 @@ def makeXYArray(f, x0, y0, x1, y1):
             if (movedY < deltaY):
                 yIterations += 1
                 movedY += pitch
-                moveRelArray(0, stepY)
+                addXYtoArray(0, stepY)
             else:
                 break
 
@@ -285,12 +247,12 @@ def makeXYArray(f, x0, y0, x1, y1):
             if (movedX < xIdeal):
                 xIterations += 1
                 movedX += pitch
-                moveRelArray(stepX, 0)
+                addXYtoArray(stepX, 0)
 
             elif (movedY < yIdeal):
                 yIterations += 1
                 movedY += pitch
-                moveRelArray(0, stepY)
+                addXYtoArray(0, stepY)
 
     return testArray        
                 
@@ -313,28 +275,16 @@ def lineRelShoot(f, direction, dist):
             step = -1*pitch
         else:                   # up
             step = pitch
-        text = "lineRelShootY(%d,%.3f)\n" %(num,step)
+        text = "lineRelShootY %d,%.3f\n" %(num,step)
     else:
         if direction == 3:      # left
             step = -1*pitch
         else:                   # right 
             step = pitch
-        text = "lineRelShootX(%d,%.3f)\n" %(num,step)
+        text = "lineRelShootX %d,%.3f\n" %(num,step)
 
     f.write(text)
 
-"""
-Add everything previous to the main body code (movement) to the .vbs file
-"""
-def addHeader(f):
-    # First define all variables
-    defineVars(f)
-            
-    # Second enter all used subprocedures and code main body
-    with open("textmodule/body.txt", 'r') as body:	
-        for line in body:
-            f.write(line)
-        
 
 """
 Add everything previous to the main body code (movement) to the .vbs file
@@ -363,8 +313,20 @@ def xyArrayShoot(f):
         else:
             f.write(")\n")
 
-    f.write("xyArrayShoot(%d)\n" %numXY)
+    f.write("xyArrayShoot %d\n" %numXY)
     
+"""
+Add everything previous to the main body code (movement) to the .vbs file
+"""
+def addHeader(f):
+    # First define all variables
+    defineVars(f)
+            
+    # Second enter all used subprocedures and code main body
+    with open("textmodule/body.txt", 'r') as body:	
+        for line in body:
+            f.write(line)
+        
 
 """
 Add everything latter to the main body code (movement) to the .vbs file
@@ -374,6 +336,10 @@ def addTrailer(f):
     with open("textmodule/end.txt", 'r') as body:	
         for line in body:
             f.write(line)
+
+"""
+easter egg for eric
+"""
 
 def addBunny(f):
     with open("textmodule/rabbit.txt", 'r') as body:

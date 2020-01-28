@@ -5,10 +5,10 @@ Am ende alles mit testarray löschen
 THIS TIME TODO:::
 ##########VIEL EINFACHER! Nicht direkt drinnen zeichnen, in illustrator oder klayout (gds file) und dann importieren
 probieren!
---------> Unit wurde integriert. checken, ob es richtig ist.
---------> If unit too small or non-existent: do something in GUI
+--------> Randfälle testen, Code säubern
+--------> Code säubern. Welche code sachen braucht man nimmer?
 
-header -> defineVars write.
+
 
 
 

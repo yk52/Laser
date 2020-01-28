@@ -17,6 +17,12 @@ Sub setCompexproParams(energyModeVal, triggerModeVal, pulseEnergyVal, HVVal)
     compexpro.WaitUntilReady
 End Sub
 
+Sub moveAbs(xPos, yPos)
+    move x, xPos
+    move y, yPos
+    waituntilinpos x,y
+End Sub
+
 Sub lineRelShootX(numShots, dist)
     for i=0 to numShots
         moveRel x, dist
