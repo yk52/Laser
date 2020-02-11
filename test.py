@@ -5,9 +5,9 @@ test script for scriptConverter
 import readGDS2txt
 import scriptConverter
 
-x = 10
-y = 10
-z = 10
+x = 0
+y = 0
+z = 0
 startLeistung = -26
 pulse = 1
 repRate = 20 
@@ -16,20 +16,20 @@ hv = 26
 EnergyMode = 0
 TriggerMode = 0
 waitMs = 100
-pitch = 100
+pitch = 10
 
-params = ["userScript", x, y, z, startLeistung, pulse, repRate, PulseEnergy, hv,
+params = ["unny", x, y, z, startLeistung, pulse, repRate, PulseEnergy, hv,
         EnergyMode, TriggerMode, waitMs, pitch]
 #queue = [[0,0],[1,0],[1,1],[1,2],[1,3],[0,1]]
 #p = [[0,0],[4,2]]
 #l = [[0,0,2,0],[2,0,2,3],[2,3,1,3],[1,3,1,2]]
-#scriptConverter.doRasterfahrtIn(params, 5, 5)
+scriptConverter.doRasterfahrtOut(params, 60, 40)
 
-queue, p, l = readGDS2txt.getCoordinates("test2.txt")
-print(queue)
-print(p)
-print(l)
-scriptConverter.createUserScript(params, queue, p, l)
+#queue, p, l = readGDS2txt.getCoordinates("test2.txt")
+#print(queue)
+#print(p)
+#print(l)
+#scriptConverter.createUserScript(params, queue, p, l)
 
 #with open("twoDTest.txt", 'w') as f:
 #    scriptConverter.twoDShoot(f, 0, 5, 0, 5)

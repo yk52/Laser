@@ -418,6 +418,9 @@ def doRasterfahrtIn(initValues, sizeX, sizeY):
                 testArray.append([x1, y1]) 
                 x0 = x1
                 y0 = y1
+            if (lenY <= 0 or lenX <= 0):
+                break
+
             lenY -= pitch
             lenX -= pitch
 
@@ -460,6 +463,7 @@ def doRasterfahrtOut(initValues, sizeX, sizeY):
 #        return
 
     with open(fileName+".vbs", 'a+') as f:
+        print(fileName)
         if ("ase" or "unny" or "abbit") in fileName:
             addBunny(f)
             print("yes")

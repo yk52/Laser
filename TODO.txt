@@ -1,16 +1,18 @@
 Laser Ansteuerung TODO
 
+
 Am ende alles mit testarray löschen
+Hase klappt nicht?
 
 THIS TIME TODO:::
-##########VIEL EINFACHER! Nicht direkt drinnen zeichnen, in illustrator oder klayout (gds file) und dann importieren
-probieren!
+--------------------> gdsCAD ausprobieren.
+
 --------> Randfälle testen, Code säubern
 --------> Code säubern. Welche code sachen braucht man nimmer?
+--------> Does wait until in pos work? if not, wait waitMs must be added back.
 
-
-
-
+Nur gerade linien erforderlich!
+unit MUSS 1 mm sein?!
 
 Good to know:
 First position is never shot. Must be moved to manually. Falls es die erste Linie überhaupt ist: Manuell an erste position bewegen und schießen!
