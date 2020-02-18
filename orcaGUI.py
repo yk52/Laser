@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 """ 
-This is currently the beamAnalyzer code.
-
 Needed variables:
 startx,starty,startz,startLeistung
 compexpro: HV, Triggermode, wait
@@ -11,18 +9,12 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 import traceback
-import pyximport; pyximport.install()
-import createOutput
-import createPng
 import numpy as np
 
 
 entries = []
 switchVariables = {}
 switchCounter = 0
-visualize = 0
-processData = 0
-polar = 0
 
 
 def makeformText(rootFrame, fields):
@@ -70,44 +62,24 @@ def insertBlank(rootFrame):
 
 
 def createLayout(root, dataProcFrame, visFrame, polFrame):
-    global dataProcIndex
-    global visualIndex
-
-    root.title("Beam Analyzer")
-    tk.Label(root, text="Beam Analyzer Settings", font=25).pack()
+    root.title("Script Converter for Laser Control")
+    tk.Label(root, text="Laser path settings", font=25).pack()
     insertBlank(root)
-    makeformText(root, ['Data name*'])
-    makeformButton(root, ['Data type*'], btn1='.txt', btn2='.npy')
-    f1 = ['PixelY (vertical)*',\
-            'PixelX (PixelY+stepsize)*', 'First DataNr*', 'Last DataNr*']
+    makeformText(root, ['Script name'])
+    f1 = ['X start', 'Y start', 'Z start', 'Pitch [mm]', 'Power', 'Pulse', 'repRate',\
+            'Pulse Energy', 'waitMs']
     makeformText(root, f1)
-    makeformButton(root, ['Maximum Value known?*'])
 
     dataProcFrame.pack(padx=5, pady=5, fill="x", anchor="n")
     makeformText(dataProcFrame.subFrame, ['Average over how many files?'])
     makeformButton(dataProcFrame.subFrame, ['Save whole file as .csv?'])
     makeformText(dataProcFrame.subFrame, ['Export single line?'])
 
-    visFrame.pack(padx=5, pady=5, fill="x", anchor="n")
-
-    makeformButton(visFrame.subFrame, ['Create Heatmap (.png)?'])
-    makeformButton(visFrame.subFrame, ['Highlight values at halfMax?'])
-
-    polFrame.pack(expand=1, padx=5, pady=5, fill="x", anchor="n")
-
-    f3 = ['Create .png', 'Create .csv']
-    makeformButton(polFrame.subFrame, f3)
-    f2 = ['Distance to sensor (mm)', 'Shift result by X degrees']
-    makeformText(polFrame.subFrame, f2)
-
     return entries
 
 
 def fetch(inputs, d, v, p):
     userInputs = []
-    processData = bool(d.show.get())
-    visualize = bool(v.show.get())
-    polar = bool(p.show.get())
 
     for entry in inputs:
         singleInput = entry[1].get()
@@ -192,61 +164,6 @@ def processEntries(inputs, processData, visualize, polar):
 
 
     depth = stop - start + 1
-
-    if (processData == 1):
-        # How many different positions
-        uniqueData = int(depth / avrgAmount)
-
-        # Step 1: Read data and save as .npy files to speed up future processing. Average, if required.
-        #         If the .npy files already exists, it is not created a 2nd time.
-        #         uniqueData = one unique position (may be averaged over multiple
-        #         measurements.)
-        currDataNr = start
-        for i in range(uniqueData):
-            createOutput.readFiles(currDataNr, avrgAmount, dataName, dataType, start+i, vSize,
-                    csv, hSize)
-            currDataNr += avrgAmount
-        
-
-        # longest possible Dataname: [Filename]AvExtended_{x}
-        if (avrgAmount > 1.0):
-            dataName = dataName + "Av"
-
-
-        # Extend horizontally if required. Data is again saved as .npy    
-        if (hSize > vSize):
-            if ('Extended' not in dataName):
-                # Final number of output files
-                hiterations = int(uniqueData / 2)        
-                currDataNr = start
-                for i in range(hiterations):
-                    createOutput.extendX(dataName, currDataNr, start+i, vSize, hSize,csv)
-                    currDataNr += 2
-                dataName = dataName + "Extended"
-
-        if (singleLine != -1):
-            createOutput.getLine(dataName, start, stop, singleLine)
-
-    # Search maxValue if not known yet or if the value isn't set manually.
-    # It is assumed that the maxValue is in the first measurement file
-    # (e.g. foo_1.txt)
-    if (maxValKnown == 'n'):
-        maxVal = createOutput.searchMaxVal(dataName, vSize, hSize, start)
-    else:
-        f = open("maxValue_"+dataName+".txt")
-        line = f.readline()
-        maxVal = int(line) 
-        f.close()
-
-    if (visualize == 1):
-        for i in range(start, stop+1):
-            data = np.load(dataName + "_" + str(i) + ".npy")
-            if (polar == 1):
-                createPng.npArrayToViewAngle(dataName, data, i, vSize, hSize, dist,
-                        savePolarCsv, savePolarPng, shiftDeg)
-            if (heatmap == 'y'):
-                createPng.npArrayToImage(dataName, data, maxVal, highlight, i, vSize, hSize)
-            del data
 
 
 

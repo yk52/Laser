@@ -3,37 +3,70 @@
 16/01/20
 Read file from klayout saved as GDS2-txt files and return list of coordinates for
 scriptConverter.py
+Does nothing with the units! 
 """
 
 import os
 import math
 #import pyximport; pyximport.install()
 
-	
-""" 
-Read GDS2 txt. file and return UNIT.
-"""
-def getUnit(path):
-    l = 0
-    with open(path, 'r') as f:
-        for line in f:
-            l += 1
-            # unit = -1 if unit is smaller than 1 micron.
-            if ("UNITS" in line):
-                split = line.split(" ")
-                unit = float(split[1])*float(split[2])
-                print(split[1])
-                print(split[2])
-                if (unit < 1e-6):
-                    return -1   # Error. Unit too small
-                else:
-                    if (unit == 1e-3):
-                        return 1e0
-                    else:
-                        return unit*1e3
-            elif (l == 6):
-                return 0  # Error. unit not found
+pathDict = {} 
+strucDict = {} 
+arrDict = {} 
 
+"""
+read whole GDS2 file
+"""
+def readFile(filePath):
+    skipLines = 0
+    pathFound = 0
+    xy = []
+    strname = ""
+    x = 0
+    y = 0
+    with open(filePath, 'r') as f:
+        unitFound = 0
+        for l, line in enumerate(f): # l = 5 is 6th line
+            if (skipLines != 0):
+                skipLines -= 1
+                continue
+
+            if ("STRNAME" in line):
+                split = line.split(" ") 
+                strname = split[1]
+                continue
+
+            if ("PATH" in line):
+                pathFound = 1
+                skipLines = 4 # skip right to coordinates
+                continue
+
+            if (pathFound == 1):
+                split = line.split(" ")
+                if ("XY" in line):    
+                    x = int(split[1].replace(":",""))
+                    y = int(split[2])
+                    xy.append((x,y))
+                    continue
+                if ("ENDEL" in line):
+                    path = {strname : tuple(xy)}
+                    pathDict.update(path)
+                    pathFound = 0
+                    strname = ""
+                    xy = []
+                    continue
+                else:
+                    x = int(split[0].replace(":",""))
+                    y = int(split[1])
+                    xy.append((x,y))
+                    continue
+
+
+
+
+
+
+	
 
 """ 
 Read GDS2 txt. file and return path to follow in coordinates

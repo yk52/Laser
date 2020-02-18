@@ -1,6 +1,6 @@
 
 for i=0 to numLoop-1
-    moveRel y, yStep*unit
+    moveRel y, yStep
     waituntilinpos x,y
     PSOPulse startShots, 1000000/20
 next

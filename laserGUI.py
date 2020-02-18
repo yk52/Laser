@@ -31,8 +31,6 @@ def dropDown(frame, optionsArray):
     return option
 
 
-class basicGUI():
-    def __ini
 
 root = Tk()
 root.title("Micromac Laser Ansteuerung")

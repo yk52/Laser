@@ -41,8 +41,8 @@ End Sub
 
 Sub xyArrayShoot(numShots)
     for i=0 to numShots
-        moveRel x, xArray(i)*unit
-        moveRel y, yArray(i)*unit
+        moveRel x, xArray(i)
+        moveRel y, yArray(i)
         waituntilinpos x,y
         PSOPulse startShots, 1000000/20
     next

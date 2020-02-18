@@ -2,10 +2,13 @@ Laser Ansteuerung TODO
 
 
 Am ende alles mit testarray löschen
+Use python dictionaries! and tuples.  -> Reading paths works already. Continue with what happens if path is called again!
+Unit soll in GUI rein falls nötig.
 Hase klappt nicht?
+Unit muss von anfang an µm sein. Im code wird dann in mm umgerechnet
 
 THIS TIME TODO:::
---------------------> gdsCAD ausprobieren.
+--------------------> eigenen gds leser, der gleichzeitig liest und zeichnet. mit 521 probieren.
 
 --------> Randfälle testen, Code säubern
 --------> Code säubern. Welche code sachen braucht man nimmer?
