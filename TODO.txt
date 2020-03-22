@@ -7,6 +7,10 @@ Unit soll in GUI rein falls nötig.
 Hase klappt nicht?
 Unit muss von anfang an µm sein. Im code wird dann in mm umgerechnet
 
+in alignment.txt -> brauche ich compexpro.on/waituntilready?
+ALIGNMENT: Ansicht muss "richtigherum" sein (bzgl. oben/unten)
+	Aktuell im Uhrzeigersinn = -Deg. CCW = +Deg
+
 THIS TIME TODO:::
 --------------------> eigenen gds leser, der gleichzeitig liest und zeichnet. mit 521 probieren.
 

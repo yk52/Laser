@@ -1,0 +1,5 @@
+Option Explicit
+
+dim x1, y1
+dim corrAngle
+dim dist

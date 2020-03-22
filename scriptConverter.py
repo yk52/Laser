@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-21/01/20
+20/03/20
 Take the path entered into the laser GUI and convert it into a visual basic script (.vbs) script
 """
 
@@ -345,6 +345,11 @@ def addBunny(f):
     with open("textmodule/rabbit.txt", 'r') as body:
         for line in body:
             f.write(line)
+
+def addText(f, fileName):
+	with open("textmodule/"+fileName+".txt", 'r') as body:
+	for line in body:
+		f.write(line)
 
 """	
 Von Aussen nach Innen. Erste Linie geht nach Rechts.
