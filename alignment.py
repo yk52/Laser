@@ -31,8 +31,9 @@ def calcDist(p1, p2):
 
 
 """
-Input:  open file to write to
-Output: Writes header into file
+Input:  f: open file object
+        fileName: file name of file to be opened and copied
+Effect: Writes header into file
 """
 def addText(f, fileName):
     with open("textmodule/"+fileName+".txt", 'r') as body:
@@ -44,6 +45,7 @@ Input:  f: open file object
         p: point tuple
         corrAngle: correction Angle in degrees
         dist: euclidean distance between alignment points p1 and p2
+Effect: Defines used variables in f
 """
 def defineVars(f, p, corrAngle, dist):
     f.write("\nx1 = %.3f\ny1 = %.3f" %(p[0], p[1]))
@@ -52,8 +54,10 @@ def defineVars(f, p, corrAngle, dist):
 
 """
 Input:  Correction angle, p1, p2 = (x,y)
-Output: Script which removes the tilt from coordinate system
-        Execute script and check if it aligned. If not: repeat?
+Effect: Creates script which removes the tilt from coordinate system
+        Execute script and check if it aligned correctly. If not: repeat?
+        Rotation takes place around most left point p (with smaller x value)
+        p is the new origin of the coordinate system.
 """
 def removeTilt(p1, p2):
     dist = calcDist(p1, p2)

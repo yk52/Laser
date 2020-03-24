@@ -1,5 +1,6 @@
 Laser Ansteuerung TODO
 
+Global user variables in scriptConverter als dictionary!
 
 Am ende alles mit testarray löschen
 Use python dictionaries! and tuples.  -> Reading paths works already. Continue with what happens if path is called again!
@@ -7,9 +8,7 @@ Unit soll in GUI rein falls nötig.
 Hase klappt nicht?
 Unit muss von anfang an µm sein. Im code wird dann in mm umgerechnet
 
-in alignment.txt -> brauche ich compexpro.on/waituntilready?
-ALIGNMENT: Ansicht muss "richtigherum" sein (bzgl. oben/unten)
-	Aktuell im Uhrzeigersinn = -Deg. CCW = +Deg
+
 
 THIS TIME TODO:::
 --------------------> eigenen gds leser, der gleichzeitig liest und zeichnet. mit 521 probieren.
@@ -26,6 +25,7 @@ First position is never shot. Must be moved to manually. Falls es die erste Lini
 Bewegungen sind relativ. Koordinatensystem recht egal
 Grundeinheit ist mm!
 Annahme:keine Einzelnen Schüsse, denen keine Linien nachfolgen. (Nur linien. keine punkte)
+
 
 in SkriptKonverter:
 Graph zu Koordinaten?
@@ -46,6 +46,9 @@ ____________________________________________________________
 ******Check*************************************************
 
 -braucht man nach jedem schuss pause?
+in alignment.txt -> brauche ich compexpro.on/waituntilready?
+ALIGNMENT: Ansicht muss "richtigherum" sein (bzgl. oben/unten)
+	Aktuell im Uhrzeigersinn = -Deg. CCW = +Deg
 
 ____________________________________________________________
 ******DONE*************************************************

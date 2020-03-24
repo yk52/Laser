@@ -11,19 +11,25 @@ z = 0
 startLeistung = -26
 pulse = 1
 repRate = 20 
-PulseEnergy = 220
+pulseEnergy = 220
 hv = 26
-EnergyMode = 0
-TriggerMode = 0
+energyMode = 0
+triggerMode = 0
 waitMs = 100
 pitch = 10
 
-params = ["unny", x, y, z, startLeistung, pulse, repRate, PulseEnergy, hv,
-        EnergyMode, TriggerMode, waitMs, pitch]
+sizeX = 40
+sizeY = 60
+
+params = {"fileName":"unny", "startX":x, "startY":y, "startZ":z,\
+        "startLeistung":startLeistung, "pulse":pulse, "repRate":repRate,\
+        "pulseEnergy":pulseEnergy, "hv":hv,\
+        "energyMode":energyMode, "triggerMode":triggerMode,\
+        "waitMs":waitMs, "pitch":pitch, "sizeX":sizeX, "sizeY":sizeY}
 #queue = [[0,0],[1,0],[1,1],[1,2],[1,3],[0,1]]
 #p = [[0,0],[4,2]]
 #l = [[0,0,2,0],[2,0,2,3],[2,3,1,3],[1,3,1,2]]
-scriptConverter.doRasterfahrtOut(params, 60, 40)
+scriptConverter.doRasterfahrtOut(params)
 
 #queue, p, l = readGDS2txt.getCoordinates("test2.txt")
 #print(queue)
