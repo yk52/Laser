@@ -1,12 +1,13 @@
 Laser Ansteuerung TODO
 
-Global user variables in scriptConverter als dictionary!
+Rasterfahrt: Als funktion in vbs, statt in python?
 
-Am ende alles mit testarray löschen
+number of shots -> an überlapp anpassen. Anzahl schüsse muss evtl. aufgerundet werden
+
 Use python dictionaries! and tuples.  -> Reading paths works already. Continue with what happens if path is called again!
 Unit soll in GUI rein falls nötig.
 Hase klappt nicht?
-Unit muss von anfang an µm sein. Im code wird dann in mm umgerechnet
+Unit muss von anfang an mm sein.
 
 
 

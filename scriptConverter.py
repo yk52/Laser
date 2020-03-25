@@ -10,7 +10,6 @@ import math
 
 
 
-
 """
 input: Dictionary with variables params and open file object f.
 defines variables in .vbs files
@@ -32,12 +31,19 @@ def defineVars(params, f):
     f.write("waitMs = %d\n" %params['waitMs'])
 
 
+"""
+Move relative distance in x or y
+"""
+def moveRel(f, axis, dist):
+    f.write("moveRel %s, %.3f\n" %(axis, dist))
+    f.write("waituntilinpos %s\n" %(axis))
 
 """
-Move absolute distance in x and y
+Move to absolute location in x and y
 """
 def moveAbs(f, xPos, yPos):
     f.write("moveAbs %.3f, %.3f\n" %(xPos, yPos))
+    f.write("waituntilinpos x,y\n")
 
 """
 Shoot once.
@@ -47,13 +53,11 @@ def shoot(f, repRate):
 
 	
 """
-Move absolute distance in x and y and shoot once
+Move to absolute location in x and y and shoot once
 """
 def moveAndShootAbs(f, repRate, x, y):
     moveAbs(f, x, y)
     shoot(f, repRate)
-
-
 
 
 
@@ -63,19 +67,23 @@ move into certain direction relative to original position. 0=up, 1=right, 2=down
 up and right: +
 down and left: -
 """
-def moveDir(direction, dist):
+def moveDir(xDistArray, yDistArray, direction, dist):
     if direction == 0:      # up
-        addXYtoArray(0, dist)
+        xDistArray.append(0)
+        yDistArray.append(dist)
     elif direction == 1:      # right
-        addXYtoArray(dist, 0)
+        xDistArray.append(dist)
+        yDistArray.append(0)
     elif direction == 2:      # down
-        addXYtoArray(0, -1*dist)
+        xDistArray.append(0)
+        yDistArray.append(-1*dist)
     elif direction == 3:      # left
-        addXYtoArray(-1*dist, 0)
+        xDistArray.append(-1*dist)
+        yDistArray.append(0)
 
 
 """
-Move along a 2D (possibly diagonal) line and shoot in a certain pitch
+Move along a 2D diagonal line and shoot in a certain pitch
 """
 def makeXYArray(f, pitch, x0, y0, x1, y1):
     """ for testing:"""
@@ -176,7 +184,7 @@ def lineRelShoot(f, pitch, direction, dist):
     # Starting position not shot automatically
     text = ""
     step = 0
-    num = int(dist / pitch)
+    num = math.ceil(dist / pitch)
 
     if direction % 2 == 0:
         if direction == 2:      # down
@@ -262,7 +270,7 @@ Von Aussen nach Innen. Erste Linie geht nach Rechts.
 Bei aussen nach innen muss der Startpunkt immer links oben sein
 dir = 0,1,2,3: Up, Right, Down, Left
 !!! sizeX und sizeY muessen Vielfaches von pitch sein! Erstellt vollstaendig
-ausfuehrbares vbs skript.
+ausfuehrbares vbs skript. muss quadratisch sein.
 """
 
 def doRasterfahrtIn(params):
@@ -273,6 +281,10 @@ def doRasterfahrtIn(params):
     startY = params["startY"]
     pitch = params["pitch"]
     repRate = params["repRate"]
+    origin = params["origin"]
+    
+    x0 = origin[0]
+    y0 = origin[1]
 
     direction = 1
     lenX = sizeX
@@ -286,28 +298,38 @@ def doRasterfahrtIn(params):
 #        return
 #
 
-    with open(fileName+".vbs", 'a+') as f:
+    with open(fileName+".vbs", 'w') as f:
         if ("ase" or "unny" or "abbit") in fileName:
             addBunny(f)
         addHeader(params, f)
 
-        moveAbs(f, startX, startY)
+        # First move to origin (Alignment point). Then move to starting point
+        moveAbs(f, x0, y0)
+        moveRel(f, 'x', startX-x0)
+        moveRel(f, 'y', startY-y0)
         shoot(f,repRate)     # first shot
         lineRelShoot(f, pitch, direction, lenX)   # first line to the right
 
-
-        while(lenY >= pitch):
-            direction = (direction + 1) % 4
-            if (lenY >= pitch):
-                lineRelShoot(f, pitch,direction, lenY)
-            direction = (direction + 1) % 4
-            if (lenX >= pitch): 
-                lineRelShoot(f, pitch, direction, lenX)
-            if (lenY <= 0 or lenX <= 0):
-                break
-
-            lenY -= pitch
-            lenX -= pitch
+        for i in range(math.ceil(sizeX/pitch)):
+           direction = (direction + 1) % 4
+           lineRelShoot(f, pitch, direction, lenY)
+           direction = (direction + 1) % 4
+           lineRelShoot(f, pitch, direction, lenX)
+           lenY -= pitch
+           lenX -= pitch
+        
+#        while(lenY >= pitch):
+#            direction = (direction + 1) % 4
+#            if (lenY > 0):
+#                lineRelShoot(f, pitch,direction, lenY)
+#            direction = (direction + 1) % 4
+#            if (lenX > 0): 
+#                lineRelShoot(f, pitch, direction, lenX)
+#            if (lenY <= 0 or lenX <= 0):
+#                break
+#
+#            lenY -= pitch
+#            lenX -= pitch
 
         addTrailer(f)
 
@@ -325,11 +347,14 @@ def doRasterfahrtOut(params):
     startY = params["startY"]
     pitch = params["pitch"]
     repRate = params["repRate"]
+    origin = params["origin"]
+    
+    x0 = origin[0]
+    y0 = origin[1]
+
     direction = 0
     lenX = 0
     lenY = 0
-
-
 
 #    if os.path.isfile(fileName+".vbs"):
 #        print(
@@ -337,13 +362,15 @@ def doRasterfahrtOut(params):
 #name.")
 #        return
 
-    with open(fileName+".vbs", 'a+') as f:
+    with open(fileName+".vbs", 'w') as f:
         print(fileName)
         if ("ase" or "unny" or "abbit") in fileName:
             addBunny(f)
             print("yes")
         addHeader(params, f)
-        moveAbs(f, startX, startY)
+        # moveAbs(f, startX, startY)
+        moveRel(f, 'x', startX-x0)
+        moveRel(f, 'y', startY-y0)
         shoot(f, repRate)     # first shot
 
 

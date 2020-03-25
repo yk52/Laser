@@ -5,7 +5,13 @@ precision: 1 micron. Base unit is 1 mm.
 """
 import alignment
 
-p1 = (4,-1)
-p2 = (0,-1)
+x1 = 40000E-3
+y1 = -10000E-3
+
+x2 = -20000E-3
+y2 = 2500E-3
+
+p1 = (x1,y1)
+p2 = (x2,y2)
 
 alignment.removeTilt(p2, p1)
