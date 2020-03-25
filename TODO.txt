@@ -2,7 +2,7 @@ Laser Ansteuerung TODO
 
 Rasterfahrt: Als funktion in vbs, statt in python?
 
-number of shots -> an überlapp anpassen. Anzahl schüsse muss evtl. aufgerundet werden
+number of shots -> an überlapp anpassen. Anzahl schüsse muss evtl. aufgerundet werden. e.g. Rasterfahrt: letzte 1,1 wird nicht ausgeführt. stoppt bei 2,2 weil strecke < pitch
 
 Use python dictionaries! and tuples.  -> Reading paths works already. Continue with what happens if path is called again!
 Unit soll in GUI rein falls nötig.
