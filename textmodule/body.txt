@@ -68,9 +68,7 @@ End Sub
 ' Program start ***********************************************************
 
 setCompexproParams energyModeVal, triggerModeVal, pulseEnergyVal, HVVal
-
-move x, startX
-move y, startY
+moveAbs(startX, startY)
 move z, startZ
 move Leistung, startLeistung
 waituntilinpos x, y, z, Leistung

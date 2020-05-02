@@ -11,12 +11,12 @@ import numpy as np
 """
 Input:  point 1 and 2 (p1, p2 in (x,y) as tuple). 
 Output: Correction Angle in degrees so that both points are at the same y value.
-        Correction Angle is already into correct direction (CCW is positive)
+        Correction Angle is already into correct direction (CW is positive)
 """
 def calcCorrAngle(p1,p2):
     dX = p1[0] - p2[0]
     dY = p1[1] - p2[1]
-    rad = -1*np.arctan(dY/dX)
+    rad = np.arctan(dY/dX)
     return np.degrees(rad)
 
 

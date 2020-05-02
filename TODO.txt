@@ -1,5 +1,44 @@
 Laser Ansteuerung TODO
 
+TIP: jog sheet STRG+J
+
+Laser schuss happening position @CENTER
+Schussfeldgröße 1.7mm
+
+startShots nötig in code? schon weg?
+
+Laser center grob: x73.7  y-61.4 position Gelbes Objektiv (ecke links oben)
+		
+		
+1.718 größe schuss schwarz ecke links oben: x70.35 y-24.66
+		Zentrum schussquadrat schwarz: x=71.21, y=-25.56
+
+		ecke links oben gelb: x70.91 y-60.79
+		Zentrum gelb: x=70.91+0.86 = 71.77, -0.9-60.79 = -61.69
+	
+
+*******-> RELATIV zw gelb zu schwarz: x-0.56 y 36.13
+
+
+
+
+in-situ = im strahlengang
+Init: Jog sheet -> Home
+Nach jedem Fehler acknowledgen und achsen wieder anschalten
+
+CENTER: x = 74.100, y = -176,14    -> Links x: +, Hinten y: +
+Rotation: c: CW +, CCW -
+
+Maximal Range: (x,y) (0,0) -> (150, -298)
+
+*** GIT INSTALLIEREN!!! VIM REPARIEREN!!!
+*** PUlseenergyval not defined in rasterfahrt? -> iwann noch herausfinden was wichtig und was nicht
+**** HV not needed, pulseEnergy: max 360 je nach Gaszustand
+
+*** GO_TO_SIDE in Align integrieren -> offset drinnen? trial and error
+
+***Fokussuche Z
+
 Rasterfahrt: Als funktion in vbs, statt in python?
 
 number of shots -> an überlapp anpassen. Anzahl schüsse muss evtl. aufgerundet werden. e.g. Rasterfahrt: letzte 1,1 wird nicht ausgeführt. stoppt bei 2,2 weil strecke < pitch

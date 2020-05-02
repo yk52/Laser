@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 test script for scriptConverter
-precision: 1 micron. Base unit is 1 mm.
+precision: 1 micron. Base unit is 1 mm. E.g. enter number in microns and add E-3?
 """
 import alignment
 

@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 """
 test script for scriptConverter
-enter mm!
+enter mm! i.e. Microns and add E-3 
 """
 import readGDS2txt
 import scriptConverter
 
-fileName = "trialRun"
+fileName = "ENDLICH"
+# origin
 x0 = -36810E-3
 y0 = 302E-3
+# start point
 x = -37400E-3
 y = 9990E-3
 z = 0E-3
@@ -21,7 +23,7 @@ energyMode = 0
 triggerMode = 0
 waitMs = 100
 pitch = 100E-3
-overlap = 5E-3
+overlap = 0E-3
 
 sizeX = 1800E-3
 sizeY = 1800E-3
