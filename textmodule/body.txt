@@ -8,11 +8,10 @@
 
 ' Used subprocedures ***********************************************************
 
-Sub setCompexproParams(energyModeVal, triggerModeVal, pulseEnergyVal, HVVal)
+Sub setCompexproParams(energyModeVal, triggerModeVal, pulseEnergyVal)
     compexpro.EnergyMode energyModeVal
     compexpro.TriggerMode triggerModeVal
     compexpro.PulseEnergy pulseEnergyVal
-    'compexpro.HV HVVal
     compexpro.On
     compexpro.WaitUntilReady
 End Sub
@@ -23,28 +22,28 @@ Sub moveAbs(xPos, yPos)
     waituntilinpos x,y
 End Sub
 
-Sub lineRelShootX(numShots, dist)
+Sub lineRelShootX(numShots, pulse, dist)
     for i=0 to numShots
         moveRel x, dist
         waituntilinpos x
-        PSOPulse startShots, 1000000/20
+        PSOPulse pulse, 1000000/20
     next
 End Sub
 
-Sub lineRelShootY(numShots, dist)
+Sub lineRelShootY(numShots, pulse, dist)
     for i=0 to numShots
         moveRel y, dist
         waituntilinpos y
-        PSOPulse startShots, 1000000/20
+        PSOPulse pulse, 1000000/20
     next
 End Sub
 
-Sub xyArrayShoot(numShots)
+Sub xyArrayShoot(numShots, pulse)
     for i=0 to numShots
         moveRel x, xArray(i)
         moveRel y, yArray(i)
         waituntilinpos x,y
-        PSOPulse startShots, 1000000/20
+        PSOPulse pulse, 1000000/20
     next
 End Sub
 
@@ -67,8 +66,8 @@ End Sub
 
 ' Program start ***********************************************************
 
-setCompexproParams energyModeVal, triggerModeVal, pulseEnergyVal, HVVal
-moveAbs(startX, startY)
+setCompexproParams energyModeVal, triggerModeVal, pulseEnergyVal
+moveAbs startX, startY
 move z, startZ
 move Leistung, startLeistung
 waituntilinpos x, y, z, Leistung

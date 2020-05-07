@@ -3,9 +3,12 @@ Laser Ansteuerung TODO
 TIP: jog sheet STRG+J
 
 Laser schuss happening position @CENTER
-Schussfeldgröße 1.7mm
 
-startShots nötig in code? schon weg?
+wollte links oben sein. bin jetzt Rechts unten!!
+
+Links rechts falsch. Koordinatensystem? (grad aber konsistent). nur links rechts, hoch runter falsch
+ich fahre bei rasterfahrt nach recht unten, dann nach rechts. dann hoch?
+
 
 Laser center grob: x73.7  y-61.4 position Gelbes Objektiv (ecke links oben)
 		
@@ -31,11 +34,11 @@ Rotation: c: CW +, CCW -
 
 Maximal Range: (x,y) (0,0) -> (150, -298)
 
-*** GIT INSTALLIEREN!!! VIM REPARIEREN!!!
+*** VIM REPARIEREN!!!
 *** PUlseenergyval not defined in rasterfahrt? -> iwann noch herausfinden was wichtig und was nicht
-**** HV not needed, pulseEnergy: max 360 je nach Gaszustand
+**** pulseEnergy: max 360 je nach Gaszustand
 
-*** GO_TO_SIDE in Align integrieren -> offset drinnen? trial and error
+*** GO_TO_SIDE in Align offset jedes Mal manuell einfügen und dann Koordinaten ablesen!
 
 ***Fokussuche Z
 

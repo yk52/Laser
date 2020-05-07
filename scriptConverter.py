@@ -24,8 +24,7 @@ def defineVars(params, f):
     f.write("startZ = %.3f\n" %params['startZ'])
     f.write("startLeistung = %.2f\n" %params['startLeistung'])
     f.write("pulse = %d\n" %params['pulse'])
-    f.write("pulseEnergyDist = %d\n" %params['pulseEnergy'])
-    f.write("HVVal = %d\n" %params['hv'])
+    f.write("pulseEnergyVal = %d\n" %params['pulseEnergy'])
     f.write("energyModeVal = %d\n" %params['energyMode'])
     f.write("triggerModeVal = %d\n" %params['triggerMode'])
     f.write("waitMs = %d\n" %params['waitMs'])
@@ -191,13 +190,13 @@ def lineRelShoot(f, pitch, direction, dist):
             step = -1*pitch
         else:                   # up
             step = pitch
-        text = "lineRelShootY %d,%.3f\n" %(num,step)
+        text = "lineRelShootY %d, pulse, %.3f\n" %(num,step)
     else:
         if direction == 3:      # left
-            step = -1*pitch
-        else:                   # right 
             step = pitch
-        text = "lineRelShootX %d,%.3f\n" %(num,step)
+        else:                   # right 
+            step = -1*pitch
+        text = "lineRelShootX %d, pulse, %.3f\n" %(num,step)
 
     f.write(text)
 

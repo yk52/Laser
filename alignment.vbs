@@ -4,10 +4,10 @@ dim x1, y1
 dim corrAngle
 dim dist
 
-x1 = -20000.000
-y1 = 2500.000
-corrAngle = 11.768
-dist = 61288.253
+x1 = 39.290
+y1 = -61.143
+corrAngle = -2.864
+dist = 73.602
 
 ' Available axis description ***************************************************
 ' x,y: Grid position [mm]
@@ -17,10 +17,6 @@ dist = 61288.253
 ' Then move dist to the right to right most alignment point. Check if its correct.
 
 ' Program start ***********************************************************
-
-' These 2 needed if I only use camera and axis?
-compexpro.On
-compexpro.WaitUntilReady
 
 move x, x1
 move y, y1
