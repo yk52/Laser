@@ -4,25 +4,7 @@ TIP: jog sheet STRG+J
 
 Laser schuss happening position @CENTER
 
-wollte links oben sein. bin jetzt Rechts unten!!
-
-Links rechts falsch. Koordinatensystem? (grad aber konsistent). nur links rechts, hoch runter falsch
-ich fahre bei rasterfahrt nach recht unten, dann nach rechts. dann hoch?
-
-
-Laser center grob: x73.7  y-61.4 position Gelbes Objektiv (ecke links oben)
-		
-		
-1.718 größe schuss schwarz ecke links oben: x70.35 y-24.66
-		Zentrum schussquadrat schwarz: x=71.21, y=-25.56
-
-		ecke links oben gelb: x70.91 y-60.79
-		Zentrum gelb: x=70.91+0.86 = 71.77, -0.9-60.79 = -61.69
-	
-
-*******-> RELATIV zw gelb zu schwarz: x-0.56 y 36.13
-
-
+Skripte als knopf verfügbar?
 
 
 in-situ = im strahlengang
@@ -34,7 +16,12 @@ Rotation: c: CW +, CCW -
 
 Maximal Range: (x,y) (0,0) -> (150, -298)
 
+
+TODO__________________________
 *** VIM REPARIEREN!!!
+*** 2 Schüsse fehlen am Ende!! (mitte Raster)
+*** test.py: alignment absolut. davon erst relativ zum ersten schusspunkt fahren.
+
 *** PUlseenergyval not defined in rasterfahrt? -> iwann noch herausfinden was wichtig und was nicht
 **** pulseEnergy: max 360 je nach Gaszustand
 
@@ -42,9 +29,10 @@ Maximal Range: (x,y) (0,0) -> (150, -298)
 
 ***Fokussuche Z
 
-Rasterfahrt: Als funktion in vbs, statt in python?
+***bei abbruch rückmeldung wo aufgehört? oder dort weitermachen wo fertig?
 
-number of shots -> an überlapp anpassen. Anzahl schüsse muss evtl. aufgerundet werden. e.g. Rasterfahrt: letzte 1,1 wird nicht ausgeführt. stoppt bei 2,2 weil strecke < pitch
+Rasterfahrt: Als funktion in vbs, statt in python?
+_________________________
 
 Use python dictionaries! and tuples.  -> Reading paths works already. Continue with what happens if path is called again!
 Unit soll in GUI rein falls nötig.

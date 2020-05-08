@@ -4,10 +4,10 @@ dim x1, y1
 dim corrAngle
 dim dist
 
-x1 = 39.290
-y1 = -61.143
-corrAngle = -2.864
-dist = 73.602
+x1 = 39.101
+y1 = -60.939
+corrAngle = -2.857
+dist = 73.998
 
 ' Available axis description ***************************************************
 ' x,y: Grid position [mm]

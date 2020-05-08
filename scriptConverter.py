@@ -193,9 +193,9 @@ def lineRelShoot(f, pitch, direction, dist):
         text = "lineRelShootY %d, pulse, %.3f\n" %(num,step)
     else:
         if direction == 3:      # left
-            step = pitch
-        else:                   # right 
             step = -1*pitch
+        else:                   # right 
+            step = pitch
         text = "lineRelShootX %d, pulse, %.3f\n" %(num,step)
 
     f.write(text)
@@ -303,9 +303,7 @@ def doRasterfahrtIn(params):
         addHeader(params, f)
 
         # First move to origin (Alignment point). Then move to starting point
-        moveAbs(f, x0, y0)
-        moveRel(f, 'x', startX-x0)
-        moveRel(f, 'y', startY-y0)
+        moveAbs(f, startX, startY)
         shoot(f,repRate)     # first shot
         lineRelShoot(f, pitch, direction, lenX)   # first line to the right
 
