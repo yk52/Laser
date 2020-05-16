@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 """
-20/03/20
-Input: Position of alignment field left and right. XY1, XY2 (The ones furthest outside.)
-Output: VBS script for alignment to get global coordinate system without tilt.
+20/04/20
+Creates VBS script for alignment to remove the tilt.
 """
 
 import os
 import numpy as np
 
 """
-Input:  point 1 and 2 (p1, p2 in (x,y) as tuple). 
+Input:  point 1 and 2 (p1 = (x1, y1), p2 = (x2, y2)). 
+        p1 = left alignment point, p2 = right alignment point
 Output: Correction Angle in degrees so that both points are at the same y value.
         Correction Angle is already into correct direction (CW is positive)
 """

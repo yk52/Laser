@@ -265,11 +265,17 @@ def addText(f, fileName):
                     f.write(line)
 
 """	
-Von Aussen nach Innen. Erste Linie geht nach Rechts.
-Bei aussen nach innen muss der Startpunkt immer links oben sein
+Output is a .vbs script to do a Rasterfahrt (Snail) from
+the outside to the inside.
+!!! sizeX and sizeY need to be divisible by the pitch.
+
+Starting point:     Upper left corner.
+Starting direction: To the right.
+
 dir = 0,1,2,3: Up, Right, Down, Left
-!!! sizeX und sizeY muessen Vielfaches von pitch sein! Erstellt vollstaendig
-ausfuehrbares vbs skript. muss quadratisch sein.
+
+NOTE:   - sizeX and sizeY need to be divisible by the pitch.
+        - area needs to be quadratic (sizeX = sizeY)
 """
 
 def doRasterfahrtIn(params):
