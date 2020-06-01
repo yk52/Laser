@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
-20/04/20
-Creates VBS script for alignment to remove the tilt.
+16/05/20
+provides functions needed to create  VBS script for tilt removal
 """
 
 import os
@@ -21,7 +21,7 @@ def calcCorrAngle(p1,p2):
 
 
 """
-Input:  p1, p2
+Input:  point 1 and 2 (p1 = (x1, y1), p2 = (x2, y2)). 
 Output: euclidean distance between p1, p2
 """
 def calcDist(p1, p2):

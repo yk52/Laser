@@ -7,6 +7,7 @@ Laser schuss happening position @CENTER
 Skripte als knopf verfügbar?
 
 
+GOOD TO KNOW ******
 in-situ = im strahlengang
 Init: Jog sheet -> Home
 Nach jedem Fehler acknowledgen und achsen wieder anschalten
@@ -15,21 +16,17 @@ CENTER: x = 74.100, y = -176,14    -> Links x: +, Hinten y: +
 Rotation: c: CW +, CCW -
 
 Maximal Range: (x,y) (0,0) -> (150, -298)
+Alignment kreuze 72.5 mm entfernt
+pulseEnergy: max 360 je nach Gaszustand
 
 
 TODO__________________________
-*** VIM REPARIEREN!!!
-*** 2 Schüsse fehlen am Ende!! (mitte Raster)
-*** test.py: alignment absolut. davon erst relativ zum ersten schusspunkt fahren.
-
-*** PUlseenergyval not defined in rasterfahrt? -> iwann noch herausfinden was wichtig und was nicht
-**** pulseEnergy: max 360 je nach Gaszustand
-
-*** GO_TO_SIDE in Align offset jedes Mal manuell einfügen und dann Koordinaten ablesen!
+*** Laser funktionen für eric in word rein mit kommentaren
 
 ***Fokussuche Z
 
 ***bei abbruch rückmeldung wo aufgehört? oder dort weitermachen wo fertig?
+		-> funktioniert print eval("X")?
 
 Rasterfahrt: Als funktion in vbs, statt in python?
 _________________________
@@ -58,6 +55,7 @@ Grundeinheit ist mm!
 Annahme:keine Einzelnen Schüsse, denen keine Linien nachfolgen. (Nur linien. keine punkte)
 
 
+
 in SkriptKonverter:
 Graph zu Koordinaten?
 ****** Stimmt das Koordinaten system? (wegen bewegung. rechts und hoch ist PLUS bei mir aktuell)
@@ -65,21 +63,20 @@ Graph zu Koordinaten?
 
 
 in GUI: 
--Test ob name bereits existiert in GUI?
+*** Check ob limits erreicht mit maßen (koordinaten + sizeX, sizeY) 
+
+-Test ob name bereits existiert in GUI? --> aktuell überschreibts
 -Gitter skalierbar nach kleinstem Pitch? (min. 1µm)
 -If new Line: Add single shot for first position (start of line)
 -new Line / Done für Lineshot (damit man weiß, wann neue line beginnen soll, und wann alte fortgeführt) -> STOP (5) in Queue, damit mans weiß
--Doppelklick an gleiche Stelle für point shot
--ESC für Aktuellen Punkt loslassen/löschen --> rückgängig
--Show wo überall ein schuss hinkommt (im gitter) vor allem interessant für diagonalShoot?
+
 
 ____________________________________________________________
 ******Check*************************************************
 
 -braucht man nach jedem schuss pause?
 in alignment.txt -> brauche ich compexpro.on/waituntilready?
-ALIGNMENT: Ansicht muss "richtigherum" sein (bzgl. oben/unten)
-	Aktuell im Uhrzeigersinn = -Deg. CCW = +Deg
+
 
 ____________________________________________________________
 ******DONE*************************************************

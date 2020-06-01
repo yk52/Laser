@@ -1,33 +1,41 @@
 #!/usr/bin/env python
 """
-test script for scriptConverter
-enter mm! i.e. Microns and add E-3 
+Create .vbs script for Rasterfahrt (Outside to inside)
+
+Precision:  1 micron. Base unit is 1 mm. E.g. enter number in microns
+            and add E-3 or directly as mm.
 """
 import readGDS2txt
 import scriptConverter
 
-fileName = "liftOff"
 
-# alignment point/origin in erics design
+
+
+"""
+USER INPUTS:
+"""
+# name for vbs script
+fileName = "rasterfahrt"
+
+# Alignment point/origin in design
 x0D = -36800E-3
 y0D = -2800E-3
 
-# start point in erics design
+# First intended shooting point in design
 xD = 46.639
 yD = -167.073
 
-# alignment point/origin on wafer (seen trough laser)
+# Alignment point/origin in laser coordinates
 x0 = 46.595
 y0 = -152.341
 
+# Size of the to-be-lasered area, pitch and overlap
+sizeX = 5
+sizeY = 5
+pitch = 0.200
+overlap = 0
 
-# Calculate relative distance from origin to starting point
-moveXRel = xD - x0D
-moveYRel = yD - y0D
-
-xStart = x0 + moveXRel
-yStart = y0 + moveYRel
-
+# Other laser parameters
 z = 3.05
 startLeistung = -26
 pulse = 1
@@ -36,15 +44,22 @@ pulseEnergy = 220
 energyMode = 0
 triggerMode = 0
 waitMs = 100
-pitch = 0.200
-overlap = 0
 
-sizeX = 5
-sizeY = 5
+
+
+"""
+DO NOT CHANGE THE CODE BELOW
+"""
+# Calculate relative distance from origin to starting point
+moveXRel = xD - x0D
+moveYRel = yD - y0D
+
+startX = x0 + moveXRel
+startY = y0 + moveYRel
+
 
 origin = (x0, y0)
 
-# newPitch = pitch - overlap
 pitch -= overlap
 
 params = {"origin":origin, "overlap":overlap, "fileName":fileName, "startX":startX, "startY":startY, "startZ":z,\

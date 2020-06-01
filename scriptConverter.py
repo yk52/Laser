@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-20/03/20
+16/05/20
 Take the path entered into the laser GUI and convert it into a visual basic script (.vbs) script
 """
 
@@ -11,8 +11,10 @@ import math
 
 
 """
-input: Dictionary with variables params and open file object f.
-defines variables in .vbs files
+input:  params: Dictionary with variables
+        f:      Open file object
+
+effect: defines variables in f
 """
 def defineVars(params, f):
     with open("textmodule/header.txt", 'r') as body:
@@ -31,28 +33,53 @@ def defineVars(params, f):
 
 
 """
-Move relative distance in x or y
+input:  axis:   x or y (char)
+        f:      Open file object
+        dist:   Distance to be moved in mm (float)
+
+effect: Writes move function for relative distance in x or y
+        into f
 """
 def moveRel(f, axis, dist):
     f.write("moveRel %s, %.3f\n" %(axis, dist))
     f.write("waituntilinpos %s\n" %(axis))
 
+
+
 """
-Move to absolute location in x and y
+input:  xPos:   Absolute xPosition in laser coordinates in mm (float)
+        yPos:   Absolute yPosition in laser coordinates in mm (float)
+        f:      Open file object
+
+effect: Writes move function to absolute x and y position
+        into f
 """
 def moveAbs(f, xPos, yPos):
     f.write("moveAbs %.3f, %.3f\n" %(xPos, yPos))
     f.write("waituntilinpos x,y\n")
 
+
+
+
 """
-Shoot once.
+input:  repRate: Laser frequency (Hz)
+        f:       Open file object
+
+effect: Writes shoot function into f
 """
 def shoot(f, repRate):
     f.write("PSOPulse pulse, 1000000/%.3f\n\n" %repRate)
 
-	
+
+
+
 """
-Move to absolute location in x and y and shoot once
+input:  repRate: Laser frequency (Hz)
+        f:       Open file object
+        x:       Absolute xPosition in laser coordinates in mm (float)
+        y:       Absolute yPosition in laser coordinates in mm (float)
+
+effect: Writes shoot and move function into f
 """
 def moveAndShootAbs(f, repRate, x, y):
     moveAbs(f, x, y)
@@ -61,31 +88,42 @@ def moveAndShootAbs(f, repRate, x, y):
 
 
 """
-Appends relative x,y distances to be moved to Array to sum them up in a for loop
-move into certain direction relative to original position. 0=up, 1=right, 2=down, 3=left
-up and right: +
-down and left: -
+input:  xDistArray: Array with relative distances along the x axis
+                    ordered chronologically
+        yDistArray: Array with relative distances along the y axis
+                    ordered chronologically
+        direction:  Either 0,1,2 or 3 (= Up, Right, Down or Left)
+        dist:       Distance to be moved in mm (float)
+
+effect: Appends relative x,y distances to be moved to an Array to 
+        gather them up for a for loop, in order to move into certain
+        direction relative to original position. 
 """
 def moveDir(xDistArray, yDistArray, direction, dist):
-    if direction == 0:      # up
+    if direction == 0:      # up: positive
         xDistArray.append(0)
         yDistArray.append(dist)
-    elif direction == 1:      # right
+    elif direction == 1:      # right: positve
         xDistArray.append(dist)
         yDistArray.append(0)
-    elif direction == 2:      # down
+    elif direction == 2:      # down: negative
         xDistArray.append(0)
         yDistArray.append(-1*dist)
-    elif direction == 3:      # left
+    elif direction == 3:      # left: negative
         xDistArray.append(-1*dist)
         yDistArray.append(0)
 
 
 """
-Move along a 2D diagonal line and shoot in a certain pitch
+input:  f:      open file object
+        pitch:  Pitch between shots in mm (float)
+        x0, y0: Starting postion (first shot) in mm (float)    
+        x1, y1: Goal postion (last shot) in mm (float)    
+
+output: xDistArray and yDistArray with relative distances to
+        move along a 2D diagonal line and shoot in a certain pitch
 """
-def makeXYArray(f, pitch, x0, y0, x1, y1):
-    """ for testing:"""
+def moveDiagonal(f, pitch, x0, y0, x1, y1):
     xIterations = 0
     yIterations = 0
     # Starting position not shot automatically
@@ -177,7 +215,13 @@ def makeXYArray(f, pitch, x0, y0, x1, y1):
 
 
 """
-Move along a horizontal or vertical line and shoot in a certain pitch
+input:  f:          open file object
+        pitch:      Pitch between shots in mm (float)
+        direction:  Either 0,1,2 or 3 (= Up, Right, Down or Left)
+        dist:       Distance to be moved in mm (float)
+
+effect: write move-function to move along a horizontal or vertical line 
+        and shoot in a certain pitch into f
 """
 def lineRelShoot(f, pitch, direction, dist):
     # Starting position not shot automatically
@@ -202,7 +246,14 @@ def lineRelShoot(f, pitch, direction, dist):
 
 
 """
-Add everything previous to the main body code (movement) to the .vbs file
+input:  f:          open file object
+        xDistArray: Array with relative distances along the x axis
+                    ordered chronologically
+        yDistArray: Array with relative distances along the y axis
+                    ordered chronologically
+
+effect: write move-function according to yDistArray and xDistArray
+        into f
 """
 def xyArrayShoot(f, xDistArray, yDistArray):
     numXY = len(xDistArray)
@@ -227,9 +278,13 @@ def xyArrayShoot(f, xDistArray, yDistArray):
             f.write(")\n")
 
     f.write("xyArrayShoot %d\n" %numXY)
+
     
 """
-Add everything previous to the main body code (movement) to the .vbs file
+input:  params: Variables as dictionary
+        f:      Open file object
+
+effect: Write variable and function definitions into f
 """
 def addHeader(params, f):
     # First define all variables
@@ -242,40 +297,44 @@ def addHeader(params, f):
         
 
 """
-Add everything latter to the main body code (movement) to the .vbs file
+input:  f: open file object 
+
+effect: Add text to f
 """
-def addTrailer(f):
-    # Fourth enter what's left to say
-    with open("textmodule/end.txt", 'r') as body:	
+def addImportantStuff(f):
+    # Enter what is left to say. 
+    with open("textmodule/rabbit.txt", 'r') as body:	
+        f.write("\n")
         for line in body:
             f.write(line)
+        f.write("\n")
+
 
 """
-easter egg for eric
+input:  fileName:   filename of textfile you want to copy
+        f:          Open file object
+
+effect: copy text of [fileName].txt to f (Generic version of the functions above)
 """
-
-def addBunny(f):
-    with open("textmodule/rabbit.txt", 'r') as body:
-        for line in body:
-            f.write(line)
-
 def addText(f, fileName):
 	with open("textmodule/"+fileName+".txt", 'r') as body:
             for line in body:
                     f.write(line)
 
 """	
-Output is a .vbs script to do a Rasterfahrt (Snail) from
-the outside to the inside.
-!!! sizeX and sizeY need to be divisible by the pitch.
+input:  params: Variables as directory
+Output: .vbs script to do a Rasterfahrt (Snail) from
+        the outside to the inside.
 
-Starting point:     Upper left corner.
+NOTES_________
+!!! sizeX and sizeY need to be divisible by the pitch.
+!!! Area needs to be quadratic (sizeX = sizeY)
+!!! Starting point has to be in upper left corner
+
 Starting direction: To the right.
 
 dir = 0,1,2,3: Up, Right, Down, Left
 
-NOTE:   - sizeX and sizeY need to be divisible by the pitch.
-        - area needs to be quadratic (sizeX = sizeY)
 """
 
 def doRasterfahrtIn(params):
@@ -304,8 +363,8 @@ def doRasterfahrtIn(params):
 #
 
     with open(fileName+".vbs", 'w') as f:
-        if ("ase" or "unny" or "abbit") in fileName:
-            addBunny(f)
+        if ("ase" or "uck" or "abbit") in fileName:
+            addImportantStuff(f)
         addHeader(params, f)
 
         # First move to origin (Alignment point). Then move to starting point
@@ -321,26 +380,23 @@ def doRasterfahrtIn(params):
            lenY -= pitch
            lenX -= pitch
         
-#        while(lenY >= pitch):
-#            direction = (direction + 1) % 4
-#            if (lenY > 0):
-#                lineRelShoot(f, pitch,direction, lenY)
-#            direction = (direction + 1) % 4
-#            if (lenX > 0): 
-#                lineRelShoot(f, pitch, direction, lenX)
-#            if (lenY <= 0 or lenX <= 0):
-#                break
-#
-#            lenY -= pitch
-#            lenX -= pitch
 
-        addTrailer(f)
 
 
 """
-Von Innen nach aussen. Geht nur vom Zentrum aus. Erste Fahrt geht nach Rechts.
-Erstellt vollstaendig ausfuehrbares vbs skript.
-funktioniert nur fuer mehr oder weniger quadratische Formen
+input:  params: Variables as directory
+Output: .vbs script to do a Rasterfahrt (Snail) from
+        the inside to the outside.
+
+NOTES_________
+!!! sizeX and sizeY need to be divisible by the pitch.
+!!! Starting point has to be in the center.
+
+Area does not need to be quadratic
+
+Starting direction: To the right.
+
+dir = 0,1,2,3: Up, Right, Down, Left
 """
 def doRasterfahrtOut(params):
     sizeX = params["sizeX"]
@@ -368,7 +424,7 @@ def doRasterfahrtOut(params):
     with open(fileName+".vbs", 'w') as f:
         print(fileName)
         if ("ase" or "unny" or "abbit") in fileName:
-            addBunny(f)
+            addImportantStuff(f)
             print("yes")
         addHeader(params, f)
         # moveAbs(f, startX, startY)
@@ -392,7 +448,6 @@ def doRasterfahrtOut(params):
                 lineRelShoot(f, pitch, direction, lenY - pitch)
                 break
 
-        addTrailer(f)
 
 
 
@@ -438,7 +493,7 @@ def readUserPath(f, pitch, repRate, queue, pArray, lArray):
                 lineRelShoot(f, pitch, direction, abs(xDist))
             # if diagonal
             else:
-                xDistArray, yDistArray = makeXYArray(f, pitch, x0, y0, x1, y1)
+                xDistArray, yDistArray = moveDiagonal(f, pitch, x0, y0, x1, y1)
                 xyArrayShoot(f, xDistArray, yDistArray)
         elif (queue[i][0] == 0):
             # Point
@@ -450,8 +505,8 @@ def readUserPath(f, pitch, repRate, queue, pArray, lArray):
 
 
 """
+TODO: In the working. Take gds file (e.g. klayout file) and transform into vbs file.
 output script made out of basic code blocks
-Goal: Only one standard form with different values, but different path
 """
 def createUserScript(params, queue, points, lines):
     fileName = params["fileName"]
@@ -465,12 +520,11 @@ name.")
 
     with open(fileName+".vbs", 'a+') as f:
         if ("ase" or "unny" or "abbit") in fileName:
-            addBunny(f)
+            addImportantStuff(f)
 
         addHeader(params, f)        
 
         # enter movement and laser procedure
         readUserPath(f, pitch, queue, points, lines)
         
-        addTrailer(f)
     return testArray
