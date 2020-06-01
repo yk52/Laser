@@ -68,7 +68,7 @@ def removeTilt(p1, p2):
     else:
         p = p2
 
-    with open("alignment.vbs", 'w') as f:
+    with open("Skripte/alignment.vbs", 'w') as f:
         addText(f, "alignmentHeader")
         defineVars(f, p, corrAngle, dist)
         addText(f, "alignmentBody")

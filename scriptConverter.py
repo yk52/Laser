@@ -362,7 +362,7 @@ def doRasterfahrtIn(params):
 #        return
 #
 
-    with open(fileName+".vbs", 'w') as f:
+    with open("Skripte/"+fileName+".vbs", 'w') as f:
         if ("ase" or "uck" or "abbit") in fileName:
             addImportantStuff(f)
         addHeader(params, f)
@@ -422,10 +422,8 @@ def doRasterfahrtOut(params):
 #        return
 
     with open(fileName+".vbs", 'w') as f:
-        print(fileName)
         if ("ase" or "unny" or "abbit") in fileName:
             addImportantStuff(f)
-            print("yes")
         addHeader(params, f)
         # moveAbs(f, startX, startY)
         moveRel(f, 'x', startX-x0)
@@ -513,9 +511,7 @@ def createUserScript(params, queue, points, lines):
     pitch = params["pitch"]
 
     if os.path.isfile(fileName+".vbs"):
-        print(
-        "\nFile already exists. \nPlease delete the existing one, or choose a new \
-name.")
+        print("\nFile already exists.\nPlease choose another name.")
         return
 
     with open(fileName+".vbs", 'a+') as f:

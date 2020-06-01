@@ -6,6 +6,9 @@ Laser schuss happening position @CENTER
 
 Skripte als knopf verfügbar?
 
+CREATE "Skripte" ORDNER in arbeitsordner!
+************ NEXT 1.6.20 Error handling: see where laser stopped.
+try in script: what happens when --> On Error MsgBox("Fehler bei Nr. ")
 
 GOOD TO KNOW ******
 in-situ = im strahlengang
