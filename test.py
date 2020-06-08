@@ -29,10 +29,9 @@ yD = -167.073
 x0 = 46.595
 y0 = -152.341
 
-# Size of the to-be-lasered area, pitch and overlap
-sizeX = 5
-sizeY = 5
-pitch = 0.200
+# Size of the quadratic to-be-lasered area, pitch and overlap
+size = 5
+pitch = 1
 overlap = 0
 
 # Other laser parameters
@@ -66,7 +65,7 @@ params = {"origin":origin, "overlap":overlap, "fileName":fileName, "startX":star
         "startLeistung":startLeistung, "pulse":pulse, "repRate":repRate,\
         "pulseEnergy":pulseEnergy, \
         "energyMode":energyMode, "triggerMode":triggerMode,\
-        "waitMs":waitMs, "pitch":pitch, "sizeX":sizeX, "sizeY":sizeY}
+        "waitMs":waitMs, "pitch":pitch, "size":size}
 
 #scriptConverter.doRasterfahrtOut(params)
 scriptConverter.doRasterfahrtIn(params)

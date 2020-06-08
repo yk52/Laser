@@ -218,18 +218,15 @@ def moveDiagonal(f, pitch, x0, y0, x1, y1):
 input:  f:          open file object
         pitch:      Pitch between shots in mm (float)
         direction:  Either 0,1,2 or 3 (= Up, Right, Down or Left)
-        dist:       Distance to be moved in mm (float)
+        num:        Number of times to be shot at pitch in direction
 
 effect: write move-function to move along a horizontal or vertical line 
         and shoot in a certain pitch into f
 """
-def lineRelShoot(f, pitch, direction, dist):
+def lineRelShoot(f, pitch, direction, num):
     # Starting position not shot automatically
     text = ""
     step = 0
-    num = int(dist / pitch)
-    print("dist = %f, pitch = %f"%(dist,pitch))
-    print("num = %d"%num)
 
     if direction % 2 == 0:
         if direction == 2:      # down
@@ -330,8 +327,8 @@ Output: .vbs script to do a Rasterfahrt (Snail) from
 
 NOTES_________
 !!! sizeX and sizeY need to be divisible by the pitch.
-!!! Area needs to be quadratic (sizeX = sizeY)
 !!! Starting point has to be in upper left corner
+!!! Area has to be quadratic (sizeX = sizeY)
 
 Starting direction: To the right.
 
@@ -340,8 +337,7 @@ dir = 0,1,2,3: Up, Right, Down, Left
 """
 
 def doRasterfahrtIn(params):
-    sizeX = params["sizeX"]
-    sizeY = params["sizeY"]
+    size = params["size"]
     fileName = params["fileName"]
     startX = params["startX"]
     startY = params["startY"]
@@ -353,10 +349,8 @@ def doRasterfahrtIn(params):
     y0 = origin[1]
 
     direction = 1
-    lenX = sizeX
-    lenY = sizeY
+    num = int(size/pitch)
 
-    maxIter = max((sizeX/pitch), (sizeY/pitch))
 
 #    if os.path.isfile(fileName+".vbs"):
 #        print(
@@ -373,19 +367,13 @@ def doRasterfahrtIn(params):
         # First move to origin (Alignment point). Then move to starting point
         moveAbs(f, startX, startY)
         shoot(f,repRate)     # first shot
-        lineRelShoot(f, pitch, direction, lenX)   # first line to the right
+        lineRelShoot(f, pitch, direction, num)   # first line to the right
 
-        for i in range(int(sizeX/pitch)):
-            print(i)
-            if (lenY == 0): 
-                break
+        for i in range(num):
             direction = (direction + 1) % 4
-            lineRelShoot(f, pitch, direction, lenY)
+            lineRelShoot(f, pitch, direction, num-i)
             direction = (direction + 1) % 4
-            lineRelShoot(f, pitch, direction, lenX)
-            lenY -= pitch
-            lenX -= pitch
-            print(lenY, lenX)
+            lineRelShoot(f, pitch, direction, num-i)
         
 
 
@@ -396,18 +384,17 @@ Output: .vbs script to do a Rasterfahrt (Snail) from
         the inside to the outside.
 
 NOTES_________
-!!! sizeX and sizeY need to be divisible by the pitch.
+!!! size needs to be divisible by the pitch.
 !!! Starting point has to be in the center.
+!!! Area needs to be quadratic (sizeX = sizeY)
 
-Area does not need to be quadratic
 
 Starting direction: To the right.
 
 dir = 0,1,2,3: Up, Right, Down, Left
 """
 def doRasterfahrtOut(params):
-    sizeX = params["sizeX"]
-    sizeY = params["sizeY"]
+    size = params["size"]
     fileName = params["fileName"]
     startX = params["startX"]
     startY = params["startY"]
@@ -419,8 +406,7 @@ def doRasterfahrtOut(params):
     y0 = origin[1]
 
     direction = 0
-    lenX = 0
-    lenY = 0
+    num = int(size/pitch)
 
 #    if os.path.isfile(fileName+".vbs"):
 #        print(
@@ -436,19 +422,15 @@ def doRasterfahrtOut(params):
         shoot(f, repRate)     # first shot
 
         
-        for i in range(1+int(sizeX/pitch)):
+        for i in range(num):
             direction = (direction + 1) % 4
-            if (lenX < sizeX):
-                lenX += pitch
-                lineRelShoot(f, pitch, direction, lenX)
+            lineRelShoot(f, pitch, direction, i+1)
             direction = (direction + 1) % 4
-            if (lenY < sizeY):
-                lenY += pitch
-                lineRelShoot(f, pitch, direction, lenY)
+            lineRelShoot(f, pitch, direction, i+1)
 
         # Last line to fill the square
         direction = (direction + 1) % 4
-        lineRelShoot(f, pitch, direction, sizeX)
+        lineRelShoot(f, pitch, direction, num)
 
 
 
