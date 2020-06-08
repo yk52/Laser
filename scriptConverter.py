@@ -227,7 +227,9 @@ def lineRelShoot(f, pitch, direction, dist):
     # Starting position not shot automatically
     text = ""
     step = 0
-    num = math.ceil(dist / pitch)
+    num = int(dist / pitch)
+    print("dist = %f, pitch = %f"%(dist,pitch))
+    print("num = %d"%num)
 
     if direction % 2 == 0:
         if direction == 2:      # down
@@ -354,6 +356,7 @@ def doRasterfahrtIn(params):
     lenX = sizeX
     lenY = sizeY
 
+    maxIter = max((sizeX/pitch), (sizeY/pitch))
 
 #    if os.path.isfile(fileName+".vbs"):
 #        print(
@@ -372,13 +375,17 @@ def doRasterfahrtIn(params):
         shoot(f,repRate)     # first shot
         lineRelShoot(f, pitch, direction, lenX)   # first line to the right
 
-        for i in range(math.ceil(sizeX/pitch)):
-           direction = (direction + 1) % 4
-           lineRelShoot(f, pitch, direction, lenY)
-           direction = (direction + 1) % 4
-           lineRelShoot(f, pitch, direction, lenX)
-           lenY -= pitch
-           lenX -= pitch
+        for i in range(int(sizeX/pitch)):
+            print(i)
+            if (lenY == 0): 
+                break
+            direction = (direction + 1) % 4
+            lineRelShoot(f, pitch, direction, lenY)
+            direction = (direction + 1) % 4
+            lineRelShoot(f, pitch, direction, lenX)
+            lenY -= pitch
+            lenX -= pitch
+            print(lenY, lenX)
         
 
 
@@ -421,31 +428,27 @@ def doRasterfahrtOut(params):
 #name.")
 #        return
 
-    with open(fileName+".vbs", 'w') as f:
+    with open("Skripte/"+fileName+".vbs", 'w') as f:
         if ("ase" or "unny" or "abbit") in fileName:
             addImportantStuff(f)
         addHeader(params, f)
-        # moveAbs(f, startX, startY)
-        moveRel(f, 'x', startX-x0)
-        moveRel(f, 'y', startY-y0)
+        moveAbs(f, startX, startY)
         shoot(f, repRate)     # first shot
 
-
-        while (lenX <= sizeX):
-            lenX += pitch
-            lenY += pitch
+        
+        for i in range(1+int(sizeX/pitch)):
             direction = (direction + 1) % 4
-            if (lenX <= sizeX):
+            if (lenX < sizeX):
+                lenX += pitch
                 lineRelShoot(f, pitch, direction, lenX)
-            else:
-                lineRelShoot(f, pitch, direction, lenX - pitch)
             direction = (direction + 1) % 4
-            if (lenY <= sizeY):
+            if (lenY < sizeY):
+                lenY += pitch
                 lineRelShoot(f, pitch, direction, lenY)
-            else:
-                lineRelShoot(f, pitch, direction, lenY - pitch)
-                break
 
+        # Last line to fill the square
+        direction = (direction + 1) % 4
+        lineRelShoot(f, pitch, direction, sizeX)
 
 
 
@@ -514,7 +517,7 @@ def createUserScript(params, queue, points, lines):
         print("\nFile already exists.\nPlease choose another name.")
         return
 
-    with open(fileName+".vbs", 'a+') as f:
+    with open("Skripte/"+fileName+".vbs", 'a+') as f:
         if ("ase" or "unny" or "abbit") in fileName:
             addImportantStuff(f)
 

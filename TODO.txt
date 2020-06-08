@@ -1,8 +1,5 @@
 Laser Ansteuerung TODO
 
-TIP: jog sheet STRG+J
-
-Laser schuss happening position @CENTER
 
 Skripte als knopf verfügbar?
 
@@ -10,9 +7,12 @@ CREATE "Skripte" ORDNER in arbeitsordner!
 ************ NEXT 1.6.20 Error handling: see where laser stopped.
 try in script: what happens when --> On Error MsgBox("Fehler bei Nr. ")
 
-GOOD TO KNOW ******
+GOOD TO KNOW *****************************************************
+
+Laser schuss happening position @CENTER
 in-situ = im strahlengang
 Init: Jog sheet -> Home
+TIP: jog sheet STRG+J
 Nach jedem Fehler acknowledgen und achsen wieder anschalten
 
 CENTER: x = 74.100, y = -176,14    -> Links x: +, Hinten y: +
@@ -21,6 +21,7 @@ Rotation: c: CW +, CCW -
 Maximal Range: (x,y) (0,0) -> (150, -298)
 Alignment kreuze 72.5 mm entfernt
 pulseEnergy: max 360 je nach Gaszustand
+******************************************************************
 
 
 TODO__________________________

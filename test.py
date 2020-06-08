@@ -15,7 +15,7 @@ import scriptConverter
 USER INPUTS:
 """
 # name for vbs script
-fileName = "rasterfahrt"
+fileName = "3"
 
 # Alignment point/origin in design
 x0D = -36800E-3
@@ -68,4 +68,5 @@ params = {"origin":origin, "overlap":overlap, "fileName":fileName, "startX":star
         "energyMode":energyMode, "triggerMode":triggerMode,\
         "waitMs":waitMs, "pitch":pitch, "sizeX":sizeX, "sizeY":sizeY}
 
+#scriptConverter.doRasterfahrtOut(params)
 scriptConverter.doRasterfahrtIn(params)

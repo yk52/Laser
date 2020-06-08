@@ -243,8 +243,8 @@ def fetchLaser(inputs):
 
     if ((startX + sizeX) > 150 or ((startY - sizeY) < -298)):
         msg = "Movement would exceed Laser boundaries.\n\
-                Please choose different starting point or decrease size.\n\
-                Range of the laser: x=[0,150], y=[0,-298]"
+Please choose different starting point or decrease size.\n\
+Range of the laser: x=[0,150], y=[0,-298]"
         messagebox.showerror("Boundary error", msg)
         return
 
@@ -281,6 +281,10 @@ def fetchLaser(inputs):
     if (inputs['Direction'].get() == 'Inwards'):
         scriptConverter.doRasterfahrtIn(params)
     else:
+        if (sizeX not sizeY):
+            msg = "For outwards, sizeX must be equal to sizeY"
+            messagebox.showerror("Boundary error", msg)
+            return
         scriptConverter.doRasterfahrtOut(params)
 
     showSuccess()
