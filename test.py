@@ -30,8 +30,8 @@ x0 = 46.595
 y0 = -152.341
 
 # Size of the quadratic to-be-lasered area, pitch and overlap
-size = 5
-pitch = 1
+size = 9
+pitch = 0.3
 overlap = 0
 
 # Other laser parameters
@@ -67,5 +67,5 @@ params = {"origin":origin, "overlap":overlap, "fileName":fileName, "startX":star
         "energyMode":energyMode, "triggerMode":triggerMode,\
         "waitMs":waitMs, "pitch":pitch, "size":size}
 
-#scriptConverter.doRasterfahrtOut(params)
-scriptConverter.doRasterfahrtIn(params)
+scriptConverter.doRasterfahrtOut(params)
+#scriptConverter.doRasterfahrtIn(params)

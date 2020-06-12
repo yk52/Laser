@@ -172,7 +172,7 @@ def createLayout(root):
     sub = tk.Frame(miscFrame, relief="groove", borderwidth=3)
     sub.pack()
     makeformButton(sub, ['Direction'], btn1='Inwards', btn2='Outwards')
-    makeformText(sub, ['Script name', 'pitch', 'startZ', 'sizeX', 'sizeY'])
+    makeformText(sub, ['Script name', 'pitch', 'startZ', 'size'])
 
     extraFrame = collapseFrame(sub, text='More Settings...',
             relief="raised")
@@ -232,16 +232,15 @@ def fetchLaser(inputs):
     startY = y0 + moveYRel
     origin = (x0, y0)
 
-    sizeX = float(inputs['sizeX'].get())
-    sizeY = float(inputs['sizeY'].get())
+    size = float(inputs['size'].get())
     pitch = float(inputs['pitch'].get())
 
-    if ((pitch > sizeX) or (pitch > sizeY)):
+    if (pitch > size):
         msg = "Pitch is larger than size"
         messagebox.showerror("Boundary error", msg)
         return
 
-    if ((startX + sizeX) > 150 or ((startY - sizeY) < -298)):
+    if ((startX + size) > 150 or ((startY - size) < -298)):
         msg = "Movement would exceed Laser boundaries.\n\
 Please choose different starting point or decrease size.\n\
 Range of the laser: x=[0,150], y=[0,-298]"
@@ -276,15 +275,11 @@ Range of the laser: x=[0,150], y=[0,-298]"
             "startLeistung":StartLeistung, "pulse":Pulse, "repRate":repRate,\
             "pulseEnergy":PulseEnergy, \
             "energyMode":EnergyMode, "triggerMode":TriggerMode,\
-            "waitMs":waitMs, "pitch":pitch, "sizeX":sizeX, "sizeY":sizeY}
+            "waitMs":waitMs, "pitch":pitch, "size":size}
 
     if (inputs['Direction'].get() == 'Inwards'):
         scriptConverter.doRasterfahrtIn(params)
     else:
-        if (sizeX not sizeY):
-            msg = "For outwards, sizeX must be equal to sizeY"
-            messagebox.showerror("Boundary error", msg)
-            return
         scriptConverter.doRasterfahrtOut(params)
 
     showSuccess()
@@ -329,6 +324,7 @@ class collapseFrame(tk.Frame):
 def main():
     root = tk.Tk()
     root.title("Laser Control")
+    root.resizable(False, False)
     frame = tk.Frame(root)
     frame.pack()
 
