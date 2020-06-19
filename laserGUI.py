@@ -112,6 +112,8 @@ effect: Show help message and open LaserGUIHelp.pdf in folder LaserHelp
 def showHelp():
     helpMsg = "For a detailed documentation, kindly refer to the "+\
     "LaserHelp.pdf file in the LaserGUIHelp folder.\n"+\
+    "It will open automatically after you close this window.\n"+\
+    "If you get an error, the file has been deleted, or misplaced. Ohwee.\n"+\
     "\nContact kakuy@tf.uni-freiburg.de for further assistance."
     messagebox.showinfo("Help", helpMsg)
     os.system("start LaserHelp/LaserGUIHelp.pdf")
@@ -128,13 +130,13 @@ def createLayout(root):
     # Alignment
     alignFrame = tk.Frame(root, relief="sunken", borderwidth=5)
     alignFrame.pack(side='left', anchor='n', padx=10, pady=10)
-    tk.Label(alignFrame, bg='LavenderBlush3', text="Step 1)  Alignment", font=25).pack(fill='x')
+    tk.Label(alignFrame, bg='LavenderBlush3', text="Step 1) Tilt alignment", font=25).pack(fill='x')
     leftRightFrame = tk.Frame(alignFrame)
     leftRightFrame.pack(pady=5)
     leftAlignFrame = tk.Frame(leftRightFrame, borderwidth=3, relief="groove")
     rightAlignFrame = tk.Frame(leftRightFrame, borderwidth=3, relief="groove")
-    tk.Label(leftAlignFrame, text="Left alignment point", bg='LavenderBlush2').pack(fill='x')
-    tk.Label(rightAlignFrame, text="Right alignment point", bg='LavenderBlush2').pack(fill='x')
+    tk.Label(leftAlignFrame, text="Left alignment point [mm]", bg='LavenderBlush2').pack(fill='x')
+    tk.Label(rightAlignFrame, text="Right alignment point [mm]", bg='LavenderBlush2').pack(fill='x')
     makeformText(leftAlignFrame, ["x1", "y1"])
     makeformText(rightAlignFrame, ["x2", "y2"])
     leftAlignFrame.pack(padx=10)
@@ -152,18 +154,18 @@ def createLayout(root):
 
     alignDesignFrame = tk.Frame(coordinateFrame, relief="groove", borderwidth=3)
     alignDesignFrame.pack()
-    tk.Label(alignDesignFrame, text="Origin in design", bg='honeydew2').pack(fill='x')
+    tk.Label(alignDesignFrame, text="Origin in design [mm]", bg='honeydew2').pack(fill='x')
     makeformText(alignDesignFrame, ['x0D', 'y0D'])
 
     shootDesignFrame = tk.Frame(coordinateFrame, relief="groove", borderwidth=3)
     shootDesignFrame.pack()
-    tk.Label(shootDesignFrame, text="First intended shooting point in\
- design", bg='honeydew2').pack(fill='x')
+    tk.Label(shootDesignFrame, text="First shooting point in\
+ design [mm]", bg='honeydew2').pack(fill='x')
     makeformText(shootDesignFrame, ['xD', 'yD'])
 
     shotFrame = tk.Frame(coordinateFrame, relief="groove", borderwidth=3)
     shotFrame.pack()
-    tk.Label(shotFrame, text="Origin in laser coordinates", bg='honeydew2').pack(fill='x')
+    tk.Label(shotFrame, text="Origin in laser coordinates [mm]", bg='honeydew2').pack(fill='x')
     makeformText(shotFrame, ['x0', 'y0'])
 
     # Right Misc frame start
@@ -172,7 +174,8 @@ def createLayout(root):
     sub = tk.Frame(miscFrame, relief="groove", borderwidth=3)
     sub.pack()
     makeformButton(sub, ['Direction'], btn1='Inwards', btn2='Outwards')
-    makeformText(sub, ['Script name', 'pitch', 'startZ', 'size'])
+    makeformText(sub, ['Script name', 'pitch [mm]', 'startZ [mm]', 'Square \
+size [mm]'])
 
     extraFrame = collapseFrame(sub, text='More Settings...',
             relief="raised")
@@ -223,7 +226,7 @@ def fetchLaser(inputs):
     y0D = float(inputs['y0D'].get())
     x0 = float(inputs['x0'].get())
     y0 = float(inputs['y0'].get())
-    startZ = float(inputs['startZ'].get())
+    startZ = float(inputs['startZ [mm]'].get())
 
     moveXRel = xD - x0D    
     moveYRel = yD - y0D
@@ -232,8 +235,8 @@ def fetchLaser(inputs):
     startY = y0 + moveYRel
     origin = (x0, y0)
 
-    size = float(inputs['size'].get())
-    pitch = float(inputs['pitch'].get())
+    size = float(inputs['Square size [mm]'].get())
+    pitch = float(inputs['pitch [mm]'].get())
 
     if (pitch > size):
         msg = "Pitch is larger than size"

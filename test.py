@@ -15,7 +15,7 @@ import scriptConverter
 USER INPUTS:
 """
 # name for vbs script
-fileName = "3"
+fileName = "schnecke5x5"
 
 # Alignment point/origin in design
 x0D = -36800E-3
@@ -30,8 +30,8 @@ x0 = 46.595
 y0 = -152.341
 
 # Size of the quadratic to-be-lasered area, pitch and overlap
-size = 9
-pitch = 0.3
+size = 5
+pitch = 0.2
 overlap = 0
 
 # Other laser parameters
@@ -67,5 +67,5 @@ params = {"origin":origin, "overlap":overlap, "fileName":fileName, "startX":star
         "energyMode":energyMode, "triggerMode":triggerMode,\
         "waitMs":waitMs, "pitch":pitch, "size":size}
 
-scriptConverter.doRasterfahrtOut(params)
-#scriptConverter.doRasterfahrtIn(params)
+#scriptConverter.doRasterfahrtOut(params)
+scriptConverter.doRasterfahrtIn(params)
