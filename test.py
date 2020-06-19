@@ -5,7 +5,6 @@ Create .vbs script for Rasterfahrt (Outside to inside)
 Precision:  1 micron. Base unit is 1 mm. E.g. enter number in microns
             and add E-3 or directly as mm.
 """
-import readGDS2txt
 import scriptConverter
 
 
@@ -15,27 +14,27 @@ import scriptConverter
 USER INPUTS:
 """
 # name for vbs script
-fileName = "schnecke5x5"
+fileName = "testSchuss"
 
 # Alignment point/origin in design
-x0D = -36800E-3
-y0D = -2800E-3
+x0D = -37
+y0D = -2.608
 
 # First intended shooting point in design
-xD = 46.639
-yD = -167.073
+xD = -38.439
+yD = -2.031
 
 # Alignment point/origin in laser coordinates
-x0 = 46.595
-y0 = -152.341
+x0 = 34.460
+y0 = -177.619
 
 # Size of the quadratic to-be-lasered area, pitch and overlap
-size = 5
-pitch = 0.2
+size = 0.3
+pitch = 0.3
 overlap = 0
 
 # Other laser parameters
-z = 3.05
+z = 3.1
 startLeistung = -26
 pulse = 1
 repRate = 20 

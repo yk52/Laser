@@ -208,6 +208,9 @@ input:  inputs: Dictionary with user inputs
         
 effect: Read user inputs for the Rasterfahrt part and create script in 
         "Skripte" folder. Success window pops up after creation.
+
+NOTE:   COORDINATE SYSTEM:  X left: -, right: +
+                            Y up: -, down: +
 """
 def fetchLaser(inputs):
     params = {}

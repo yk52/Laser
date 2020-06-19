@@ -23,7 +23,7 @@ Sub moveAbs(xPos, yPos)
 End Sub
 
 Sub lineRelShootX(numShots, pulse, dist)
-    for i=0 to numShots
+    for i=0 to numShots-1
         moveRel x, dist
         waituntilinpos x
         PSOPulse pulse, 1000000/20
@@ -31,7 +31,7 @@ Sub lineRelShootX(numShots, pulse, dist)
 End Sub
 
 Sub lineRelShootY(numShots, pulse, dist)
-    for i=0 to numShots
+    for i=0 to numShots-1
         moveRel y, dist
         waituntilinpos y
         PSOPulse pulse, 1000000/20
@@ -39,7 +39,7 @@ Sub lineRelShootY(numShots, pulse, dist)
 End Sub
 
 Sub xyArrayShoot(numShots, pulse)
-    for i=0 to numShots
+    for i=0 to numShots-1
         moveRel x, xArray(i)
         moveRel y, yArray(i)
         waituntilinpos x,y
