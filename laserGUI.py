@@ -240,8 +240,7 @@ def fetchLaser(inputs):
     moveYRel = yD - y0D
 
     startX =  x0 + moveXRel
-    startY = y0 + moveYRel
-    origin = (x0, y0)
+    startY = y0 - moveYRel # different orientation of axis in laser and kLayout
 
     size = float(inputs['Square size [mm]'].get())
     pitch = float(inputs['pitch [mm]'].get())
@@ -281,7 +280,7 @@ Range of the laser: x=[0,150], y=[0,-298]"
     Overlap = defaults['Overlap']
 
     pitch -= Overlap
-    params = {"origin":origin, "overlap":Overlap, "fileName":filename, \
+    params = {"overlap":Overlap, "fileName":filename, \
             "startX":startX, "startY":startY, "startZ":startZ,\
             "startLeistung":StartLeistung, "pulse":Pulse, "repRate":repRate,\
             "pulseEnergy":PulseEnergy, \

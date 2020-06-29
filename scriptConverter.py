@@ -6,7 +6,6 @@ Take the path entered into the laser GUI and convert it into a visual basic scri
 
 import os
 import math
-#import pyximport; pyximport.install()
 
 
 
@@ -343,28 +342,17 @@ def doRasterfahrtIn(params):
     startY = params["startY"]
     pitch = params["pitch"]
     repRate = params["repRate"]
-    origin = params["origin"]
-    
-    x0 = origin[0]
-    y0 = origin[1]
 
     direction = 1
     num = int(size/pitch)
 
-
-#    if os.path.isfile(fileName+".vbs"):
-#        print(
-#        "\nFile already exists. \nPlease delete the existing one, or choose a new \
-#name.")
-#        return
-#
 
     with open("Skripte/"+fileName+".vbs", 'w') as f:
         if ("ase" or "uck" or "abbit") in fileName:
             addImportantStuff(f)
         addHeader(params, f)
 
-        # First move to origin (Alignment point). Then move to starting point
+        # First move to starting point
         moveAbs(f, startX, startY)
         shoot(f,repRate)     # first shot
         lineRelShoot(f, pitch, direction, num)   # first line to the right
@@ -400,24 +388,16 @@ def doRasterfahrtOut(params):
     startY = params["startY"]
     pitch = params["pitch"]
     repRate = params["repRate"]
-    origin = params["origin"]
-    
-    x0 = origin[0]
-    y0 = origin[1]
 
     direction = 0
     num = int(size/pitch)
 
-#    if os.path.isfile(fileName+".vbs"):
-#        print(
-#        "\nFile already exists. \nPlease delete the existing one, or choose a new \
-#name.")
-#        return
 
     with open("Skripte/"+fileName+".vbs", 'w') as f:
         if ("ase" or "unny" or "abbit") in fileName:
             addImportantStuff(f)
         addHeader(params, f)
+        # Move to starting point
         moveAbs(f, startX, startY)
         shoot(f, repRate)     # first shot
 
