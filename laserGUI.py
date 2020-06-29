@@ -133,13 +133,12 @@ def createLayout(root):
     alignFrame = tk.Frame(root, relief="sunken", borderwidth=5)
     alignFrame.pack(side='left', anchor='n', padx=10, pady=10)
     tk.Label(alignFrame, bg='LavenderBlush3', text="Step 1) Tilt alignment", font=25).pack(fill='x')
-    tk.Label(alignFrame, text="Use camera coordinates", font=18).pack(fill='x')
     leftRightFrame = tk.Frame(alignFrame)
     leftRightFrame.pack(pady=5)
     leftAlignFrame = tk.Frame(leftRightFrame, borderwidth=3, relief="groove")
     rightAlignFrame = tk.Frame(leftRightFrame, borderwidth=3, relief="groove")
-    tk.Label(leftAlignFrame, text="Left alignment point [mm]", bg='LavenderBlush2').pack(fill='x')
-    tk.Label(rightAlignFrame, text="Right alignment point [mm]", bg='LavenderBlush2').pack(fill='x')
+    tk.Label(leftAlignFrame, text="Left alignment (camera) point [mm]", bg='LavenderBlush2').pack(fill='x')
+    tk.Label(rightAlignFrame, text="Right alignment (camera) point [mm]", bg='LavenderBlush2').pack(fill='x')
     makeformText(leftAlignFrame, ["x1", "y1"])
     makeformText(rightAlignFrame, ["x2", "y2"])
     leftAlignFrame.pack(padx=10)
@@ -168,7 +167,9 @@ def createLayout(root):
 
     shotFrame = tk.Frame(coordinateFrame, relief="groove", borderwidth=3)
     shotFrame.pack()
-    tk.Label(shotFrame, text="Origin in laser coordinates [mm]", bg='honeydew2').pack(fill='x')
+    tk.Label(shotFrame, text="Origin in LASER SITE coordinates [mm]", bg='honeydew2').pack(fill='x')
+    tk.Label(shotFrame, text="Go to site for these "+
+    "coordinates.").pack(fill='x')
     makeformText(shotFrame, ['x0', 'y0'])
 
     # Right Misc frame start
@@ -176,6 +177,7 @@ def createLayout(root):
     miscFrame.pack(side="right", anchor='n', pady=5)
     sub = tk.Frame(miscFrame, relief="groove", borderwidth=3)
     sub.pack()
+    tk.Label(sub, text="Other parameters", bg='honeydew2').pack(fill='x')
     makeformButton(sub, ['Direction'], btn1='Inwards', btn2='Outwards')
     makeformText(sub, ['Script name', 'pitch [mm]', 'startZ [mm]', 'Square \
 size [mm]'])
