@@ -2,6 +2,8 @@
 """ 
 Creates GUI for Laser control in order to access alignment.py and
 scriptConverter.py 
+Script is created by setting together basic blocks of code which can be
+found under the folder "textmodule"
 """
 import os
 import tkinter as tk
@@ -131,6 +133,7 @@ def createLayout(root):
     alignFrame = tk.Frame(root, relief="sunken", borderwidth=5)
     alignFrame.pack(side='left', anchor='n', padx=10, pady=10)
     tk.Label(alignFrame, bg='LavenderBlush3', text="Step 1) Tilt alignment", font=25).pack(fill='x')
+    tk.Label(alignFrame, text="Use camera coordinates", font=18).pack(fill='x')
     leftRightFrame = tk.Frame(alignFrame)
     leftRightFrame.pack(pady=5)
     leftAlignFrame = tk.Frame(leftRightFrame, borderwidth=3, relief="groove")

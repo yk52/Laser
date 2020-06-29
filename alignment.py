@@ -2,6 +2,8 @@
 """
 16/05/20
 provides functions needed to create  VBS script for tilt removal
+The script is created by building blocks of code, which can be found under the
+folder "textmodule".
 """
 
 import os

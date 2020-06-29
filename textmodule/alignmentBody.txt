@@ -17,7 +17,7 @@ move y, y1
 waituntilinpos x, y
 wait 1000	'waituntilinpos does not always work apparently
 
-move c, corrAngle
+moveRel c, corrAngle
 waituntilinpos c
 wait 1000
 
