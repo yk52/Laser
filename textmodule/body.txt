@@ -73,5 +73,6 @@ move Leistung, startLeistung
 waituntilinpos x, y, z, Leistung
 wait 1000	' waituntilinpos does not always work
 
+PSOPulse(10, 1000000/20)	' To adjust Leistung
 open shutter
 wait waitMs
